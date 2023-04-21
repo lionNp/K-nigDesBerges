@@ -1,33 +1,66 @@
 #include "bords_util.h"
 
+void get_single_pieces(field bitfield_fig, field single_pieces_color[], int num_p){
+    for(int i=0; i<num_p; i++){
+        single_pieces_color[i] = 0;}
+
+    printf("num pieces: %d\n", num_p);
+    
+    int n = 0;
+    for(int i=0; n<num_p; i++){
+        if(bitfield_fig % 2 == 1){
+            single_pieces_color[n] += (field) 1 << i;
+            n++;
+        }
+        bitfield_fig = bitfield_fig >> 1;
+    }
+}
+
+int num_pieces(field board){
+    int n = 0;
+    for(int i=0; i<64; i++){
+        if(board % 2 == 1){
+            n++;
+        }
+        board = board>>1;
+    }
+
+    return n;
+}
+
 void import_string(field bitfield_fig[], char gamestring[]){
-    printf("%s\n", gamestring);
+
+    //initialise empty boards
+    for(int i=0; i<figuren_anz; i++){
+        bitfield_fig[i] = (field) 0;
+    }
 
     int str_len = strlen(gamestring);
+
+    printf("Gamestring: %s\n", gamestring);
 
     int i = 0;
     for(int iterate=0; iterate<str_len; iterate++){
         char c = gamestring[iterate];
-        printf("%c", c);
 
         switch(c){
-            case 'r': add_to_board_br_to_tl(&bitfield_fig[r], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); printf(" at %d\n", i); break;
-            case 'n': add_to_board_br_to_tl(&bitfield_fig[n], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); printf(" at %d\n", i); break;
-            case 'b': add_to_board_br_to_tl(&bitfield_fig[b], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); printf(" at %d\n", i); break;
-            case 'q': add_to_board_br_to_tl(&bitfield_fig[q], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); printf(" at %d\n", i); break;
-            case 'k': add_to_board_br_to_tl(&bitfield_fig[k], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); printf(" at %d\n", i); break;
-            case 'p': add_to_board_br_to_tl(&bitfield_fig[p], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); printf(" at %d\n", i); break;
+            case 'r': add_to_board_br_to_tl(&bitfield_fig[r], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
+            case 'n': add_to_board_br_to_tl(&bitfield_fig[n], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
+            case 'b': add_to_board_br_to_tl(&bitfield_fig[b], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
+            case 'q': add_to_board_br_to_tl(&bitfield_fig[q], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
+            case 'k': add_to_board_br_to_tl(&bitfield_fig[k], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
+            case 'p': add_to_board_br_to_tl(&bitfield_fig[p], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
 
-            case 'R': add_to_board_br_to_tl(&bitfield_fig[r], i); add_to_board_br_to_tl(&bitfield_fig[w], i); printf(" at %d\n", i); break;
-            case 'N': add_to_board_br_to_tl(&bitfield_fig[n], i); add_to_board_br_to_tl(&bitfield_fig[w], i); printf(" at %d\n", i); break;
-            case 'B': add_to_board_br_to_tl(&bitfield_fig[b], i); add_to_board_br_to_tl(&bitfield_fig[w], i); printf(" at %d\n", i); break;
-            case 'Q': add_to_board_br_to_tl(&bitfield_fig[q], i); add_to_board_br_to_tl(&bitfield_fig[w], i); printf(" at %d\n", i); break;
-            case 'K': add_to_board_br_to_tl(&bitfield_fig[k], i); add_to_board_br_to_tl(&bitfield_fig[w], i); printf(" at %d\n", i); break;
-            case 'P': add_to_board_br_to_tl(&bitfield_fig[p], i); add_to_board_br_to_tl(&bitfield_fig[w], i); printf(" at %d\n", i); break;
+            case 'R': add_to_board_br_to_tl(&bitfield_fig[r], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
+            case 'N': add_to_board_br_to_tl(&bitfield_fig[n], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
+            case 'B': add_to_board_br_to_tl(&bitfield_fig[b], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
+            case 'Q': add_to_board_br_to_tl(&bitfield_fig[q], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
+            case 'K': add_to_board_br_to_tl(&bitfield_fig[k], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
+            case 'P': add_to_board_br_to_tl(&bitfield_fig[p], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
 
-            case '/': printf(" skip\n"); i--; break;
+            case '/':  i--; break;
 
-            default: i += (c - 48); printf("skip %d\n", c-48); i--; break; //skip ones
+            default: i += (c - 48); i--; break; //skip ones
         }
 
         i++;
