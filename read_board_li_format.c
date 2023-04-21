@@ -35,6 +35,6 @@ void test_add_to_board_coords(){
 }
 
 void test_bitfield_print(){
-    field bitfield = (field) 0b1000011011000111100111011110100111001001001111010100101111111010;
+    field bitfield = (field) 0b1000101001100001111100011010001001011111001100011001000111111000;
     print_board(bitfield);
 }
