@@ -6,23 +6,20 @@ int main(){
     char feld_string[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
     import_string(bitfield_fig, feld_string);
 
-    //run tests if needed
-    // test_bitfield_print();
-    // test_add_to_board_coords();
-    // print_all_boards(bitfield_fig);
-
     //get single pieces
     field board_to_split = (bitfield_fig[b] & bitfield_fig[w]) | bitfield_fig[r] | bitfield_fig[n];
 
     int num_p = num_pieces(board_to_split);
-    //printf("num pieces: %d\n", num_p);
-
     field single_pieces_color[num_p];
     get_single_pieces(board_to_split, single_pieces_color, num_p);
-
-    for(int i=0; i<num_p; i++){
+    /*for(int i=0; i<num_p; i++){
         print_board(single_pieces_color[i]);
-    }
+    }*/
+    
+    //run tests if needed
+    // test_bitfield_print();
+    // test_add_to_board_coords();
+    // print_all_boards(bitfield_fig);
 
     return 0;
 }

@@ -92,7 +92,7 @@ void add_to_board_coords(field *board, int x, int y){
 }
 
 void add_to_board_br_to_tl(field *board, int n){
-    *board = *board | ((field) 1 << 63-n);
+    *board = *board | ((field) 1 << (63-n));
 }
 
 void print_all_boards(field *boards){
