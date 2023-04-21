@@ -1,30 +1,36 @@
 #include "boards.h"
 
 int main(){
-    char feld_string[] = "dd3-Kf5";
 
+    //initialise empty boards
     field bitfield_fig[figuren_anz];
     for(int i=0; i<figuren_anz; i++){
         bitfield_fig[i] = (field) 0;
-
-        printf("%ld \n",bitfield_fig[i]);
     }
 
+    
+    //read situation string
+    char feld_string[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+    import_string(bitfield_fig, feld_string);
 
+    //run tests if needed
     // test_bitfield_print();
     // test_add_to_board_coords();
+
+    print_all_boards(bitfield_fig);
 
     printf("done\n");
 
     return 0;
 }
+
 void test_add_to_board_coords(){
     field board = (field) 0;
 
     printf("board:\n");
     print_board(board);
     printf("add to board at x=3, y=2\n");
-    board = add_to_board_coords(board, 3, 4);
+    add_to_board_coords(&board, 3, 4);
     print_board(board);
 }
 

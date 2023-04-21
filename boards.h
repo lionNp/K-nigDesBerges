@@ -10,17 +10,20 @@
 typedef uint64_t field;
 
 enum figuren{
-    schwarz,
-    weiss,
-    koenig,
-    dame,
-    turm,
-    pferd,
-    laeufer,
-    bauer
+    black,
+    white,
+    king,
+    queen,
+    rook,
+    bishop,
+    knight,
+    pawn
 };
 
 void print_board(field board);
 void test_bitfield_print();
-field add_to_board_coords(field board, int x, int y);
+void add_to_board_coords(field *board, int x, int y);
 void test_add_to_board_coords();
+void import_string(field bitfield_fig[], char gamestring[]);
+void add_to_board_br_to_tl(field *board, int n);
+void print_all_boards(field *boards);
