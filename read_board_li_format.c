@@ -31,7 +31,7 @@ int main(){
     }*/
     
     //imagine we are white
-    find_legal_diag_moves(bitfield_fig[w] | (field) 1 << 50, (field) 1 << 36);
+    find_legal_diag_moves(bitfield_fig[w], bitfield_fig[bl], (field) 1 << 36);
 
     return 0;
 }

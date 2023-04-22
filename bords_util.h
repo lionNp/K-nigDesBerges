@@ -19,7 +19,7 @@ enum figuren_util{
     p
 };
 
-field find_legal_diag_moves(field own_pieces, field position);
+field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position);
 field shift_diag_up(field diag, int n);
 field shift_diag_down(field diag, int n);
 void import_string(field boards[], char gamestring[]);
