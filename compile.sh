@@ -1,1 +1,1 @@
-gcc -o compiled read_board_li_format.c -lm
+gcc -o run read_board_li_format.c -lm
