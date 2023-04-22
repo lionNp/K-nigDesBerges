@@ -10,12 +10,12 @@ field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position
     }
     bit_num--;
 
-    printf("bitnum: %d\n", bit_num);
+    //printf("bitnum: %d\n", bit_num);
 
     int x = bit_num % 8;
     int y = bit_num / 8;
 
-    printf("x = %d\ny = %d\n", x, y);
+    //printf("x = %d\ny = %d\n", x, y);
 
     //check up left
     int max_steps = 7-x;
@@ -45,7 +45,7 @@ field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position
         if(((position << (7*i)) & own_pieces) == (field) 0){
             moves = moves | position << (7*i);
             //printf("added move\n");
-            if(((position << (9*i)) & enemy_pieces) != (field) 0) break;
+            if(((position << (7*i)) & enemy_pieces) != (field) 0) break;
         }
         else break;
     }
@@ -61,7 +61,7 @@ field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position
         if(((position >> (7*i)) & own_pieces) == (field) 0){
             moves = moves | position >> (7*i);
             //printf("added move\n");
-            if(((position << (9*i)) & enemy_pieces) != (field) 0) break;
+            if(((position >> (7*i)) & enemy_pieces) != (field) 0) break;
         }
         else break;
     }
@@ -77,18 +77,18 @@ field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position
         if(((position >> (9*i)) & own_pieces) == (field) 0){
             moves = moves | position >> (9*i);
             //printf("added move\n");
-            if(((position << (9*i)) & enemy_pieces) != (field) 0) break;
+            if(((position >> (9*i)) & enemy_pieces) != (field) 0) break;
         }
         else break;
     }
 
     
 
-    printf("moves:\n");
+    /*printf("moves:\n");
     print_board(moves);
     printf("initial piece:\n");
-    print_board(position);
-
+    print_board(position);*/
+   
 
     return moves;
 }
