@@ -3,7 +3,7 @@
 int main(){
     //read situation string
     field bitfield_fig[figuren_anz];
-    char feld_string[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+    char feld_string[] = "rnbqkbnr/pppppppp/8/8/2B2B2/8/PPPPPPPP/RN1QK1NR";
     import_string(bitfield_fig, feld_string);
 
     //get single pieces
@@ -30,7 +30,8 @@ int main(){
         print_board(shift_diag_up(up_diag, i));
     }*/
     
-    //imagine we are white
+
+    /*//imagine we are white
     field legal_diag_moves_bishop = find_legal_diag_moves(bitfield_fig[w], bitfield_fig[bl], (field) 1 << 28);
 
     printf("Board white:\n");
@@ -47,6 +48,26 @@ int main(){
         print_board(single_moves[i]);
     }
     printf("for a total of %d moves\n", num_moves);*/
+    
+
+    printf("Board white:\n");
+    print_board(bitfield_fig[w]);
+    printf("White Bishops:\n");
+    print_board(bitfield_fig[w] & bitfield_fig[b]);
+    printf("Board black:\n");
+    print_board(bitfield_fig[bl]);
+
+
+    printf("moves white bishops\n");
+    field white_bishops = bitfield_fig[w] & bitfield_fig[b];
+    int num_moves = num_pieces(white_bishops);
+    field single_bishops[num_moves];
+    get_single_pieces(white_bishops, single_bishops, num_moves);
+    for(int i=0; i<num_moves; i++){
+        field legal_diag_moves_bishop = find_legal_diag_moves(bitfield_fig[w], bitfield_fig[bl], single_bishops[i]);
+        print_board(legal_diag_moves_bishop);
+    }
+    
 
     return 0;
 }
