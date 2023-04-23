@@ -1,10 +1,112 @@
 #include "bords_util.h"
 
+
+field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position){
+    field moves = (field) 0;
+
+    int bit_num = 1;
+    for(;bit_num < 64; bit_num++){
+        if(position >> bit_num == 0) break;
+    }
+    bit_num--;
+
+    //printf("bitnum: %d\n", bit_num);
+
+    int x = bit_num % 8;
+    int y = bit_num / 8;
+
+    //printf("x = %d\ny = %d\n", x, y);
+
+    //check up left
+    int max_steps = 7-x;
+    if(7-y < 7-x) max_steps = 7-y;
+    //printf("max_steps: %d\n", max_steps);
+    for(int i=1; i<=max_steps; i++){
+        //printf("try %d\n", i);
+        //print_board(position << (9*i));
+        //print_board(own_pieces);
+        //add position to move list if doable
+        if(((position << (9*i)) & own_pieces) == (field) 0){
+            moves = moves | position << (9*i);
+            //printf("added move\n");
+            if(((position << (9*i)) & enemy_pieces) != (field) 0) break;
+        }
+        else break;
+    }
+
+    //check up right
+    max_steps = x;
+    if(7-y < x) max_steps = 7-y;
+    for(int i=1; i<=max_steps; i++){
+        //printf("try %d\n", i);
+        //print_board(position << (7*i));
+        //print_board(own_pieces);
+        //add position to move list if doable
+        if(((position << (7*i)) & own_pieces) == (field) 0){
+            moves = moves | position << (7*i);
+            //printf("added move\n");
+            if(((position << (7*i)) & enemy_pieces) != (field) 0) break;
+        }
+        else break;
+    }
+
+    //check down left
+    max_steps = 7-x;
+    if(y < 7-x) max_steps = y;
+    for(int i=1; i<=max_steps; i++){
+        //printf("try %d\n", i);
+        //print_board(position >> (7*i));
+        //print_board(own_pieces);
+        //add position to move list if doable
+        if(((position >> (7*i)) & own_pieces) == (field) 0){
+            moves = moves | position >> (7*i);
+            //printf("added move\n");
+            if(((position >> (7*i)) & enemy_pieces) != (field) 0) break;
+        }
+        else break;
+    }
+
+    //check down right
+    max_steps = x;
+    if(y < x) max_steps = y;
+    for(int i=1; i<=max_steps; i++){
+        //printf("try %d\n", i);
+        //print_board(position >> (9*i));
+        //print_board(own_pieces);
+        //add position to move list if doable
+        if(((position >> (9*i)) & own_pieces) == (field) 0){
+            moves = moves | position >> (9*i);
+            //printf("added move\n");
+            if(((position >> (9*i)) & enemy_pieces) != (field) 0) break;
+        }
+        else break;
+    }
+
+    
+
+    /*printf("moves:\n");
+    print_board(moves);
+    printf("initial piece:\n");
+    print_board(position);*/
+   
+
+    return moves;
+}
+
+
+field shift_diag_up(field diag, int n){
+    return diag << 8*n;
+}
+
+field shift_diag_down(field diag, int n){
+    return diag >> 8*n;
+}
+
 void get_single_pieces(field bitfield_fig, field single_pieces_color[], int num_p){
     for(int i=0; i<num_p; i++){
         single_pieces_color[i] = 0;}
 
-    printf("num pieces: %d\n", num_p);
+    //printf("num pieces: %d\n", num_p);
     
     int n = 0;
     for(int i=0; n<num_p; i++){
