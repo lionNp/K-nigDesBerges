@@ -21,7 +21,7 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
 
         //two forward (with magical optimisation to avoid saving and loading of registers in assembly)
         moves = moves | ((((position << 16) & (own_pieces | enemy_pieces)) ^ (position << 16))
-                        ^ ((position >> 16) << 16) << 16)        // check ob y = 1: wenn, dann ist pos >> 16 0, also ist pos >> 16 << 32 auch 0 -> pos >> 16 != 0
+                        ^ ((position >> 16) << 32))        // check ob y = 1: wenn, dann ist pos >> 16 0, also ist pos >> 16 << 32 auch 0 -> pos >> 16 != 0
                         & ((((position << 8) & (own_pieces | enemy_pieces)) ^ (position << 8)) << 8) // check ob 1 vor frei ist
         ;    
 
@@ -50,7 +50,7 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
 
         //two forward (with magical optimisation to avoid saving and loading of registers in assembly)
         moves = moves | ((((position >> 16) & (own_pieces | enemy_pieces)) ^ (position >> 16))
-                        ^ ((position << 16) >> 16) >> 16)        // check ob y = 1: wenn, dann ist pos >> 16 0, also ist pos >> 16 << 32 auch 0 -> pos >> 16 != 0
+                        ^ ((position << 16) >> 32))        // check ob y = 1: wenn, dann ist pos >> 16 0, also ist pos >> 16 << 32 auch 0 -> pos >> 16 != 0
                         & ((((position >> 8) & (own_pieces | enemy_pieces)) ^ (position >> 8)) >> 8) // check ob 1 vor frei ist
         ;  
         /*if(y == 6 && ( ((position >> 8) & (own_pieces | enemy_pieces)) == (field) 0) ){
