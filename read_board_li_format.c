@@ -3,7 +3,7 @@
 int main(){
     //read situation string
     field bitfield_fig[figuren_anz];
-    char feld_string[] = "rnbqkbnr/pppppppp/8/8/2B2B2/8/PPPPPPPP/RN1QK1NR";
+    char feld_string[] = "rnbqkbnr/pppppppp/2B2B2/3B4/8/8/PPPPPPPP/RN1QK1NR";
     import_string(bitfield_fig, feld_string);
 
     //get single pieces
@@ -29,7 +29,7 @@ int main(){
     /*for(int i=0; i<8; i++){
         print_board(shift_diag_up(up_diag, i));
     }*/
-    
+
 
     /*//imagine we are white
     field legal_diag_moves_bishop = find_legal_diag_moves(bitfield_fig[w], bitfield_fig[bl], (field) 1 << 28);
@@ -50,23 +50,30 @@ int main(){
     printf("for a total of %d moves\n", num_moves);*/
     
 
-    printf("Board white:\n");
-    print_board(bitfield_fig[w]);
+    //printf("Board white:\n");
+    //print_board(bitfield_fig[w]);
     printf("White Bishops:\n");
-    print_board(bitfield_fig[w] & bitfield_fig[b]);
-    printf("Board black:\n");
-    print_board(bitfield_fig[bl]);
+    print_board(bitfield_fig[bl] & bitfield_fig[p]);
+    //printf("Board black:\n");
+    //print_board(bitfield_fig[bl]);*/
+    
+    struct timeval stop, start;
+    gettimeofday(&start, NULL);
 
 
-    printf("moves white bishops\n");
-    field white_bishops = bitfield_fig[w] & bitfield_fig[b];
+    //printf("moves white bishops\n");
+    field white_bishops = bitfield_fig[bl] & bitfield_fig[p];
     int num_moves = num_pieces(white_bishops);
     field single_bishops[num_moves];
     get_single_pieces(white_bishops, single_bishops, num_moves);
     for(int i=0; i<num_moves; i++){
-        field legal_diag_moves_bishop = find_legal_diag_moves(bitfield_fig[w], bitfield_fig[bl], single_bishops[i]);
-        print_board(legal_diag_moves_bishop);
+        field legal_diag_moves_bishop = find_legal_pawn_moves(bitfield_fig[bl], bitfield_fig[w], single_bishops[i], black);
+        //print_board(legal_diag_moves_bishop);
     }
+
+    
+    gettimeofday(&stop, NULL);
+    printf("took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
     
 
     return 0;
