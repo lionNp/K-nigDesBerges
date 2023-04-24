@@ -3,7 +3,7 @@
 int main(){
     //read situation string
     field bitfield_fig[figuren_anz];
-    char feld_string[] = "rnbqkbnr/pppppppp/2B2B2/3B4/8/8/PPPPPPPP/RN1QK1NR";
+    char feld_string[] = "rnbqkbnr/2pppppp/ppB2B2/3B4/8/8/PPPPPPPP/RN1QK1NR";
     import_string(bitfield_fig, feld_string);
 
     //get single pieces
@@ -61,14 +61,14 @@ int main(){
     gettimeofday(&start, NULL);
 
 
-    //printf("moves white bishops\n");
+    printf("moves white bishops\n");
     field white_bishops = bitfield_fig[bl] & bitfield_fig[p];
     int num_moves = num_pieces(white_bishops);
     field single_bishops[num_moves];
     get_single_pieces(white_bishops, single_bishops, num_moves);
     for(int i=0; i<num_moves; i++){
         field legal_diag_moves_bishop = find_legal_pawn_moves(bitfield_fig[bl], bitfield_fig[w], single_bishops[i], black);
-        //print_board(legal_diag_moves_bishop);
+        print_board(legal_diag_moves_bishop);
     }
 
     
