@@ -1,5 +1,30 @@
 #include "move_util.h"
 
+
+field check_for_chess(field own_pieces, field enemy_pieces, field position, bool color, field bitfield_figs[]){
+    field chess_from = (field) 0;
+
+    //check for b or q
+    chess_from = chess_from | (find_legal_diag_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[b] | bitfield_figs[q]) & enemy_pieces) );
+
+    //check for r or q
+    chess_from = chess_from | (find_legal_rook_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[r] | bitfield_figs[q]) & enemy_pieces) );
+
+    //check for k
+    //TODO
+
+    // WARNING: only works if white is bottom
+    //check for p
+    if(color == white){
+        chess_from = chess_from | ( ( (position << 9) | (position << 7) ) & (bitfield_figs[p] & bitfield_figs[bl]) );
+    }
+    else{
+        chess_from = chess_from | ( ( (position >> 9) | (position >> 7) ) & (bitfield_figs[p] & bitfield_figs[w]) );
+    }
+
+    return chess_from;
+}
+
 field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position, bool color){
     field moves = (field) 0;
 
