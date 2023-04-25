@@ -1,1 +1,1 @@
-gcc -o run central.c -lm
+gcc -o build/run src/main.c -lm -Isrc -Isrc/header
