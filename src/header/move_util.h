@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 typedef uint64_t field;
 #define figuren_anz 8
@@ -11,3 +12,5 @@ field check_for_chess(field own_pieces, field enemy_pieces, field position, bool
 field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position, bool color);
 field find_legal_rook_moves(field own_pieces, field enemy_pieces, field position);
 field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position);
+
+#include "move_util.c"

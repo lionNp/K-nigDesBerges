@@ -1,4 +1,3 @@
-#include "bords_util.h"
 
 field shift_diag_up(field diag, int n){
     return diag << 8*n;
@@ -36,7 +35,7 @@ int num_pieces(field board){
     return n;
 }
 
-void import_string(field bitfield_fig[], char gamestring[]){
+void import_string(field bitfield_fig[], char gamestring[]) {
 
     //initialise empty boards
     for(int i=0; i<figuren_anz; i++){

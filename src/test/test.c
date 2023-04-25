@@ -1,9 +1,10 @@
-#include "boards.h"
+#include "main.h"
 
 int main(){
     //read situation string
     field bitfield_fig[figuren_anz];
-    char feld_string[] = "1n1rk1n1/pp1ppppp/b2q2b1/8/2p5/3K3r/PPPPPPPP/RNBQ1BNR";
+    char feld_string[] = "rn1qkbnr/pppppppp/8/b7/3PP3/8/PPP2PPP/RNBQKBNR";
+    //"1n1rk1n1/pp1ppppp/b2q2b1/8/2p5/3K3r/PPPPPPPP/RNBQ1BNR";
     import_string(bitfield_fig, feld_string);
 
     //get single pieces

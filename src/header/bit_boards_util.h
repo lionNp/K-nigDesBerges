@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdint.h>
 
 typedef uint64_t field;
 #define figuren_anz 8
@@ -9,14 +10,14 @@ field horizontal = 0xFF;
 field vertical = 0x8080808080808080;
 
 enum figuren_util{
-    bl,
-    w,
-    k,
-    q,
-    r,
-    b,
-    n,
-    p
+    bl = 0,
+    w = 1,
+    k = 2,
+    q = 3,
+    r = 4,
+    b = 5,
+    n = 6,
+    p = 7
 };
 
 field shift_diag_up(field diag, int n);
@@ -28,3 +29,5 @@ void add_to_board_coords(field *board, int x, int y);
 void print_all_boards(field *boards);
 int num_pieces(field board);
 void get_single_pieces(field bitfield_fig, field single_pieces_color[], int size_single_pieces_color);
+
+#include "bit_boards_util.c"
