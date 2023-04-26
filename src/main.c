@@ -67,8 +67,8 @@ int main(){
         }
         bit_num--;
         field moves = knight_moves[bit_num] ^ (knight_moves[bit_num] & bitfield_fig[bl]);  
-        printf("<- Knight moves ->\n");
-        print_board(moves);
+        //printf("<- Knight moves ->\n");
+        //print_board(moves);
     }
 
     field king_2 = bitfield_fig[bl] & bitfield_fig[k];
@@ -79,8 +79,8 @@ int main(){
     }
     bit_num--;
     field moves = king_moves[bit_num] ^ (king_moves[bit_num] & bitfield_fig[bl]);  
-    printf("<- King moves ->\n");
-    print_board(moves);
+    //printf("<- King moves ->\n");
+    //print_board(moves);
 
     gettimeofday(&stop, NULL);
     printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
