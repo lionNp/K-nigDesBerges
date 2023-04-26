@@ -1,1 +1,11 @@
-gcc -o build/run src/bit_boards_util.c src/move_util.c src/main.c -lm -Isrc/header -lpthread
+#!/bin/bash
+
+files=()
+
+for file in ./src/*.c; do
+  if [ -f "$file" ]; then
+    files+=("$file")
+  fi
+done
+
+gcc "${files[@]}" -o build/run -Isrc/header -lm -lpthread
