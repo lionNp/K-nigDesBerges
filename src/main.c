@@ -43,7 +43,7 @@ int main(){
     field queen = bitfield_fig[bl] & bitfield_fig[q];
     int num_moves_q = num_pieces(bishops);
     field single_queen[num_moves_q];
-    get_single_pieces(single_queen[0], single_queen, 1);
+    get_single_pieces(single_queen[0], single_queen, num_moves_q);
     for(int i=0; i<num_moves_q; i++){
         field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[bl], bitfield_fig[w], single_queen[i]);
         field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[bl], bitfield_fig[w], single_queen[i]);
@@ -53,16 +53,15 @@ int main(){
 
     gettimeofday(&stop, NULL);
     printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
-    
 
     gettimeofday(&start, NULL);
     // check for chess:
     field king = bitfield_fig[w] & bitfield_fig[k];
-    field in_chess_from = check_for_chess(bitfield_fig[w], bitfield_fig[bl], king, white, bitfield_fig);
+    field in_chess_from = check_for_check(bitfield_fig[w], bitfield_fig[bl], king, white, bitfield_fig);
     gettimeofday(&stop, NULL);
-    printf("chess check took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
+    printf("check check took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
 
-    printf("\nchess from\n");
+    printf("\ncheck from\n");
     print_board(in_chess_from);
 
     return 0;

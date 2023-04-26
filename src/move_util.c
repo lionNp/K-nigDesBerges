@@ -1,6 +1,6 @@
 
 
-field check_for_chess(field own_pieces, field enemy_pieces, field position, bool color, field bitfield_figs[]){
+field check_for_check(field own_pieces, field enemy_pieces, field position, bool color, field bitfield_figs[]){
     field chess_from = (field) 0;
 
     //check for b or q
@@ -9,7 +9,7 @@ field check_for_chess(field own_pieces, field enemy_pieces, field position, bool
     //check for r or q
     chess_from = chess_from | (find_legal_rook_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[r] | bitfield_figs[q]) & enemy_pieces) );
 
-    //check for n
+    //check for kn
     //TODO
 
     // WARNING: only works if white is bottom

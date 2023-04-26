@@ -109,7 +109,7 @@ int main(){
     gettimeofday(&start, NULL);
     // check for chess:
     field king = bitfield_fig[w] & bitfield_fig[k];
-    field in_chess_from = check_for_chess(bitfield_fig[w], bitfield_fig[bl], king, white, bitfield_fig);
+    field in_chess_from = check_for_check(bitfield_fig[w], bitfield_fig[bl], king, white, bitfield_fig);
     gettimeofday(&stop, NULL);
     printf("chess check took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
 
