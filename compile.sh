@@ -1,1 +1,1 @@
-gcc -o build/run src/main.c -lm -Isrc -Isrc/header
+gcc -o build/run src/bit_boards_util.c src/move_util.c src/main.c -lm -Isrc/header -lpthread

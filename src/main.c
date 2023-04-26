@@ -1,8 +1,12 @@
+#include <sys/time.h>
+
 #include "main.h"
+#include "bit_boards_util.h"
+#include "move_util.h"
 
 int main(){
     //read situation string
-    field bitfield_fig[figuren_anz];
+    field bitfield_fig[figure_count];
     char feld_string[] = "rn1qkbnr/pppppppp/8/b7/3PP3/8/PPP2PPP/RNBQKBNR";
     //"1n1rk1n1/pp1ppppp/b2q2b1/8/2p5/3K3r/PPPPPPPP/RNBQ1BNR";
     import_string(bitfield_fig, feld_string);

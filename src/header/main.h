@@ -1,12 +1,9 @@
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
-#include <sys/time.h>
-//#include <math.h> // when using maths you need to link the maths header with -lm flag when compiling
+#ifndef MAIN_H
+#define MAIN_H
 
-#include "bit_boards_util.h"
-#include "move_util.h"
+#include "common.h"
 
 void test_bitfield_print();
 void test_add_to_board_coords();
+
+#endif

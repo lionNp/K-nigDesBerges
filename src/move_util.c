@@ -1,4 +1,4 @@
-
+#include "move_util.h"
 
 field check_for_chess(field own_pieces, field enemy_pieces, field position, bool color, field bitfield_figs[]){
     field chess_from = (field) 0;
