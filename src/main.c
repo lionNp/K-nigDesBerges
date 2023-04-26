@@ -1,6 +1,10 @@
 #include "main.h"
 
 int main(){
+    uint64_t knight_moves[64];
+    uint64_t king_moves[64];
+    init_knight_moves(knight_moves);
+    init_king_moves(king_moves);
     //read situation string
     field bitfield_fig[figuren_anz];
     char feld_string[] = "rn1qkbnr/pppppppp/8/b7/3PP3/8/PPP2PPP/RNBQKBNR";
@@ -50,6 +54,33 @@ int main(){
         field legal_qeen_moves = legal_moves_queen_1 | legal_moves_queen_2;
         //print_board(legal_diag_moves_bishop);
     }
+
+    field knight = bitfield_fig[bl] & bitfield_fig[n];
+    int num_moves_n = num_pieces(knight);
+    field single_knights[num_moves_b];
+    get_single_pieces(knight, single_knights, num_moves_n);
+    for(int i = 0; i < num_moves_n; i++){
+        int bit_num = 0;
+        for(;bit_num < 64; bit_num++)
+        {
+            if(single_knights[i] >> bit_num == 0) break;
+        }
+        bit_num--;
+        field moves = knight_moves[bit_num] ^ (knight_moves[bit_num] & bitfield_fig[bl]);  
+        printf("<- Knight moves ->\n");
+        print_board(moves);
+    }
+
+    field king_2 = bitfield_fig[bl] & bitfield_fig[k];
+    int bit_num = 0;
+    for(;bit_num < 64; bit_num++)
+    {
+        if(king_2 >> bit_num == 0) break;
+    }
+    bit_num--;
+    field moves = king_moves[bit_num] ^ (king_moves[bit_num] & bitfield_fig[bl]);  
+    printf("<- King moves ->\n");
+    print_board(moves);
 
     gettimeofday(&stop, NULL);
     printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
