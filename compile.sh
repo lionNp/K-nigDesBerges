@@ -2,10 +2,31 @@
 
 files=()
 
+if [ $# == 0 ] || [ "$1" == "main" ]; then
+
+  for file in ./src/*.c; do
+    if [ -f "$file" ]; then
+      files+=("$file")
+    fi
+  done
+
+  gcc "${files[@]}" -o build/main -Isrc/header -lm -lpthread
+  exit 0
+fi
+
+if ! [ -f "./src/test/$1.c" ]; then
+  echo "Error: src/test/ does not contain a file named: '$1'.c"
+  exit 1
+fi
+
 for file in ./src/*.c; do
-  if [ -f "$file" ]; then
+  if [ -f "$file" ] && [ "$file" != "./src/main.c" ]; then
     files+=("$file")
   fi
 done
+files+=("./src/test/$1.c")
 
-gcc "${files[@]}" -o build/run -Isrc/header -lm -lpthread
+output="build/$1"
+
+gcc "${files[@]}" -o "$output" -Isrc/header -lm -lpthread
+exit 0
