@@ -1,6 +1,7 @@
 #include <pthread.h>
 #include <sys/time.h>
-
+#include "bit_boards_util.h"
+#include "move_util.h"
 #include "common.h"
 
 int main(){
@@ -112,12 +113,12 @@ int main(){
     gettimeofday(&start, NULL);
     // check for chess:
     field king = bitfield_fig[w] & bitfield_fig[k];
-    field in_chess_from = check_for_check(bitfield_fig[w], bitfield_fig[bl], king, white, bitfield_fig);
+    field in_check_from = check_for_check(bitfield_fig[w], bitfield_fig[bl], king, white, bitfield_fig);
     gettimeofday(&stop, NULL);
     printf("chess check took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
 
     printf("\nchess from\n");
-    print_board(in_chess_from);
+    print_board(in_check_from);
 
 
     return 0;

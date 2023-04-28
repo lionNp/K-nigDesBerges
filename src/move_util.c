@@ -1,62 +1,5 @@
 #include "move_util.h"
 
-// Files
-#define a_file 0x8080808080808080ull
-#define b_file 0x4040404040404040ull
-#define c_file 0x2020202020202020ull
-#define d_file 0x1010101010101010ull
-#define e_file 0x0808080808080808ull
-#define f_file 0x0404040404040404ull
-#define g_file 0x0202020202020202ull
-#define h_file 0x0101010101010101ull
-// rows
-#define row_1 0x00000000000000ffull
-#define row_2 0x000000000000ff00ull
-#define row_3 0x0000000000ff0000ull
-#define row_4 0x00000000ff000000ull
-#define row_5 0x000000ff00000000ull
-#define row_6 0x0000ff0000000000ull
-#define row_7 0x00ff000000000000ull
-#define row_8 0xff00000000000000ull 
-// diagonals left corner
-#define diag_l_1 0x0000000000000080ull
-#define diag_l_2 0x0000000000008040ull
-#define diag_l_3 0x0000000000804020ull
-#define diag_l_4 0x0000000080402010ull
-#define diag_l_5 0x0000008040201008ull
-#define diag_l_6 0x0000804020100804ull
-#define diag_l_7 0x0080402010080402ull
-#define diag_l_8 0x8040201008040201ull
-#define diag_l_9 0x4020100804020100ull
-#define diag_l_10 0x2010080402010000ull
-#define diag_l_11 0x1008040201000000ull
-#define diag_l_12 0x0804020100000000ull
-#define diag_l_13 0x0402010000000000ull
-#define diag_l_14 0x0201000000000000ull
-#define diag_l_15 0x0100000000000000ull
-// diagonals right corner
-#define diag_r_1 0x0000000000000001ull
-#define diag_r_2 0x0000000000000102ull
-#define diag_r_3 0x0000000000010204ull
-#define diag_r_4 0x0000000001020408ull
-#define diag_r_5 0x0000000102040810ull
-#define diag_r_6 0x0000010204081020ull
-#define diag_r_7 0x0001020408102040ull
-#define diag_r_8 0x0102040810204080ull
-#define diag_r_9 0x0204081020408000ull
-#define diag_r_10 0x0408102040800000ull
-#define diag_r_11 0x0810204080000000ull
-#define diag_r_12 0x1020408000000000ull
-#define diag_r_13 0x2040800000000000ull
-#define diag_r_14 0x4080000000000000ull
-#define diag_r_15 0x8000000000000000ull
-
-const uint64_t files[8] = {h_file, g_file, f_file, e_file, d_file, c_file, b_file, a_file};
-const uint64_t rows[8] = {row_1, row_2, row_3, row_4, row_5, row_6, row_7, row_8};
-const uint64_t diag_l[15] = {diag_l_1, diag_l_2, diag_l_3, diag_l_4, diag_l_5, diag_l_6, diag_l_7, diag_l_8, diag_l_9, diag_l_10, diag_l_11, 
-                            diag_l_12, diag_l_13, diag_l_14, diag_l_15};
-const uint64_t diag_r[15] = {diag_r_1, diag_r_2, diag_r_3, diag_r_4, diag_r_5, diag_r_6, diag_r_7, diag_r_8, diag_r_9, diag_r_10, diag_r_11, 
-                            diag_r_12, diag_r_13, diag_r_14, diag_r_15};
 const int position = 32;
 
 void init_knight_moves(field knight_moves[]){
@@ -155,13 +98,13 @@ void init_queen_moves(field queen_moves[]){
 }
 
 field check_for_check(field own_pieces, field enemy_pieces, field position, bool color, field bitfield_figs[]){
-    field chess_from = (field) 0;
+    field check_from = (field) 0;
 
     //check for b or q
-    chess_from = chess_from | (find_legal_diag_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[b] | bitfield_figs[q]) & enemy_pieces) );
+    check_from |= (find_legal_diag_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[b] | bitfield_figs[q]) & enemy_pieces) );
 
     //check for r or q
-    chess_from = chess_from | (find_legal_rook_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[r] | bitfield_figs[q]) & enemy_pieces) );
+    check_from |= (find_legal_rook_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[r] | bitfield_figs[q]) & enemy_pieces) );
 
     //check for kn
     //TODO
@@ -169,13 +112,13 @@ field check_for_check(field own_pieces, field enemy_pieces, field position, bool
     // WARNING: only works if white is bottom
     //check for p
     if(color == white){
-        chess_from = chess_from | ( ( (position << 9) | (position << 7) ) & (bitfield_figs[p] & bitfield_figs[bl]) );
+        check_from |= ( ( (position << 9) | (position << 7) ) & (bitfield_figs[p] & bitfield_figs[bl]) );
     }
     else{
-        chess_from = chess_from | ( ( (position >> 9) | (position >> 7) ) & (bitfield_figs[p] & bitfield_figs[w]) );
+        check_from |= ( ( (position >> 9) | (position >> 7) ) & (bitfield_figs[p] & bitfield_figs[w]) );
     }
 
-    return chess_from;
+    return check_from;
 }
 
 field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position, bool color){
@@ -233,7 +176,6 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
         /*if(y == 6 && ( ((position >> 8) & (own_pieces | enemy_pieces)) == (field) 0) ){
             moves = moves | (((position >> 16) & (own_pieces | enemy_pieces)) ^ (position >> 16));
         }*/
-        
 
         //capture right
         moves |= ((position >> 7) & enemy_pieces);

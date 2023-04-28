@@ -11,6 +11,7 @@ if [ $# == 0 ] || [ "$1" == "main" ]; then
   done
 
   gcc "${files[@]}" -o build/main -Isrc/header -lm -lpthread -fgnu89-inline
+  ./build/main
   exit 0
 fi
 
@@ -29,4 +30,5 @@ files+=("./src/test/$1.c")
 output="build/$1"
 
 gcc "${files[@]}" -o "$output" -Isrc/header -lm -lpthread -fgnu89-inline
+"./build/$1"
 exit 0

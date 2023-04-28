@@ -37,6 +37,7 @@ int main(){
     for(int i=0; i<num_moves_r; i++){
         field legal_moves_rook = find_legal_rook_moves(bitfield_fig[bl], bitfield_fig[w], single_rooks[i]);
         //print_board(legal_diag_moves_bishop);
+        print_board(legal_moves_rook);
     }
 
     field bishops = bitfield_fig[bl] & bitfield_fig[b];
@@ -47,17 +48,18 @@ int main(){
         field legal_moves_bishop = find_legal_diag_moves(bitfield_fig[bl], bitfield_fig[w], single_bishops[i]);
         //print_board(legal_diag_moves_bishop);
     }
-
+    // to be fixed TODO
     field queen = bitfield_fig[bl] & bitfield_fig[q];
-    int num_moves_q = num_pieces(bishops);
+    int num_moves_q = num_pieces(queen);
     field single_queen[num_moves_q];
     get_single_pieces(single_queen[0], single_queen, num_moves_q);
     for(int i=0; i<num_moves_q; i++){
         field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[bl], bitfield_fig[w], single_queen[i]);
         field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[bl], bitfield_fig[w], single_queen[i]);
-        field legal_qeen_moves = legal_moves_queen_1 | legal_moves_queen_2;
+        field legal_queen_moves = legal_moves_queen_1 | legal_moves_queen_2;
         //print_board(legal_diag_moves_bishop);
-    }
+        print_board(legal_queen_moves);
+    } // to be fixed TODO
 
     field knight = bitfield_fig[bl] & bitfield_fig[n];
     int num_moves_n = num_pieces(knight);
@@ -92,13 +94,12 @@ int main(){
     gettimeofday(&start, NULL);
     // check for chess:
     field king = bitfield_fig[w] & bitfield_fig[k];
-    field in_chess_from = check_for_check(bitfield_fig[w], bitfield_fig[bl], king, white, bitfield_fig);
+    field in_check_from = check_for_check(bitfield_fig[w], bitfield_fig[bl], king, white, bitfield_fig);
     gettimeofday(&stop, NULL);
     printf("check check took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
 
     printf("\ncheck from\n");
-    print_board(in_chess_from);
-
+    print_board(in_check_from);
     return 0;
 }
 
