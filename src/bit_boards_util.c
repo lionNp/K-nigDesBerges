@@ -105,6 +105,13 @@ void add_to_board_br_to_tl(field *board, int n){
     *board = *board | ((field) 1 << (63-n));
 }
 
+void print_moves(field *boards){
+    for(int i = 0; i < 32; i++){
+        printf("Board %i \n", i);
+        print_board(boards[i]);
+    }    
+}
+
 void print_all_boards(field *boards){
     printf("White Board:\n");
     print_board(boards[w]);
@@ -122,5 +129,4 @@ void print_all_boards(field *boards){
     print_board(boards[k]);
     printf("Pawn Board:\n");
     print_board(boards[p]);
-
 }

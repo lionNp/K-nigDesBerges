@@ -1,7 +1,12 @@
 #include "move_util.h"
 
+// print value for position
 const int position = 32;
 
+
+// Generate move_masks
+//
+//
 void init_knight_moves(field knight_moves[]){
     uint64_t pos[64];
     for(int i = 0; i < 63; i++)
@@ -97,7 +102,21 @@ void init_queen_moves(field queen_moves[]){
     //print_board(queen_moves[position]);
 }
 
-field check_for_check(field own_pieces, field enemy_pieces, field position, bool color, field bitfield_figs[]){
+// get position
+//
+//
+int get_pos(field piece)
+{
+    for(int bit = 0; bit < 64; bit++)
+        if(piece >> bit == 0) break;
+    bit--;
+    return bit;
+}
+
+// Check if King is checked
+//
+//
+field in_check(field own_pieces, field enemy_pieces, field position, bool color, field bitfield_figs[]){
     field check_from = (field) 0;
 
     //check for b or q
@@ -121,6 +140,9 @@ field check_for_check(field own_pieces, field enemy_pieces, field position, bool
     return check_from;
 }
 
+// get legal moves
+//
+//
 field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position, bool color){
     field moves = (field) 0;
 
@@ -243,7 +265,6 @@ field find_legal_rook_moves(field own_pieces, field enemy_pieces, field position
 
     return moves;
 }
-
 
 field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position){
     field moves = (field) 0;
