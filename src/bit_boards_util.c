@@ -106,7 +106,7 @@ void add_to_board_br_to_tl(field *board, int n){
 }
 
 void print_moves(field *boards){
-    for(int i = 0; i < 32; i++){
+    for(int i = 0; i < 16; i++){
         printf("Board %i \n", i);
         print_board(boards[i]);
     }    

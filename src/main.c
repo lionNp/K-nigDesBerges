@@ -18,7 +18,7 @@ int main(){
     
     import_string(bitfield_fig, feld_string);
 
-    print_all_boards(bitfield_fig);
+    //print_all_boards(bitfield_fig);
     print_board(bitfield_fig[black]);
     struct timeval stop, start;
 
@@ -37,7 +37,7 @@ int main(){
         for(int y = 0; y < num_moves; y++){
             switch(piece){
                 case pawn:
-                    legal_moves[x] = find_legal_pawn_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y], !turn);
+                    legal_moves[x] = find_legal_pawn_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y], 0);
                     break;
                 case rook:
                     legal_moves[x] = find_legal_rook_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
@@ -55,9 +55,7 @@ int main(){
                     legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
                     break;
                 case king:
-                    print_board(single_piece[y]);
                     bit = log2(single_piece[y]);
-                    printf("%d\n", bit);
                     legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfield_fig[black]); 
                     break;
                 default:
@@ -70,13 +68,6 @@ int main(){
     gettimeofday(&stop, NULL);
     printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
     print_moves(legal_moves);
-    gettimeofday(&start, NULL);
-    // check for check:
-    field king = bitfield_fig[white] & bitfield_fig[king];
-    field in_check_from = in_check(bitfield_fig[white], bitfield_fig[black], king, white, bitfield_fig);
-    gettimeofday(&stop, NULL);
-    //printf("check check took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
-
     //printf("\ncheck from\n");
     //print_board(in_check_from);
     return 0;
