@@ -31,6 +31,9 @@ int main(){
     // measure performance starting here
     gettimeofday(&start, NULL);
 
+    //switch sides here
+    int ally = white;
+    int enemy = black;
     // all moves
     field legal_moves[32];
     char wpiece[32] = "";
@@ -44,26 +47,26 @@ int main(){
         for(int y = 0; y < num_moves; y++){
             if(piece == pawn){
                     wpiece[x] = 'p';
-                    legal_moves[x] = find_legal_pawn_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y], 0);
+                    legal_moves[x] = find_legal_pawn_moves(bitfield_fig[ally], bitfield_fig[enemy], single_piece[y], ally);
             }else if(piece == rook){
                     wpiece[x] = 'r';
-                    legal_moves[x] = find_legal_rook_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
+                    legal_moves[x] = find_legal_rook_moves(bitfield_fig[ally], bitfield_fig[enemy], single_piece[y]);
             }else if(piece == bishop){
                     wpiece[x] = 'b';
-                    legal_moves[x] = find_legal_diag_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
+                    legal_moves[x] = find_legal_diag_moves(bitfield_fig[ally], bitfield_fig[enemy], single_piece[y]);
             }else if(piece == knight){
                     wpiece[x] = 'n';
                     bit = log2(single_piece[y]);
-                    legal_moves[x] = knight_moves[bit] ^ (knight_moves[bit] & bitfield_fig[black]);
+                    legal_moves[x] = knight_moves[bit] ^ (knight_moves[bit] & bitfield_fig[ally]);
             }else if(piece == queen){
                     wpiece[x] = 'q';
-                    field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
-                    field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
+                    field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[ally], bitfield_fig[enemy], single_piece[y]);
+                    field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[ally], bitfield_fig[enemy], single_piece[y]);
                     legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
             }else if(piece == king){
                     wpiece[x] = 'k';
                     bit = log2(single_piece[y]);
-                    legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfield_fig[black]); 
+                    legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfield_fig[ally]); 
             }
         x++;
         }
