@@ -11,15 +11,13 @@ field shift_diag_down(field diag, int n){
 }
 
 void get_single_pieces(field bitfield_fig, field single_pieces_color[], int num_p){
-    for(int i=0; i<num_p; i++){
-        single_pieces_color[i] = 0;}
-
-    //printf("num pieces: %d\n", num_p);
-    
+    for(int i = 0; i < num_p; i++){
+        single_pieces_color[i] = 0;
+    }
     int n = 0;
-    for(int i=0; n<num_p; i++){
+    for(int i = 0; n < num_p; i++){
         if(bitfield_fig % 2 == 1){
-            single_pieces_color[n] += (field) 1 << i;
+            single_pieces_color[n] += 1UL << i;
             n++;
         }
         bitfield_fig = bitfield_fig >> 1;
@@ -105,9 +103,9 @@ void add_to_board_br_to_tl(field *board, int n){
     *board = *board | ((field) 1 << (63-n));
 }
 
-void print_moves(field *boards){
-    for(int i = 0; i < 16; i++){
-        printf("Board %i \n", i);
+void print_moves(field *boards, char *wpiece){
+    for(int i = 0; i < strlen(wpiece); i++){
+        printf("Moves %c:\n", wpiece[i]);
         print_board(boards[i]);
     }    
 }
