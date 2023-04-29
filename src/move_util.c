@@ -85,7 +85,6 @@ void init_bishop_moves(field bishop_moves[]){
 }
 
 void init_queen_moves(field queen_moves[]){
-    uint64_t pos[64];
     int row = 0;
     int file = 0;
     for(int i = 0; i < 63; i++)
@@ -102,16 +101,6 @@ void init_queen_moves(field queen_moves[]){
     //print_board(queen_moves[position]);
 }
 
-// get position
-//
-//
-void get_pos(int bit, field piece)
-{
-    for(; bit < 64; bit++)
-        if(piece >> bit == 0) break;
-    bit--;
-}
-
 // Check if King is checked
 //
 //
@@ -119,10 +108,10 @@ field in_check(field own_pieces, field enemy_pieces, field position, bool color,
     field check_from = (field) 0;
 
     //check for b or q
-    check_from |= (find_legal_diag_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[b] | bitfield_figs[q]) & enemy_pieces) );
+    check_from |= (find_legal_diag_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[bishop] | bitfield_figs[queen]) & enemy_pieces) );
 
     //check for r or q
-    check_from |= (find_legal_rook_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[r] | bitfield_figs[q]) & enemy_pieces) );
+    check_from |= (find_legal_rook_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[rook] | bitfield_figs[queen]) & enemy_pieces) );
 
     //check for kn
     //TODO
@@ -130,10 +119,10 @@ field in_check(field own_pieces, field enemy_pieces, field position, bool color,
     // WARNING: only works if white is bottom
     //check for p
     if(color == white){
-        check_from |= ( ( (position << 9) | (position << 7) ) & (bitfield_figs[p] & bitfield_figs[bl]) );
+        check_from |= ( ( (position << 9) | (position << 7) ) & (bitfield_figs[pawn] & bitfield_figs[black]) );
     }
     else{
-        check_from |= ( ( (position >> 9) | (position >> 7) ) & (bitfield_figs[p] & bitfield_figs[w]) );
+        check_from |= ( ( (position >> 9) | (position >> 7) ) & (bitfield_figs[pawn] & bitfield_figs[white]) );
     }
 
     return check_from;

@@ -19,7 +19,7 @@ void get_single_pieces(field bitfield_fig, field single_pieces_color[], int num_
     int n = 0;
     for(int i=0; n<num_p; i++){
         if(bitfield_fig % 2 == 1){
-            single_pieces_color[n] += (field) 1 << i;
+            single_pieces_color[knight] += (field) 1 << i;
             n++;
         }
         bitfield_fig = bitfield_fig >> 1;
@@ -54,19 +54,19 @@ void import_string(field bitfield_fig[], char gamestring[]) {
         char c = gamestring[iterate];
 
         switch(c){
-            case 'r': add_to_board_br_to_tl(&bitfield_fig[r], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
-            case 'n': add_to_board_br_to_tl(&bitfield_fig[n], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
-            case 'b': add_to_board_br_to_tl(&bitfield_fig[b], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
-            case 'q': add_to_board_br_to_tl(&bitfield_fig[q], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
-            case 'k': add_to_board_br_to_tl(&bitfield_fig[k], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
-            case 'p': add_to_board_br_to_tl(&bitfield_fig[p], i); add_to_board_br_to_tl(&bitfield_fig[bl], i); break;
+            case 'r': add_to_board_br_to_tl(&bitfield_fig[rook], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
+            case 'n': add_to_board_br_to_tl(&bitfield_fig[knight], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
+            case 'b': add_to_board_br_to_tl(&bitfield_fig[bishop], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
+            case 'q': add_to_board_br_to_tl(&bitfield_fig[queen], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
+            case 'k': add_to_board_br_to_tl(&bitfield_fig[king], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
+            case 'p': add_to_board_br_to_tl(&bitfield_fig[pawn], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
 
-            case 'R': add_to_board_br_to_tl(&bitfield_fig[r], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
-            case 'N': add_to_board_br_to_tl(&bitfield_fig[n], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
-            case 'B': add_to_board_br_to_tl(&bitfield_fig[b], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
-            case 'Q': add_to_board_br_to_tl(&bitfield_fig[q], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
-            case 'K': add_to_board_br_to_tl(&bitfield_fig[k], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
-            case 'P': add_to_board_br_to_tl(&bitfield_fig[p], i); add_to_board_br_to_tl(&bitfield_fig[w], i); break;
+            case 'R': add_to_board_br_to_tl(&bitfield_fig[rook], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
+            case 'N': add_to_board_br_to_tl(&bitfield_fig[knight], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
+            case 'B': add_to_board_br_to_tl(&bitfield_fig[bishop], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
+            case 'Q': add_to_board_br_to_tl(&bitfield_fig[queen], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
+            case 'K': add_to_board_br_to_tl(&bitfield_fig[king], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
+            case 'P': add_to_board_br_to_tl(&bitfield_fig[pawn], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
 
             case '/':  i--; break;
 
@@ -114,19 +114,19 @@ void print_moves(field *boards){
 
 void print_all_boards(field *boards){
     printf("White Board:\n");
-    print_board(boards[w]);
+    print_board(boards[white]);
     printf("Black Board:\n");
-    print_board(boards[bl]);
+    print_board(boards[black]);
     printf("Rook Board:\n");
-    print_board(boards[r]);
+    print_board(boards[rook]);
     printf("Knight Board:\n");
-    print_board(boards[n]);
+    print_board(boards[knight]);
     printf("Bishop Board:\n");
-    print_board(boards[b]);
+    print_board(boards[bishop]);
     printf("Queen Board:\n");
-    print_board(boards[q]);
+    print_board(boards[queen]);
     printf("King Board:\n");
-    print_board(boards[k]);
+    print_board(boards[king]);
     printf("Pawn Board:\n");
-    print_board(boards[p]);
+    print_board(boards[pawn]);
 }

@@ -68,19 +68,18 @@ extern field diag_l[15];
 #define horizontal 0xFF;
 #define vertical 0x8080808080808080;
 
-#define white true
-#define black false
+#define turn true
 #define figure_count 8
 
 enum figure {
-    bl = 0,
-    w = 1,
-    k = 2,
-    q = 3,
-    r = 4,
-    b = 5,
-    n = 6,
-    p = 7
+    black = 0,
+    white = 1,
+    king = 2,
+    queen = 3,
+    rook = 4,
+    bishop = 5,
+    knight = 6,
+    pawn = 7
 };
 
 #endif

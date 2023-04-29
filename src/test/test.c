@@ -12,7 +12,7 @@ int main(){
     import_string(bitfield_fig, feld_string);
 
     //get single pieces
-    //field board_to_split = (bitfield_fig[b] & bitfield_fig[w]) | bitfield_fig[r] | bitfield_fig[n];
+    //field board_to_split = (bitfield_fig[bishop] & bitfield_fig[white]) | bitfield_fig[rook] | bitfield_fig[knight];
 
     //int num_p = num_pieces(board_to_split);
     //field single_pieces_color[num_p];
@@ -37,12 +37,12 @@ int main(){
 
 
     /*//imagine we are white
-    field legal_diag_moves_bishop = find_legal_diag_moves(bitfield_fig[w], bitfield_fig[bl], (field) 1 << 28);
+    field legal_diag_moves_bishop = find_legal_diag_moves(bitfield_fig[white], bitfield_fig[black], (field) 1 << 28);
 
     printf("Board white:\n");
-    print_board(bitfield_fig[w]);
+    print_board(bitfield_fig[white]);
     printf("Board black:\n");
-    print_board(bitfield_fig[bl]);
+    print_board(bitfield_fig[black]);
     printf("Moves for bishop at postion 28 (d4)\n");
     print_board(legal_diag_moves_bishop);
 
@@ -56,51 +56,51 @@ int main(){
     
 
     //printf("Board white:\n");
-    //print_board(bitfield_fig[w]);
+    //print_board(bitfield_fig[white]);
     //printf("White Bishops:\n");
-    //print_board(bitfield_fig[bl] & bitfield_fig[p]);
+    //print_board(bitfield_fig[black] & bitfield_fig[pawn]);
     //printf("Board black:\n");
-    //print_board(bitfield_fig[bl]);*/
+    //print_board(bitfield_fig[black]);*/
     
     struct timeval stop, start;
     gettimeofday(&start, NULL);
 
     // all black moves
 
-    field pawns = bitfield_fig[bl] & bitfield_fig[p];
+    field pawns = bitfield_fig[black] & bitfield_fig[pawn];
     int num_moves_p = num_pieces(pawns);
     field single_pawns[num_moves_p];
     get_single_pieces(pawns, single_pawns, num_moves_p);
     for(int i=0; i<num_moves_p; i++){
-        field legal_moves_pawn = find_legal_pawn_moves(bitfield_fig[bl], bitfield_fig[w], single_pawns[i], black);
+        field legal_moves_pawn = find_legal_pawn_moves(bitfield_fig[black], bitfield_fig[white], single_pawns[i], black);
         //print_board(legal_diag_moves_bishop);
     }
 
-    field rooks = bitfield_fig[bl] & bitfield_fig[r];
+    field rooks = bitfield_fig[black] & bitfield_fig[rook];
     int num_moves_r = num_pieces(rooks);
     field single_rooks[num_moves_r];
     get_single_pieces(rooks, single_rooks, num_moves_r);
     for(int i=0; i<num_moves_r; i++){
-        field legal_moves_rook = find_legal_rook_moves(bitfield_fig[bl], bitfield_fig[w], single_rooks[i]);
+        field legal_moves_rook = find_legal_rook_moves(bitfield_fig[black], bitfield_fig[white], single_rooks[i]);
         //print_board(legal_diag_moves_bishop);
     }
 
-    field bishops = bitfield_fig[bl] & bitfield_fig[b];
+    field bishops = bitfield_fig[black] & bitfield_fig[bishop];
     int num_moves_b = num_pieces(bishops);
     field single_bishops[num_moves_b];
     get_single_pieces(bishops, single_bishops, num_moves_b);
     for(int i=0; i<num_moves_b; i++){
-        field legal_moves_bishop = find_legal_diag_moves(bitfield_fig[bl], bitfield_fig[w], single_bishops[i]);
+        field legal_moves_bishop = find_legal_diag_moves(bitfield_fig[black], bitfield_fig[white], single_bishops[i]);
         //print_board(legal_diag_moves_bishop);
     }
 
-    field queen = bitfield_fig[bl] & bitfield_fig[q];
+    field queen = bitfield_fig[black] & bitfield_fig[queen];
     int num_moves_q = num_pieces(bishops);
     field single_queen[num_moves_q];
     get_single_pieces(single_queen[0], single_queen, 1);
     for(int i=0; i<num_moves_q; i++){
-        field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[bl], bitfield_fig[w], single_queen[i]);
-        field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[bl], bitfield_fig[w], single_queen[i]);
+        field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[black], bitfield_fig[white], single_queen[i]);
+        field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[black], bitfield_fig[white], single_queen[i]);
         field legal_qeen_moves = legal_moves_queen_1 | legal_moves_queen_2;
         //print_board(legal_diag_moves_bishop);
     }
@@ -112,8 +112,8 @@ int main(){
 
     gettimeofday(&start, NULL);
     // check for chess:
-    field king = bitfield_fig[w] & bitfield_fig[k];
-    field in_check_from = in_check(bitfield_fig[w], bitfield_fig[bl], king, white, bitfield_fig);
+    field king = bitfield_fig[white] & bitfield_fig[king];
+    field in_check_from = in_check(bitfield_fig[white], bitfield_fig[black], king, white, bitfield_fig);
     gettimeofday(&stop, NULL);
     printf("chess check took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
 

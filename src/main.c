@@ -1,6 +1,7 @@
 #include <sys/time.h>
 
 #include "main.h"
+#include <math.h>
 #include "bit_boards_util.h"
 #include "move_util.h"
 
@@ -18,44 +19,45 @@ int main(){
     import_string(bitfield_fig, feld_string);
 
     //print_all_boards(bitfield_fig);
-    
+    print_board(bitfield_fig[black]);
     struct timeval stop, start;
 
     // measure performance starting here
     gettimeofday(&start, NULL);
 
-    // all black moves
+    // all moves
     field legal_moves[32];
     int x = 0;
-    for(int i=k; i<=p; i++){
+    for(int piece=king; piece<=pawn; piece++){
         int bit = 0;
-        field pieces = bitfield_fig[bl] & bitfield_fig[i];
+        field pieces = bitfield_fig[black] & bitfield_fig[piece];
         int num_moves = num_pieces(pieces);
         field single_piece[num_moves];
         get_single_pieces(pieces, single_piece, num_moves);
         for(int y = 0; y < num_moves; y++){
-            switch(i){
-                case p:
-                    legal_moves[x] = find_legal_pawn_moves(bitfield_fig[bl], bitfield_fig[w], single_piece[y], black);
+            switch(piece){
+                case pawn:
+                    legal_moves[x] = find_legal_pawn_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y], !turn);
                     break;
-                case r:
-                    legal_moves[x] = find_legal_rook_moves(bitfield_fig[bl], bitfield_fig[w], single_piece[y]);
+                case rook:
+                    legal_moves[x] = find_legal_rook_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
                     break;
-                case b:
-                    legal_moves[x] = find_legal_diag_moves(bitfield_fig[bl], bitfield_fig[w], single_piece[y]);
+                case bishop:
+                    legal_moves[x] = find_legal_diag_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
                     break;
-                case n:
-                    get_pos(bit, single_piece[y]);
-                    legal_moves[x] = knight_moves[bit] ^ (knight_moves[bit] & bitfield_fig[bl]);
+                case knight:
+                    bit = log2(single_piece[y]);
+                    legal_moves[x] = knight_moves[bit] ^ (knight_moves[bit] & bitfield_fig[black]);
                     break;
-                case q:
-                    field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[bl], bitfield_fig[w], single_piece[y]);
-                    field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[bl], bitfield_fig[w], single_piece[y]);
+                case queen:
+                    field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
+                    field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
                     legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
                     break;
-                case k:
-                    get_pos(bit, single_piece[y]);
-                    legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfield_fig[bl]); 
+                case king:
+                    bit = log2(single_piece[y]);
+                    printf("-->");
+                    legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfield_fig[black]); 
                     break;
                 }
         }
@@ -67,8 +69,8 @@ int main(){
     print_moves(legal_moves);
     gettimeofday(&start, NULL);
     // check for check:
-    field king = bitfield_fig[w] & bitfield_fig[k];
-    field in_check_from = in_check(bitfield_fig[w], bitfield_fig[bl], king, white, bitfield_fig);
+    field king = bitfield_fig[white] & bitfield_fig[king];
+    field in_check_from = in_check(bitfield_fig[white], bitfield_fig[black], king, white, bitfield_fig);
     gettimeofday(&stop, NULL);
     //printf("check check took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
 
