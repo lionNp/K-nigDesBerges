@@ -13,6 +13,6 @@ void init_king_moves(field king_moves[]);
 void init_queen_moves(field queen_moves[]);
 void init_bishop_moves(field bishop_moves[]);
 void init_rook_moves(field rook_moves[]);
-int get_pos(field piece)
+void get_pos(int bit, field piece);
 
 #endif

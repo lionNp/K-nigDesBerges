@@ -105,12 +105,11 @@ void init_queen_moves(field queen_moves[]){
 // get position
 //
 //
-int get_pos(field piece)
+void get_pos(int bit, field piece)
 {
-    for(int bit = 0; bit < 64; bit++)
+    for(; bit < 64; bit++)
         if(piece >> bit == 0) break;
     bit--;
-    return bit;
 }
 
 // Check if King is checked

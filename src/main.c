@@ -17,7 +17,7 @@ int main(){
     
     import_string(bitfield_fig, feld_string);
 
-    print_all_boards(bitfield_fig);
+    //print_all_boards(bitfield_fig);
     
     struct timeval stop, start;
 
@@ -27,8 +27,8 @@ int main(){
     // all black moves
     field legal_moves[32];
     int x = 0;
-    int pos = 0;
     for(int i=k; i<=p; i++){
+        int bit = 0;
         field pieces = bitfield_fig[bl] & bitfield_fig[i];
         int num_moves = num_pieces(pieces);
         field single_piece[num_moves];
@@ -45,8 +45,8 @@ int main(){
                     legal_moves[x] = find_legal_diag_moves(bitfield_fig[bl], bitfield_fig[w], single_piece[y]);
                     break;
                 case n:
-                    pos = get_pos(single_piece);
-                    legal_moves[x] = knight_moves[pos] ^ (knight_moves[pos] & bitfield_fig[bl]);
+                    get_pos(bit, single_piece[y]);
+                    legal_moves[x] = knight_moves[bit] ^ (knight_moves[bit] & bitfield_fig[bl]);
                     break;
                 case q:
                     field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[bl], bitfield_fig[w], single_piece[y]);
@@ -54,8 +54,8 @@ int main(){
                     legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
                     break;
                 case k:
-                    pos = get_pos(single_piece);
-                    legal_moves[x] = king_moves[pos] ^ (king_moves[pos] & bitfield_fig[bl]); 
+                    get_pos(bit, single_piece[y]);
+                    legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfield_fig[bl]); 
                     break;
                 }
         }
@@ -64,7 +64,7 @@ int main(){
 
     gettimeofday(&stop, NULL);
     printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
-    //print_moves(legal_moves);
+    print_moves(legal_moves);
     gettimeofday(&start, NULL);
     // check for check:
     field king = bitfield_fig[w] & bitfield_fig[k];
