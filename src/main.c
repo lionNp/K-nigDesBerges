@@ -18,7 +18,7 @@ int main(){
     
     import_string(bitfield_fig, feld_string);
 
-    //print_all_boards(bitfield_fig);
+    print_all_boards(bitfield_fig);
     print_board(bitfield_fig[black]);
     struct timeval stop, start;
 
@@ -28,8 +28,8 @@ int main(){
     // all moves
     field legal_moves[32];
     int x = 0;
+    int bit = 0;
     for(int piece=king; piece<=pawn; piece++){
-        int bit = 0;
         field pieces = bitfield_fig[black] & bitfield_fig[piece];
         int num_moves = num_pieces(pieces);
         field single_piece[num_moves];
@@ -55,9 +55,12 @@ int main(){
                     legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
                     break;
                 case king:
+                    print_board(single_piece[y]);
                     bit = log2(single_piece[y]);
-                    printf("-->");
+                    printf("%d\n", bit);
                     legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfield_fig[black]); 
+                    break;
+                default:
                     break;
                 }
         }

@@ -19,7 +19,7 @@ void get_single_pieces(field bitfield_fig, field single_pieces_color[], int num_
     int n = 0;
     for(int i=0; n<num_p; i++){
         if(bitfield_fig % 2 == 1){
-            single_pieces_color[knight] += (field) 1 << i;
+            single_pieces_color[n] += (field) 1 << i;
             n++;
         }
         bitfield_fig = bitfield_fig >> 1;
