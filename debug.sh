@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function compile_exec {
-    gcc "${files[@]}" -o "$output" -Isrc/header -lm -lpthread -fgnu89-inline
-    "./$output"
+    gcc "${files[@]}" -o "$output" -Isrc/header -lm -lpthread -fgnu89-inline -g
+    gdb "./$output"
     exit 0
 }
 
@@ -10,7 +10,7 @@ files=()
 
 if [ $# == 0 ] || [ "$1" == "main" ]; then
 
-  output="build/main"
+  output="build/main_debug"
 
   for file in ./src/*.c; do
     if [ -f "$file" ]; then
@@ -33,6 +33,6 @@ for file in ./src/*.c; do
 done
 files+=("./src/test/$1.c")
 
-output="build/$1"
+output="build/$1_debug"
 
 compile_exec
