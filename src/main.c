@@ -45,25 +45,31 @@ int main(){
         field single_piece[num_moves];
         get_single_pieces(pieces, single_piece, num_moves);
         for(int y = 0; y < num_moves; y++){
-            if(piece == pawn){
+            switch(piece){
+                case pawn:
                     wpiece[x] = 'p';
-                    legal_moves[x] = find_legal_pawn_moves(bitfield_fig[ally], bitfield_fig[enemy], single_piece[y], ally);
-            }else if(piece == rook){
+                    legal_moves[x] = find_legal_pawn_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y], 0);
+                    break;
+                case rook:
                     wpiece[x] = 'r';
-                    legal_moves[x] = find_legal_rook_moves(bitfield_fig[ally], bitfield_fig[enemy], single_piece[y]);
-            }else if(piece == bishop){
+                    legal_moves[x] = find_legal_rook_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
+                    break;
+                case bishop:
                     wpiece[x] = 'b';
-                    legal_moves[x] = find_legal_diag_moves(bitfield_fig[ally], bitfield_fig[enemy], single_piece[y]);
-            }else if(piece == knight){
+                    legal_moves[x] = find_legal_diag_moves(bitfield_fig[black], bitfield_fig[white], single_piece[y]);
+                    break;
+                case knight:
                     wpiece[x] = 'n';
                     bit = log2(single_piece[y]);
-                    legal_moves[x] = knight_moves[bit] ^ (knight_moves[bit] & bitfield_fig[ally]);
-            }else if(piece == queen){
+                    legal_moves[x] = knight_moves[bit] ^ (knight_moves[bit] & bitfield_fig[black]);
+                    break;
+                case queen:
                     wpiece[x] = 'q';
                     field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[ally], bitfield_fig[enemy], single_piece[y]);
                     field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[ally], bitfield_fig[enemy], single_piece[y]);
                     legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
-            }else if(piece == king){
+                    break;
+                case king:
                     wpiece[x] = 'k';
                     bit = log2(single_piece[y]);
                     legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfield_fig[ally]); 
