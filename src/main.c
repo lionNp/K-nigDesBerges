@@ -103,9 +103,9 @@ int main(){
     }
     gettimeofday(&stop, NULL);
     printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec); 
-    for(int i = 0; i < count; i++){
-        print_board(moves[i]);
-    }
+    //for(int i = 0; i < count; i++){
+    //    print_board(moves[i]);
+    //}
     //printf("\ncheck from\n");
     //print_board(in_check_from);
     return 0;
