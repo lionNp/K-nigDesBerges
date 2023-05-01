@@ -12,6 +12,16 @@ extern field files[8];
 extern field rows[8];
 extern field diag_r[15];
 extern field diag_l[15];
+extern int white_pawn_values[64];
+extern int black_pawn_values[64];
+extern int knight_values[64];
+extern int bishop_values[64];
+extern int rook_values[64];
+extern int queen_values[64];
+extern int white_king_values[64];
+extern int black_king_values[64];
+// Player
+extern bool turn;
 // Files
 #define a_file 0x8080808080808080ull
 #define b_file 0x4040404040404040ull
@@ -67,8 +77,6 @@ extern field diag_l[15];
 #define up_diag 0x102040810204080;
 #define horizontal 0xFF;
 #define vertical 0x8080808080808080;
-
-#define turn true
 #define figure_count 8
 
 enum figure {
