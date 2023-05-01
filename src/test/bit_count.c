@@ -2,18 +2,18 @@
 #include <math.h>
 
 #include "common.h"
+#include "stopwatch_utils.h"
 
 void main()
 {
     printf("Doing 100 iterations every bit position\n\n");
 
     printf("Using Bitshit:\n");
-    struct timeval stop, start;
-
+    
     unsigned long sum_time = 0;
     for (size_t i = 0; i < 64; i++)
     {
-        gettimeofday(&start, NULL);
+        stopwatch* stopwatch1 = start_stopwatch();
         for (size_t j = 0; j < 100; j++)
         {
             field pos = (field) 1 << i;
@@ -30,8 +30,7 @@ void main()
             if(bit_num != i)
                 printf("Wrong Result !\n");
         }
-        gettimeofday(&stop, NULL);
-        unsigned long time = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
+        unsigned long time = stop_stopwatch(stopwatch1);
         sum_time += time;
     }
 
@@ -44,7 +43,7 @@ void main()
     sum_time = 0;
     for (size_t i = 0; i < 64; i++)
     {
-        gettimeofday(&start, NULL);
+        stopwatch* stopwatch2 = start_stopwatch();
         for (size_t j = 0; j < 100; j++)
         {
             field pos = (field) 1 << i;
@@ -53,8 +52,7 @@ void main()
             if(bit_num != i)
                 printf("Wrong Result !\n");
         }
-        gettimeofday(&stop, NULL);
-        unsigned long time = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
+        unsigned long time = stop_stopwatch(stopwatch2);
         sum_time += time;
     }
 
