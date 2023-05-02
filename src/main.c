@@ -39,7 +39,7 @@ int main(){
 
     struct timeval stop, start;
 
-    for(int p = 0; p < 2; p++){
+    for(int p = 0; p < 4; p++){
         // measure performance starting here
         gettimeofday(&start, NULL);
 
@@ -115,8 +115,8 @@ int main(){
             }
             //move_count++;
         }
-
         field moves[2*move_count];
+        int piece_arr[2*move_count];
         int rating[2*move_count];
         int count = 0;
         for(int i = 0; i < piece_count; i++){
@@ -128,9 +128,11 @@ int main(){
             // match specific moves with piece and evaluate move
             for(int k = 0; k < num_moves; k++){
                 rating[count] = evaluation(bitfield_fig, single_move[k], legal_moves_piece[i], piece_array[i]);
+                piece_arr[count] = piece_array[i];
                 moves[count] = legal_moves_piece[i];
                 count++;
                 rating[count] = 0;
+                piece_arr[count] = 0;
                 moves[count] = single_move[k];
                 count++;
             }
@@ -142,20 +144,19 @@ int main(){
         for(c = 1; c < 2*move_count; c++)
             if(rating[c] > rating[loc])
                     loc = c;
-
         // make move
         // move piece in piece_board
         bitfield_fig[turn] ^= moves[loc];
-        bitfield_fig[piece] ^= moves[loc];
+        bitfield_fig[piece_arr[loc]] ^= moves[loc];
         for(int i = 0; i < 8; i++)
             bitfield_fig[i] ^= (moves[loc+1] & bitfield_fig[i]); 
         bitfield_fig[turn] ^= moves[loc+1];
-        bitfield_fig[piece] ^= moves[loc+1];
+        bitfield_fig[piece_arr[loc]] ^= moves[loc+1];
 
-        if(piece == king){
+        if(piece_arr[loc] == king){
             castle_left[turn] = false;
             castle_right[turn] = false;
-        }else if(piece == rook){
+        }else if(piece_arr[loc] == rook){
             if(moves[loc] & h_file)
                 castle_right[turn] = false;
             if(moves[loc] & a_file)

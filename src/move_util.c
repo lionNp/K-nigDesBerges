@@ -187,7 +187,6 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
         //capture left
         moves |= ((position >> 9) & enemy_pieces);
     }
-
     return moves;
 }
 

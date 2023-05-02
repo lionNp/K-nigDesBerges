@@ -72,7 +72,7 @@ int main(){
     field single_pawns[num_moves_p];
     get_single_pieces(pawns, single_pawns, num_moves_p);
     for(int i=0; i<num_moves_p; i++){
-        field legal_moves_pawn = find_legal_pawn_moves(bitfield_fig[black], bitfield_fig[white], single_pawns[i], black);
+        field legal_moves_pawn = find_legal_pawn_moves(bitfield_fig[black], bitfield_fig[white], single_pawns[i]);
         //print_board(legal_diag_moves_bishop);
     }
 
