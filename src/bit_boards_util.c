@@ -27,12 +27,10 @@ void get_single_pieces(field input, field single_pieces_color[], int num_p){
 int num_pieces(field board){
     int n = 0;
     for(int i=0; i<64; i++){
-        if(board % 2 == 1){
+        if(board % 2 == 1)
             n++;
-        }
         board = board>>1;
     }
-
     return n;
 }
 
