@@ -1,11 +1,10 @@
-#include <sys/time.h>
-
 #include "main.h"
 #include <math.h>
 #include "common.h"
 #include "bit_boards_util.h"
 #include "move_util.h"
 #include "evaluation.h"
+#include "stopwatch_utils.h"
 
 int main(){
     /*
@@ -41,7 +40,7 @@ int main(){
 
     for(int p = 0; p < 4; p++){
         // measure performance starting here
-        gettimeofday(&start, NULL);
+        stopwatch* time = start_stopwatch();
 
         // all moves
         field legal_moves[16];
@@ -163,8 +162,8 @@ int main(){
                 castle_left[turn] = false;
         }
 
-        gettimeofday(&stop, NULL);
-        printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
+        field t = stop_stopwatch(time);
+        printf("all moves took %lu us\n", t);
 
         if(turn){
             printf("Best move for white:\n");
