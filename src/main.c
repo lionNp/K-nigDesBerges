@@ -8,147 +8,158 @@
 #include "evaluation.h"
 
 int main(){
-    // initialize move_masks
-    uint64_t knight_moves[64];
-    uint64_t king_moves[64];
-    uint64_t rook_moves[64];
-    uint64_t queen_moves[64];
-    uint64_t bishop_moves[64];
-    init_knight_moves(knight_moves);
-    init_king_moves(king_moves);
-    init_bishop_moves(bishop_moves);
-    init_queen_moves(queen_moves);
-    init_rook_moves(rook_moves);
-
+    /*
+    field king_m[64];
+    init_king_moves(king_m);
+    for(int i = 0; i < 63; i++){
+        printf("0x%lxull, ", king_m[i]);
+    }
+    printf("\n");
+    */
     //read situation string
     field bitfield_fig[figure_count];
     char feld_string[] = game_string;
     
     import_string(bitfield_fig, feld_string);
 
-    //print_all_boards(bitfield_fig);
-    //print_board(bitfield_fig[turn]);
-    struct timeval stop, start;
-    for(int p = 0; p < 2; p++){
-
-    
-    // measure performance starting here
-    gettimeofday(&start, NULL);
-
-    // all moves
-    field legal_moves[16];
-    field legal_moves_piece[16];
-    int piece_array[16];
-    int x = 0;
-    int bit = 0;
-    int piece_count = 0;
-    int move_count = 0;
-    int piece = king;
-    for(; piece<=pawn; piece++){
-        field pieces = bitfield_fig[turn] & bitfield_fig[piece];
-        int num_moves = num_pieces(pieces);
-        field single_piece[num_moves];
-        get_single_pieces(pieces, single_piece, num_moves);
-        for(int y = 0; y < num_moves; y++){
-            piece_count++;
-            piece_array[x] = piece;
-            legal_moves_piece[x] = single_piece[y];
-            switch(piece){
-                case pawn:
-                    legal_moves[x] = find_legal_pawn_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y], 0);
-                    move_count += num_pieces(legal_moves[x]);
-                    break;
-                case rook:
-                    legal_moves[x] = find_legal_rook_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
-                    move_count += num_pieces(legal_moves[x]);
-                    break;
-                case bishop:
-                    legal_moves[x] = find_legal_diag_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
-                    move_count += num_pieces(legal_moves[x]);
-                    break;
-                case knight:
-                    bit = log2(single_piece[y]);
-                    legal_moves[x] = knight_moves[bit] ^ (knight_moves[bit] & bitfield_fig[turn]);
-                    move_count += num_pieces(legal_moves[x]);
-                    break;
-                case queen:
-                    field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
-                    field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
-                    legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
-                    move_count += num_pieces(legal_moves[x]);
-                    break;
-                case king:
-                    bit = log2(single_piece[y]);
-                    legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfield_fig[turn]); 
-                    move_count += num_pieces(legal_moves[x]);
-            }
-        x++;
-        }
-    }
-
-    field moves[2*move_count];
-    int rating[2*move_count];
-    int count = 0;
-    for(int i = 0; i < piece_count; i++){
-        // get number of moves for piece
-        int num_moves = num_pieces(legal_moves[i]);
-        // split moves
-        field single_move[num_moves];
-        get_single_pieces(legal_moves[i], single_move, num_moves);
-        // match specific moves with piece and evaluate move
-        for(int k = 0; k < num_moves; k++){
-            rating[count] = evaluation(bitfield_fig, single_move[k], legal_moves_piece[i], piece_array[i]);
-            moves[count] = legal_moves_piece[i];
-            count++;
-            rating[count] = 0;
-            moves[count] = single_move[k];
-            count++;
-        }
-    }
-    
-    //find first maximum rating
-    int loc = 0;
-    int c = 0;
-    for(c = 1; c < 2*move_count; c++)
-        if(rating[c] > rating[loc])
-                loc = c;
-
-
-    gettimeofday(&stop, NULL);
-    printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
     if(turn){
-        printf("Best move for white:\n");
-        print_board(moves[loc]);
-        printf("to:\n");
-        print_board(moves[loc+1]);
-        printf("\n");
-    }
+            printf("Whites board:\n");
+            print_board(bitfield_fig[turn]);
+            printf("Blacks board:\n");
+            print_board(bitfield_fig[!turn]);
+            printf("\n");
+        }
     else{
-        printf("Best move for black:\n");
-        print_board(moves[loc]);
-        printf("to:\n");
-        print_board(moves[loc+1]);
+        printf("Blacks board:\n");
+        print_board(bitfield_fig[turn]);
+        printf("Whites board:\n");
+        print_board(bitfield_fig[!turn]);
         printf("\n");
     }
-    // make move
-    // move piece in piece_board
-    bitfield_fig[piece] ^= moves[loc];
-    for(int i = 2; i < 8; i++)
-        bitfield_fig[i] ^= (moves[loc+1] & bitfield_fig[i]);
-    
-    bitfield_fig[piece] |= moves[loc+1];
 
-    // move piece in color_board
-    bitfield_fig[turn] ^= moves[loc];
-    bitfield_fig[turn] ^= moves[loc+1];
-    // elimenate piece if moved onto
-    bitfield_fig[!turn] ^= (moves[loc+1] & bitfield_fig[!turn]);
+    struct timeval stop, start;
 
-    //switch sides here
-    turn = 1 - turn;
+    for(int p = 0; p < 2; p++){
+        // measure performance starting here
+        gettimeofday(&start, NULL);
+
+        // all moves
+        field legal_moves[16];
+        field legal_moves_piece[16];
+        int piece_array[16];
+        int x = 0;
+        int bit = 0;
+        int piece_count = 0;
+        int move_count = 0;
+        int piece = king;
+        field checked = (field) 0;
+        for(; piece<=pawn; piece++){
+            field pieces = bitfield_fig[turn] & bitfield_fig[piece];
+            int num_moves = num_pieces(pieces);
+            field single_piece[num_moves];
+            get_single_pieces(pieces, single_piece, num_moves);
+            for(int y = 0; y < num_moves; y++){
+                piece_count++;
+                piece_array[x] = piece;
+                legal_moves_piece[x] = single_piece[y];
+                switch(piece){
+                    case pawn:
+                        legal_moves[x] = find_legal_pawn_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
+                        move_count += num_pieces(legal_moves[x]);
+                        break;
+                    case rook:
+                        legal_moves[x] = find_legal_rook_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
+                        move_count += num_pieces(legal_moves[x]);
+                        break;
+                    case bishop:
+                        legal_moves[x] = find_legal_diag_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
+                        move_count += num_pieces(legal_moves[x]);
+                        break;
+                    case knight:
+                        bit = log2(single_piece[y]);
+                        legal_moves[x] = knight_moves[bit] ^ (knight_moves[bit] & bitfield_fig[turn]);
+                        move_count += num_pieces(legal_moves[x]);
+                        break;
+                    case queen:
+                        field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
+                        field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
+                        legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
+                        move_count += num_pieces(legal_moves[x]);
+                        break;
+                    case king:
+                        bit = log2(single_piece[y]);
+                        legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfield_fig[turn]); 
+                        move_count += num_pieces(legal_moves[x]);
+                }
+            x++;
+            }
+        }
+
+        field moves[2*move_count];
+        int rating[2*move_count];
+        int count = 0;
+        for(int i = 0; i < piece_count; i++){
+            // get number of moves for piece
+            int num_moves = num_pieces(legal_moves[i]);
+            // split moves
+            field single_move[num_moves];
+            get_single_pieces(legal_moves[i], single_move, num_moves);
+            // match specific moves with piece and evaluate move
+            for(int k = 0; k < num_moves; k++){
+                rating[count] = evaluation(bitfield_fig, single_move[k], legal_moves_piece[i], piece_array[i]);
+                moves[count] = legal_moves_piece[i];
+                count++;
+                rating[count] = 0;
+                moves[count] = single_move[k];
+                count++;
+            }
+        }
+        
+        //find first maximum rating
+        int loc = 0;
+        int c = 0;
+        for(c = 1; c < 2*move_count; c++)
+            if(rating[c] > rating[loc])
+                    loc = c;
+
+        // make move
+        // move piece in piece_board
+        bitfield_fig[turn] ^= moves[loc];
+        bitfield_fig[piece] ^= moves[loc];
+        for(int i = 0; i < 8; i++)
+            bitfield_fig[i] ^= (moves[loc+1] & bitfield_fig[i]); 
+        bitfield_fig[turn] ^= moves[loc+1];
+        bitfield_fig[piece] ^= moves[loc+1];
+
+        gettimeofday(&stop, NULL);
+        printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
+
+        if(turn){
+            printf("Best move for white:\n");
+            print_board(moves[loc]);
+            printf("to:\n");
+            print_board(moves[loc+1]);
+            printf("Whites board:\n");
+            print_board(bitfield_fig[turn]);
+            printf("Blacks board:\n");
+            print_board(bitfield_fig[!turn]);
+            printf("\n");
+        }
+        else{
+            printf("Best move for black:\n");
+            print_board(moves[loc]);
+            printf("to:\n");
+            print_board(moves[loc+1]);
+            printf("Blacks board:\n");
+            print_board(bitfield_fig[turn]);
+            printf("Whites board:\n");
+            print_board(bitfield_fig[!turn]);
+            printf("\n");
+        }
+        //switch sides here
+        turn = 1 - turn;
     }
-    //printf("\ncheck from\n");
-    //print_board(in_check_from);
+    
     return 0;
 }
 

@@ -1,8 +1,7 @@
 #include "move_util.h"
-
-// print value for position
-const int position = 32;
-
+#include "bit_boards_util.h"
+#include "common.h"
+#include <math.h>
 
 // Generate move_masks
 //
@@ -104,26 +103,25 @@ void init_queen_moves(field queen_moves[]){
 // Check if King is checked
 //
 //
-field in_check(field own_pieces, field enemy_pieces, field position, bool color, field bitfield_figs[]){
+field in_check(field position, field bitfield_figs[]){
     field check_from = (field) 0;
 
-    //check for b or q
-    check_from |= (find_legal_diag_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[bishop] | bitfield_figs[queen]) & enemy_pieces) );
+    //check for bishop or queen
+    check_from |= (find_legal_diag_moves(bitfield_figs[turn], bitfield_figs[!turn], position) & ((bitfield_figs[bishop] | bitfield_figs[queen]) & bitfield_figs[!turn]) );
 
-    //check for r or q
-    check_from |= (find_legal_rook_moves(own_pieces, enemy_pieces, position) & ((bitfield_figs[rook] | bitfield_figs[queen]) & enemy_pieces) );
+    //check for rook or queen
+    check_from |= (find_legal_rook_moves(bitfield_figs[turn], bitfield_figs[!turn], position) & ((bitfield_figs[rook] | bitfield_figs[queen]) & bitfield_figs[!turn]) );
 
-    //check for kn
-    //TODO
+    //check for knight
+    int bit = log2(position);
+    check_from |= (knight_moves[bit] & bitfield_figs[!turn]) & bitfield_figs[knight];
 
-    // WARNING: only works if white is bottom
+    // WARNING: beware board orientation
     //check for p
-    if(color == white){
-        check_from |= ( ( (position << 9) | (position << 7) ) & (bitfield_figs[pawn] & bitfield_figs[black]) );
-    }
-    else{
-        check_from |= ( ( (position >> 9) | (position >> 7) ) & (bitfield_figs[pawn] & bitfield_figs[white]) );
-    }
+    if(turn)
+        check_from |= (((position << 9) | (position << 7)) & (bitfield_figs[pawn] & bitfield_figs[!turn]));
+    else
+        check_from |= (((position >> 9) | (position >> 7)) & (bitfield_figs[pawn] & bitfield_figs[!turn]));
 
     return check_from;
 }
@@ -131,7 +129,7 @@ field in_check(field own_pieces, field enemy_pieces, field position, bool color,
 // get legal moves
 //
 //
-field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position, bool color){
+field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position){
     field moves = (field) 0;
 
     int bit_num = 1;
@@ -144,7 +142,7 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
     int y = bit_num / 8;
 
     //printf("color: %d\n", color);
-    if(color == white){
+    if(turn){
         //might be smarter and faster, might be shit (^ is bitwise xor)
 
         //one forward

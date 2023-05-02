@@ -20,6 +20,8 @@ extern int rook_values[64];
 extern int queen_values[64];
 extern int white_king_values[64];
 extern int black_king_values[64];
+extern field knight_moves[64];
+extern field king_moves[64];
 // Player
 extern bool turn;
 // Files
@@ -78,6 +80,8 @@ extern bool turn;
 #define horizontal 0xFF;
 #define vertical 0x8080808080808080;
 #define figure_count 8
+
+
 
 enum figure {
     black = 0,

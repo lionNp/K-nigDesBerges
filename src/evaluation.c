@@ -1,6 +1,7 @@
 #include "evaluation.h"
 #include "math.h"
 #include "bit_boards_util.h"
+#include "move_util.h"
 
 float evaluation(field bitfield[], field move_to, field move_from, int piece){
     float rating = 0.0;
@@ -8,15 +9,26 @@ float evaluation(field bitfield[], field move_to, field move_from, int piece){
     // move piece in turn_board
     bitfield[turn] ^= move_from;
     bitfield[turn] ^= move_to;
-    // move piece in piece_board
-    bitfield[piece] ^= move_from;
-    bitfield[piece] |= move_to;
-
-    for(int i = 2; i < 8; i++)
-        bitfield[i] ^= (move_to & bitfield[i]); 
-    
     // elimenate piece if taken
-    bitfield[!turn] ^= (move_to & bitfield[!turn]);
+    int flag = 0;
+    if(move_to & bitfield[!turn]){
+        bitfield[!turn] ^= (move_to & bitfield[!turn]);
+        flag = 1;
+    }
+
+    field king_position = 0UL;
+    if(piece == king)
+        king_position = bitfield[turn] & move_to;
+    else
+        king_position = bitfield[turn] & bitfield[king];
+    field checked = in_check(king_position, bitfield);
+    if(checked != (field) 0){ 
+        bitfield[turn] ^= move_from;
+        bitfield[turn] ^= move_to;   
+        if(flag)
+            bitfield[!turn] |= move_to;
+        return 0;
+    }
 
     int pos_to = log2(move_to);
     int pos_from = log2(move_from);
@@ -75,17 +87,15 @@ float evaluation(field bitfield[], field move_to, field move_from, int piece){
     field turn_next_pawns = bitfield[!turn] & bitfield[pawn];
     rating -= num_pieces(turn_next_pawns) * 1;
 
-    /*
+
     //unmake move
     // move piece in piece_board
-    bitfield[piece] ^= move_to;
-    bitfield[piece] ^= move_from;
-    // move piece in color_board
-    bitfield[turn] ^= move_to;
+    // move piece in turn_board
     bitfield[turn] ^= move_from;
-    // restore piece if moved onto
-    bitfield[!turn] = bitfield_opponent;
-    */
+    bitfield[turn] ^= move_to;   
+    // elimenate piece if taken
+    if(flag)
+        bitfield[!turn] |= move_to;
 
     return rating;
 }
