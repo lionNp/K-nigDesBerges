@@ -64,15 +64,15 @@ int main(){
                 legal_moves_piece[x] = single_piece[y];
                 switch(piece){
                     case pawn:
-                        legal_moves[x] = find_legal_pawn_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
+                        legal_moves[x] = find_legal_pawn_moves(bitfield_fig[turn], bitfield_fig[!turn], single_piece[y]);
                         move_count += num_pieces(legal_moves[x]);
                         break;
                     case rook:
-                        legal_moves[x] = find_legal_rook_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
+                        legal_moves[x] = find_legal_rook_moves(bitfield_fig[turn], bitfield_fig[!turn], single_piece[y]);
                         move_count += num_pieces(legal_moves[x]);
                         break;
                     case bishop:
-                        legal_moves[x] = find_legal_diag_moves(bitfield_fig[turn], bitfield_fig[1 - turn], single_piece[y]);
+                        legal_moves[x] = find_legal_diag_moves(bitfield_fig[turn], bitfield_fig[!turn], single_piece[y]);
                         move_count += num_pieces(legal_moves[x]);
                         break;
                     case knight:
@@ -93,6 +93,27 @@ int main(){
                 }
             x++;
             }
+        }
+        //castle check
+        field castling = (field) 0;
+        if(turn){
+            if(castle_left[turn]){
+                field rooks = bitfield_fig[turn] & bitfield_fig[rook];
+            }
+            if(castle_right[turn]){
+                field rooks = bitfield_fig[turn] & bitfield_fig[rook];
+            }
+            //move_count++;
+        }
+        else{
+            if(castle_left[turn]){
+                field rooks = bitfield_fig[turn] & bitfield_fig[rook];
+                
+            }
+            if(castle_right[turn]){
+                field rooks = bitfield_fig[turn] & bitfield_fig[rook];
+            }
+            //move_count++;
         }
 
         field moves[2*move_count];
@@ -130,6 +151,16 @@ int main(){
             bitfield_fig[i] ^= (moves[loc+1] & bitfield_fig[i]); 
         bitfield_fig[turn] ^= moves[loc+1];
         bitfield_fig[piece] ^= moves[loc+1];
+
+        if(piece == king){
+            castle_left[turn] = false;
+            castle_right[turn] = false;
+        }else if(piece == rook){
+            if(moves[loc] & h_file)
+                castle_right[turn] = false;
+            if(moves[loc] & a_file)
+                castle_left[turn] = false;
+        }
 
         gettimeofday(&stop, NULL);
         printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);

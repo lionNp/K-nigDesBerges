@@ -24,6 +24,8 @@ extern field knight_moves[64];
 extern field king_moves[64];
 // Player
 extern bool turn;
+extern bool castle_left[2];
+extern bool castle_right[2];
 // Files
 #define a_file 0x8080808080808080ull
 #define b_file 0x4040404040404040ull

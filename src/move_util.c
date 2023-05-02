@@ -132,11 +132,7 @@ field in_check(field position, field bitfield_figs[]){
 field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position){
     field moves = (field) 0;
 
-    int bit_num = 1;
-    for(;bit_num <= 64; bit_num++){
-        if(position >> bit_num == 0) break;
-    }
-    bit_num--;
+    int bit_num = log2(position);
 
     int x = bit_num % 8;
     int y = bit_num / 8;
