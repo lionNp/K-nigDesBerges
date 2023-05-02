@@ -13,5 +13,7 @@ void print_moves(field *boards, char *wpiece);
 void print_all_boards(field *boards);
 int num_pieces(field board);
 void get_single_pieces(field bitfield_fig, field single_pieces_color[], int size_single_pieces_color);
+void print_pos(field position);
+void print_move(field start, field end);
 
 #endif
