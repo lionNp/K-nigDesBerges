@@ -5,15 +5,19 @@
 float evaluation(field bitfield[], field move_to, field move_from, int piece){
     float rating = 0.0;
     // make move
-    // move piece in piece_board
-    bitfield[piece] ^= move_from;
-    bitfield[piece] ^= move_to;
-    // move piece in color_board
+    // move piece in turn_board
     bitfield[turn] ^= move_from;
     bitfield[turn] ^= move_to;
-    // elimenate piece if moved onto
-    field bitfield_opponent = bitfield[!turn];
+    // move piece in piece_board
+    bitfield[piece] ^= move_from;
+    bitfield[piece] |= move_to;
+
+    for(int i = 2; i < 8; i++)
+        bitfield[i] ^= (move_to & bitfield[i]); 
+    
+    // elimenate piece if taken
     bitfield[!turn] ^= (move_to & bitfield[!turn]);
+
     int pos_to = log2(move_to);
     int pos_from = log2(move_from);
     // evaluate
@@ -44,34 +48,34 @@ float evaluation(field bitfield[], field move_to, field move_from, int piece){
             break;
     }   
 
-
-    field turn_king = bitfield[turn] & bitfield[king];
-    rating += num_pieces(turn_king)*100;
+    // matertial
+    //field turn_king = bitfield[turn] & bitfield[king];
+    //rating += num_pieces(turn_king)*100;
     field turn_queen = bitfield[turn] & bitfield[queen];
-    rating += num_pieces(turn_queen)*9;
+    rating += num_pieces(turn_queen) * 9;
     field turn_rook = bitfield[turn] & bitfield[rook];
-    rating += num_pieces(turn_rook)*5;
+    rating += num_pieces(turn_rook) * 5;
     field turn_bishop = bitfield[turn] & bitfield[bishop];
-    rating += num_pieces(turn_bishop)*3;
+    rating += num_pieces(turn_bishop) * 3;
     field turn_knight = bitfield[turn] & bitfield[knight];
-    rating += num_pieces(turn_knight)*3;
+    rating += num_pieces(turn_knight) * 3;
     field turn_pawns = bitfield[turn] & bitfield[pawn];
-    rating += num_pieces(turn_pawns);
+    rating += num_pieces(turn_pawns) * 1;
 
-    field turn_next_king = bitfield[!turn] & bitfield[king];
-    rating -= num_pieces(turn_next_king)*100;
+    //field turn_next_king = bitfield[!turn] & bitfield[king];
+    //rating -= num_pieces(turn_next_king)*100;
     field turn_next_queen = bitfield[!turn] & bitfield[queen];
-    rating -= num_pieces(turn_next_queen)*9;
+    rating -= num_pieces(turn_next_queen) * 9;
     field turn_next_rook = bitfield[!turn] & bitfield[rook];
-    rating -= num_pieces(turn_next_rook)*5;
+    rating -= num_pieces(turn_next_rook) * 5;
     field turn_next_bishop = bitfield[!turn] & bitfield[bishop];
-    rating -= num_pieces(turn_next_bishop)*3;
+    rating -= num_pieces(turn_next_bishop) * 3;
     field turn_next_knight = bitfield[!turn] & bitfield[knight];
-    rating -= num_pieces(turn_next_knight)*3;
+    rating -= num_pieces(turn_next_knight) * 3;
     field turn_next_pawns = bitfield[!turn] & bitfield[pawn];
-    rating -= num_pieces(turn_next_pawns);
+    rating -= num_pieces(turn_next_pawns) * 1;
 
-
+    /*
     //unmake move
     // move piece in piece_board
     bitfield[piece] ^= move_to;
@@ -81,5 +85,7 @@ float evaluation(field bitfield[], field move_to, field move_from, int piece){
     bitfield[turn] ^= move_from;
     // restore piece if moved onto
     bitfield[!turn] = bitfield_opponent;
+    */
+
     return rating;
 }

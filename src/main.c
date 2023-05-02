@@ -19,9 +19,6 @@ int main(){
     init_bishop_moves(bishop_moves);
     init_queen_moves(queen_moves);
     init_rook_moves(rook_moves);
-    
-    //switch sides here
-    turn = 1 - turn;
 
     //read situation string
     field bitfield_fig[figure_count];
@@ -32,7 +29,9 @@ int main(){
     //print_all_boards(bitfield_fig);
     //print_board(bitfield_fig[turn]);
     struct timeval stop, start;
+    for(int p = 0; p < 2; p++){
 
+    
     // measure performance starting here
     gettimeofday(&start, NULL);
 
@@ -44,7 +43,8 @@ int main(){
     int bit = 0;
     int piece_count = 0;
     int move_count = 0;
-    for(int piece=king; piece<=pawn; piece++){
+    int piece = king;
+    for(; piece<=pawn; piece++){
         field pieces = bitfield_fig[turn] & bitfield_fig[piece];
         int num_moves = num_pieces(pieces);
         field single_piece[num_moves];
@@ -110,20 +110,43 @@ int main(){
     int loc = 0;
     int c = 0;
     for(c = 1; c < 2*move_count; c++)
-    {
         if(rating[c] > rating[loc])
                 loc = c;
-    }
+
 
     gettimeofday(&stop, NULL);
     printf("all moves took %lu us\n", (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec);
-    printf("Best move:\n");
-    print_board(moves[loc]);
-    printf("to:\n");
-    print_board(moves[loc+1]);
-    printf("\n");
-
+    if(turn){
+        printf("Best move for white:\n");
+        print_board(moves[loc]);
+        printf("to:\n");
+        print_board(moves[loc+1]);
+        printf("\n");
+    }
+    else{
+        printf("Best move for black:\n");
+        print_board(moves[loc]);
+        printf("to:\n");
+        print_board(moves[loc+1]);
+        printf("\n");
+    }
+    // make move
+    // move piece in piece_board
+    bitfield_fig[piece] ^= moves[loc];
+    for(int i = 2; i < 8; i++)
+        bitfield_fig[i] ^= (moves[loc+1] & bitfield_fig[i]);
     
+    bitfield_fig[piece] |= moves[loc+1];
+
+    // move piece in color_board
+    bitfield_fig[turn] ^= moves[loc];
+    bitfield_fig[turn] ^= moves[loc+1];
+    // elimenate piece if moved onto
+    bitfield_fig[!turn] ^= (moves[loc+1] & bitfield_fig[!turn]);
+
+    //switch sides here
+    turn = 1 - turn;
+    }
     //printf("\ncheck from\n");
     //print_board(in_check_from);
     return 0;
