@@ -119,3 +119,60 @@ void print_all_boards(field *boards){
     printf("Pawn Board:\n");
     print_board(boards[pawn]);
 }
+
+void print_pos(field position){
+    char start[] = "xx";
+    uint64_t col[] = {a_file, b_file, c_file, d_file, e_file, f_file, g_file, h_file};
+    uint64_t rows[] = {row_1, row_2, row_3, row_4, row_5, row_6, row_7, row_8};
+    int r= 0;
+    int c = 0;
+    int stop = 0;
+
+    while(c < 8){
+        while(r < 8 && stop == 0){
+            if((col[c] & rows[r]) == position)
+                stop = 1;
+            r++;
+        }
+        if(stop > 0)
+            break;
+        r = 0;
+        c++;
+    }
+
+    switch(c){
+        case 0:
+            start[0] = 'a';
+            break;
+        case 1:
+            start[0] = 'b';
+            break;
+        case 2:
+            start[0] = 'c';
+            break;
+        case 3:
+            start[0] = 'd';
+            break;
+        case 4:
+            start[0] = 'e';
+            break;
+        case 5:
+            start[0] = 'f';
+            break;
+        case 6:
+            start[0] = 'g';
+            break;
+        case 7:
+            start[0] = 'h';
+            break;
+    }
+    start[1] = r + '0';
+    printf("%s", start);
+}
+
+void print_move(field start, field end){
+    print_pos(start);
+    printf("-");
+    print_pos(end);
+    printf("\n");
+}
