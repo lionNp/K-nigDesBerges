@@ -79,7 +79,7 @@ int main(){
                         legal_moves[x] = knight_moves[bit] ^ (knight_moves[bit] & bitfield_fig[turn]);
                         move_count += num_pieces(legal_moves[x]);
                         break;
-                    case queen:
+                    case queen: ;
                         field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[turn], bitfield_fig[!turn], single_piece[y]);
                         field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[turn], bitfield_fig[!turn], single_piece[y]);
                         legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
