@@ -45,6 +45,8 @@ float evaluation(field bitfield[], field move_to, field move_from, int piece){
     }   
 
 
+    field turn_king = bitfield[turn] & bitfield[king];
+    rating += num_pieces(turn_king)*100;
     field turn_queen = bitfield[turn] & bitfield[queen];
     rating += num_pieces(turn_queen)*9;
     field turn_rook = bitfield[turn] & bitfield[rook];
@@ -56,6 +58,8 @@ float evaluation(field bitfield[], field move_to, field move_from, int piece){
     field turn_pawns = bitfield[turn] & bitfield[pawn];
     rating += num_pieces(turn_pawns);
 
+    field turn_next_king = bitfield[!turn] & bitfield[king];
+    rating -= num_pieces(turn_next_king)*100;
     field turn_next_queen = bitfield[!turn] & bitfield[queen];
     rating -= num_pieces(turn_next_queen)*9;
     field turn_next_rook = bitfield[!turn] & bitfield[rook];

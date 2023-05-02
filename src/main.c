@@ -106,16 +106,13 @@ int main(){
         }
     }
     
-    float maximum = rating[0];
+    //find first maximum rating
     int loc = 0;
     int c = 0;
     for(c = 1; c < 2*move_count; c++)
     {
-        if(rating[c] > maximum)
-        {
-                maximum  = rating[c];
+        if(rating[c] > rating[loc])
                 loc = c;
-        }
     }
 
     gettimeofday(&stop, NULL);
@@ -125,10 +122,6 @@ int main(){
     printf("to:\n");
     print_board(moves[loc+1]);
     printf("\n");
-
-
- 
-    
 
     
     //printf("\ncheck from\n");
