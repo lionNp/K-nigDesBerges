@@ -22,16 +22,15 @@ float evaluation(field bitfield[], field move_to, field move_from, int piece){
     else
         king_position = bitfield[turn] & bitfield[king];
     field checked = in_check(king_position, bitfield);
-    if(checked != (field) 0){ 
-        // set castle flag
-        castle_left[turn] = false;
-        castle_right[turn] = false;
+    
+    if(checked){ 
         // unmake move
         bitfield[turn] ^= move_from;
         bitfield[turn] ^= move_to;   
         if(flag)
             bitfield[!turn] |= move_to;
-        return 0;
+        rating = -9999;
+        return rating;
     }
     // evaluate move
     int pos_to = log2(move_to);
