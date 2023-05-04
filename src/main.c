@@ -26,7 +26,7 @@ int main() {
         printf("\n");
     }
 
-    for(int p = 0; p < 4; p++) {
+    for(int p = 0; p < 1; p++) { // TODO: to be moved into own file
         // measure performance starting here
         stopwatch* time = start_stopwatch();
 
@@ -131,10 +131,14 @@ int main() {
         
         //find first maximum rating
         int loc = 0;
-        int c = 0;
-        for(c = 1; c < 2*move_count; c++)
+        int total_legal_moves = move_count;
+        for(int c = 0; c < 2*move_count; c++){
+            if(rating[c] == -9999)
+                total_legal_moves--;
             if(rating[c] > rating[loc])
                     loc = c;
+        }
+            
         // make move
         // move current_piece in piece_board
         bitfields[is_player_white] ^= moves[loc];
@@ -155,8 +159,7 @@ int main() {
         }
 
         field t = stop_stopwatch(time);
-        printf("all moves took %lu us\n", t);
-
+        printf("Of all %d moves %d were legal moves and took %lu us\n", move_count, total_legal_moves, t);
         if(is_player_white){
             printf("Best move for white:\n");
             print_board(moves[loc]);

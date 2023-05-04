@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define game_string "rn1qkbnr/pppppppp/8/b7/3PP3/8/PPP2PPP/RNBQKBNR"
+#define game_string "2b1k3/p5rp/Pppb1p1P/n2qpPpR/1PPpP1P1/R2P1Q1B/1Br4n/1N2K1N1"
 
 typedef uint64_t field; 
 extern field files[8];
