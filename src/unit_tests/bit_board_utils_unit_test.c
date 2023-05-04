@@ -4,6 +4,11 @@
 #include "stopwatch_utils.h"
 #include <stdbool.h>
 
+void start_unit_test(char name[])
+{
+    printf("\nStarting Unit Test: %s\n", name);
+}
+
 void print_test_result(bool test_result)
 {
     printf("%s\n", test_result ? "All Test completed successfully !" : "Errors !");
@@ -11,7 +16,7 @@ void print_test_result(bool test_result)
 
 bool test_set_bit_by_index()
 {
-    printf("Starting Unit Test: set_bit_by_index\n");
+    start_unit_test("set_bit_by_index");
 
     bool test_result = true;
     field max_bit = 1ul << 63;
@@ -27,9 +32,9 @@ bool test_set_bit_by_index()
     print_test_result(test_result);
 }
 
-bool test_get_single_pieces()
+bool test_get_single_piece_boards()
 {    
-    printf("Starting Unit Test: get_single_piece_boards\n");
+    start_unit_test("get_single_piece_boards");
 
     field bitboards[figure_count];
     import_gamesting(bitboards, "8/8/2pp1p2/8/8/8/8/8");
@@ -51,9 +56,7 @@ bool test_get_single_pieces()
 
     field expected[] = {e3, e2, e1};
 
-    bool test_result = true;
-    for (size_t i = 0; i < piece_count; i++)
-        test_result &= assert_bitboard_equal(expected[i], result[i]);
+    bool test_result = assert_bitboards_contains_all(result, piece_count, expected, piece_count);
     
     print_test_result(test_result);
 
@@ -63,6 +66,6 @@ bool test_get_single_pieces()
 int main()
 {
     test_set_bit_by_index();
-    test_get_single_pieces();
+    test_get_single_piece_boards();
     return 0;
 }
