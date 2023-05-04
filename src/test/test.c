@@ -1,6 +1,6 @@
 #include <pthread.h>
 #include <sys/time.h>
-#include "bit_boards_util.h"
+#include "bit_board_utils.h"
 #include "move_util.h"
 #include "common.h"
 
@@ -9,14 +9,14 @@ int main(){
     field bitfield_fig[figure_count];
     char feld_string[] = "rn1qkbnr/pppppppp/8/b7/3PP3/8/PPP2PPP/RNBQKBNR";
     //"1n1rk1n1/pp1ppppp/b2q2b1/8/2p5/3K3r/PPPPPPPP/RNBQ1BNR";
-    import_string(bitfield_fig, feld_string);
+    import_gamesting(bitfield_fig, feld_string);
 
     //get single pieces
     //field board_to_split = (bitfield_fig[bishop] & bitfield_fig[white]) | bitfield_fig[rook] | bitfield_fig[knight];
 
-    //int num_p = num_pieces(board_to_split);
+    //int num_p = get_piece_count(board_to_split);
     //field single_pieces_color[num_p];
-    //get_single_pieces(board_to_split, single_pieces_color, num_p);
+    //get_single_piece_boards(board_to_split, single_pieces_color, num_p);
     /*for(int i=0; i<num_p; i++){
         print_board(single_pieces_color[i]);
     }*/
@@ -46,9 +46,9 @@ int main(){
     printf("Moves for bishop at postion 28 (d4)\n");
     print_board(legal_diag_moves_bishop);
 
-    /*int num_moves = num_pieces(legal_diag_moves_bishop);
+    /*int num_moves = get_piece_count(legal_diag_moves_bishop);
     field single_moves[num_moves];
-    get_single_pieces(legal_diag_moves_bishop, single_moves, num_moves);
+    get_single_piece_boards(legal_diag_moves_bishop, single_moves, num_moves);
     for(int i=0; i<num_moves; i++){
         print_board(single_moves[i]);
     }
@@ -68,36 +68,36 @@ int main(){
     // all black moves
 
     field pawns = bitfield_fig[black] & bitfield_fig[pawn];
-    int num_moves_p = num_pieces(pawns);
+    int num_moves_p = get_piece_count(pawns);
     field single_pawns[num_moves_p];
-    get_single_pieces(pawns, single_pawns, num_moves_p);
+    get_single_piece_boards(pawns, single_pawns, num_moves_p);
     for(int i=0; i<num_moves_p; i++){
         field legal_moves_pawn = find_legal_pawn_moves(bitfield_fig[black], bitfield_fig[white], single_pawns[i]);
         //print_board(legal_diag_moves_bishop);
     }
 
     field rooks = bitfield_fig[black] & bitfield_fig[rook];
-    int num_moves_r = num_pieces(rooks);
+    int num_moves_r = get_piece_count(rooks);
     field single_rooks[num_moves_r];
-    get_single_pieces(rooks, single_rooks, num_moves_r);
+    get_single_piece_boards(rooks, single_rooks, num_moves_r);
     for(int i=0; i<num_moves_r; i++){
         field legal_moves_rook = find_legal_rook_moves(bitfield_fig[black], bitfield_fig[white], single_rooks[i]);
         //print_board(legal_diag_moves_bishop);
     }
 
     field bishops = bitfield_fig[black] & bitfield_fig[bishop];
-    int num_moves_b = num_pieces(bishops);
+    int num_moves_b = get_piece_count(bishops);
     field single_bishops[num_moves_b];
-    get_single_pieces(bishops, single_bishops, num_moves_b);
+    get_single_piece_boards(bishops, single_bishops, num_moves_b);
     for(int i=0; i<num_moves_b; i++){
         field legal_moves_bishop = find_legal_diag_moves(bitfield_fig[black], bitfield_fig[white], single_bishops[i]);
         //print_board(legal_diag_moves_bishop);
     }
 
     field queen = bitfield_fig[black] & bitfield_fig[queen];
-    int num_moves_q = num_pieces(bishops);
+    int num_moves_q = get_piece_count(bishops);
     field single_queen[num_moves_q];
-    get_single_pieces(single_queen[0], single_queen, 1);
+    get_single_piece_boards(single_queen[0], single_queen, 1);
     for(int i=0; i<num_moves_q; i++){
         field legal_moves_queen_1 = find_legal_diag_moves(bitfield_fig[black], bitfield_fig[white], single_queen[i]);
         field legal_moves_queen_2 = find_legal_rook_moves(bitfield_fig[black], bitfield_fig[white], single_queen[i]);

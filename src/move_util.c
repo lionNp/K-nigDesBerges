@@ -103,29 +103,26 @@ void init_queen_moves(field queen_moves[]){
 // Check if King is checked
 //
 //
-field in_check(field position, field bitfield_figs[]){
+field in_check(field position, field bitfieldss[]){
     field check_from = (field) 0;
     
     //check for bishop or queen
-    check_from |= (find_legal_diag_moves(bitfield_figs[turn], bitfield_figs[!turn], position) & ((bitfield_figs[bishop] | bitfield_figs[queen]) & bitfield_figs[!turn]) );
-    
+    check_from |= (find_legal_diag_moves(bitfieldss[is_player_white], bitfieldss[!is_player_white], position) & ((bitfieldss[bishop] | bitfieldss[queen]) & bitfieldss[!is_player_white]) );
+
     //check for rook or queen
-    check_from |= (find_legal_rook_moves(bitfield_figs[turn], bitfield_figs[!turn], position) & ((bitfield_figs[rook] | bitfield_figs[queen]) & bitfield_figs[!turn]) );
-    
+    check_from |= (find_legal_rook_moves(bitfieldss[is_player_white], bitfieldss[!is_player_white], position) & ((bitfieldss[rook] | bitfieldss[queen]) & bitfieldss[!is_player_white]) );
+
     //check for knight
     int bit = log2(position);
-    check_from |= (knight_moves[bit] & bitfield_figs[!turn]) & bitfield_figs[knight];
+    check_from |= (knight_moves[bit] & bitfieldss[!is_player_white]) & bitfieldss[knight];
+
     // WARNING: beware board orientation
     //check for p
-    if(turn)
-        check_from |= (((position << 9) | (position << 7)) & (bitfield_figs[pawn] & bitfield_figs[!turn]));
+    if(is_player_white)
+        check_from |= (((position << 9) | (position << 7)) & (bitfieldss[pawn] & bitfieldss[!is_player_white]));
     else
-        check_from |= (((position >> 9) | (position >> 7)) & (bitfield_figs[pawn] & bitfield_figs[!turn]));
-    /*
-    if(check_from != 0UL){
-        printf("IN CHECK CHECK:::\n");
-        print_board(check_from);
-    }*/
+        check_from |= (((position >> 9) | (position >> 7)) & (bitfieldss[pawn] & bitfieldss[!is_player_white]));
+
     return check_from;
 }
 
@@ -141,7 +138,7 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
     int y = bit_num / 8;
 
     //printf("color: %d\n", color);
-    if(turn){
+    if(is_player_white){
         //might be smarter and faster, might be shit (^ is bitwise xor)
 
         //one forward
