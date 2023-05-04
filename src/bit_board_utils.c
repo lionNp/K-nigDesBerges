@@ -25,7 +25,7 @@ void get_single_piece_boards(field board, field single_piece_boards[], int piece
             single_piece_boards[pieces_found] = (1ul << i);
             pieces_found++;
         }
-        board >>= 1;
+        board = board>>1;
     }
 }
 
@@ -35,7 +35,7 @@ int get_piece_count(field board) {
     for(int i = 0; i < 64; i++) {
         if(board % 2 == 1)
             n++;
-        board = board >> 1;
+        board = board>>1;
     }
     return n;
 }

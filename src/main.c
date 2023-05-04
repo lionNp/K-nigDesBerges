@@ -26,36 +26,37 @@ int main() {
         printf("\n");
     }
 
-    for(int p = 0; p < 1; p++) { // TODO: to be moved into own file
+    for(int p = 0; p < 1; p++) // TODO: to be moved into own file
+    { 
         // measure performance starting here
         stopwatch* time = start_stopwatch();
 
+        // all moves
         int bit = 0;
         int piece_count = 0;
         int move_count = 0;
         field checked = (field) 0;
 
         int current_piece = king;
-
-        int pieces_for_player[16];
-        int x = 0;
         
+        int piece_array[16];
+        int x = 0;
+
         field legal_moves[16];
         field legal_moves_piece[16];
 
-        for(; current_piece <= pawn; current_piece++) 
+        for(; current_piece<=pawn; current_piece++)
         {
             field player_piece_board = bitfields[is_player_white] & bitfields[current_piece];
-            int piece_count = get_piece_count(player_piece_board);
+            int num_moves = get_piece_count(player_piece_board);
 
-            field single_piece_boards[piece_count];
-            get_single_piece_boards(player_piece_board, single_piece_boards, piece_count);
+            field single_piece_boards[num_moves];
+            get_single_piece_boards(player_piece_board, single_piece_boards, num_moves);
 
-            //for all pieces of its kind
-            for(int y = 0; y < piece_count; y++) 
+            for(int y = 0; y < num_moves; y++)
             {
                 piece_count++;
-                pieces_for_player[x] = current_piece;
+                piece_array[x] = current_piece;
                 legal_moves_piece[x] = single_piece_boards[y];
 
                 switch(current_piece)
@@ -87,11 +88,9 @@ int main() {
                         legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
                         move_count += get_piece_count(legal_moves[x]);
                         break;
-
+                        
                     case king:
-                        print_board(single_piece_boards[y]);
                         bit = log2(single_piece_boards[y]);
-                        printf("X:%d - Y:%d - Bit:%d - white:%d - Piece: %d\n", x, y, bit, is_player_white, current_piece);
                         legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfields[is_player_white]); 
                         move_count += get_piece_count(legal_moves[x]);
                 }
@@ -132,8 +131,8 @@ int main() {
             get_single_piece_boards(legal_moves[i], single_move, piece_count);
             // match specific moves with current_piece and evaluate move
             for(int k = 0; k < piece_count; k++){
-                rating[count] = evaluation(bitfields, single_move[k], legal_moves_piece[i], pieces_for_player[i]);
-                piece_arr[count] = pieces_for_player[i];
+                rating[count] = evaluation(bitfields, single_move[k], legal_moves_piece[i], piece_array[i]);
+                piece_arr[count] = piece_array[i];
                 moves[count] = legal_moves_piece[i];
                 count++;
                 rating[count] = 0;
