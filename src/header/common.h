@@ -23,7 +23,7 @@ extern int black_king_values[64];
 extern field knight_moves[64];
 extern field king_moves[64];
 // Player
-extern bool turn;
+extern bool is_player_white;
 extern bool castle_left[2];
 extern bool castle_right[2];
 // Files

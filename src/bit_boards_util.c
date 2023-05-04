@@ -10,35 +10,40 @@ field shift_diag_down(field diag, int n){
     return diag >> 8*n;
 }
 
-void get_single_pieces(field input, field single_pieces_color[], int num_p){
-    for(int i = 0; i < num_p; i++){
-        single_pieces_color[i] = 0;
+//takes a board and splits every piece into a seperate board containing only that piece
+void get_single_piece_boards(field board, field single_piece_boards[], int piece_count) {
+    //set result boards to 0
+    for(int i = 0; i < piece_count; i++) {
+        single_piece_boards[i] = 0;
     }
-    int n = 0;
-    for(int i = 0; n < num_p; i++){
-        if(input % 2 == 1){
-            single_pieces_color[n] += 1UL << i;
-            n++;
+
+    int pieces_found = 0;
+    for(int i = 0; pieces_found < piece_count; i++) 
+    {
+        if(board % 2 == 1) 
+        {
+            single_piece_boards[pieces_found] = (1ul << i);
+            pieces_found++;
         }
-        input = input >> 1;
+        board >>= 1;
     }
 }
 
-int num_pieces(field board){
+//counts all pieces on the provided board
+int get_piece_count(field board) {
     int n = 0;
-    for(int i=0; i<64; i++){
+    for(int i = 0; i < 64; i++) {
         if(board % 2 == 1)
             n++;
-        board = board>>1;
+        board = board >> 1;
     }
     return n;
 }
 
-void import_string(field bitfield_fig[], char gamestring[]) {
-
+void import_gamesting(field bitfields[], char gamestring[]) {
     //initialise empty boards
-    for(int i = 0; i < figure_count; i++){
-        bitfield_fig[i] = (field) 0;
+    for(int i = 0; i < figure_count; i++) {
+        bitfields[i] = (field) 0;
     }
 
     int str_len = strlen(gamestring);
@@ -46,27 +51,78 @@ void import_string(field bitfield_fig[], char gamestring[]) {
     printf("Gamestring: %s\n", gamestring);
 
     int i = 0;
-    for(int iterate=0; iterate<str_len; iterate++){
+    for(int iterate = 0; iterate < str_len; iterate++) {
         char c = gamestring[iterate];
 
-        switch(c){
-            case 'r': add_to_board_br_to_tl(&bitfield_fig[rook], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
-            case 'n': add_to_board_br_to_tl(&bitfield_fig[knight], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
-            case 'b': add_to_board_br_to_tl(&bitfield_fig[bishop], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
-            case 'q': add_to_board_br_to_tl(&bitfield_fig[queen], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
-            case 'k': add_to_board_br_to_tl(&bitfield_fig[king], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
-            case 'p': add_to_board_br_to_tl(&bitfield_fig[pawn], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
+        switch(c) {
+            case 'r': 
+                set_bit_by_index(&bitfields[rook], i); 
+                set_bit_by_index(&bitfields[black], i); 
+                break;
 
-            case 'R': add_to_board_br_to_tl(&bitfield_fig[rook], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
-            case 'N': add_to_board_br_to_tl(&bitfield_fig[knight], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
-            case 'B': add_to_board_br_to_tl(&bitfield_fig[bishop], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
-            case 'Q': add_to_board_br_to_tl(&bitfield_fig[queen], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
-            case 'K': add_to_board_br_to_tl(&bitfield_fig[king], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
-            case 'P': add_to_board_br_to_tl(&bitfield_fig[pawn], i); add_to_board_br_to_tl(&bitfield_fig[white], i); break;
+            case 'n': 
+                set_bit_by_index(&bitfields[knight], i);
+                set_bit_by_index(&bitfields[black], i); 
+                break;
 
-            case '/':  i--; break;
+            case 'b': 
+                set_bit_by_index(&bitfields[bishop], i);
+                set_bit_by_index(&bitfields[black], i); 
+                break;
 
-            default: i += (c - 48); i--; break; //skip ones
+            case 'q': 
+                set_bit_by_index(&bitfields[queen], i); 
+                set_bit_by_index(&bitfields[black], i); 
+                break;
+
+            case 'k': 
+                set_bit_by_index(&bitfields[king], i); 
+                set_bit_by_index(&bitfields[black], i); 
+                break;
+
+            case 'p': 
+                set_bit_by_index(&bitfields[pawn], i); 
+                set_bit_by_index(&bitfields[black], i); 
+                break;
+
+            case 'R': 
+                set_bit_by_index(&bitfields[rook], i); 
+                set_bit_by_index(&bitfields[white], i); 
+                break;
+
+            case 'N': 
+                set_bit_by_index(&bitfields[knight], i); 
+                set_bit_by_index(&bitfields[white], i); 
+                break;
+
+            case 'B': 
+                set_bit_by_index(&bitfields[bishop], i); 
+                set_bit_by_index(&bitfields[white], i); 
+                break;
+
+            case 'Q': 
+                set_bit_by_index(&bitfields[queen], i); 
+                set_bit_by_index(&bitfields[white], i); 
+                break;
+                
+            case 'K': 
+                set_bit_by_index(&bitfields[king], i); 
+                set_bit_by_index(&bitfields[white], i); 
+                break;
+
+            case 'P': 
+                set_bit_by_index(&bitfields[pawn], i); 
+                set_bit_by_index(&bitfields[white], i); 
+                break;
+
+            case '/':  
+                i--; //dont count '/' as field index
+                break;
+
+            default: 
+                i += (c - 48); //c - 48 == actual number
+                i--;
+                break;
         }
 
         i++;
@@ -97,8 +153,9 @@ void add_to_board_coords(field *board, int x, int y){
     *board = *board | ((field) 1<<(7-x + 8*y));
 }
 
-void add_to_board_br_to_tl(field *board, int n){
-    *board = *board | ((field) 1 << (63-n));
+//n=0 is top left, n=63 is bottom right
+void set_bit_by_index(field *board, int n) {
+    *board |= ((field) 1 << (63-n));
 }
 
 void print_all_boards(field *boards){

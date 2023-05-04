@@ -1,6 +1,6 @@
 #include "common.h"
 
-bool turn = true;
+bool is_player_white = true;
 bool castle_left[2] = {true, true};
 bool castle_right[2] = {true, true};
 
