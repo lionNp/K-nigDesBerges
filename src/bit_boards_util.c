@@ -46,9 +46,11 @@ void import_string(field bitfield_fig[], char gamestring[]) {
     printf("Gamestring: %s\n", gamestring);
 
     int i = 0;
-    for(int iterate=0; iterate<str_len; iterate++){
+    int iterate=0;
+    for(; iterate < str_len; iterate++){
         char c = gamestring[iterate];
-
+        if(c == ' ') 
+            break;
         switch(c){
             case 'r': add_to_board_br_to_tl(&bitfield_fig[rook], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
             case 'n': add_to_board_br_to_tl(&bitfield_fig[knight], i); add_to_board_br_to_tl(&bitfield_fig[black], i); break;
@@ -71,6 +73,8 @@ void import_string(field bitfield_fig[], char gamestring[]) {
 
         i++;
     }
+    iterate++;
+    if(gamestring[iterate] == 'b') turn = 0;
 }
 
 void print_board(field board){

@@ -93,6 +93,7 @@ int main(){
             }
         }
         //castle check
+        /*
         field castling = (field) 0;
         if(turn){
             if(castle_left[turn]){
@@ -101,7 +102,7 @@ int main(){
             if(castle_right[turn]){
                 field rooks = bitfield_fig[turn] & bitfield_fig[rook];
             }
-            //move_count++;
+            move_count++;
         }
         else{
             if(castle_left[turn]){
@@ -111,8 +112,9 @@ int main(){
             if(castle_right[turn]){
                 field rooks = bitfield_fig[turn] & bitfield_fig[rook];
             }
-            //move_count++;
+            move_count++;
         }
+        */
         field moves[2*move_count];
         int piece_arr[2*move_count];
         int rating[2*move_count];

@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define game_string "2b1k3/p5rp/Pppb1p1P/n2qpPpR/1PPpP1P1/R2P1Q1B/1Br4n/1N2K1N1"
+#define game_string "rnbqkbnr/pp1p1ppp/4p3/1Pp5/8/2N5/P1PPPPPP/R1BQKBNR w"
 
 typedef uint64_t field; 
 extern field files[8];
@@ -82,8 +82,6 @@ extern bool castle_right[2];
 #define horizontal 0xFF;
 #define vertical 0x8080808080808080;
 #define figure_count 8
-
-
 
 enum figure {
     black = 0,
