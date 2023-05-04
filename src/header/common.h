@@ -24,6 +24,7 @@ extern field knight_moves[64];
 extern field king_moves[64];
 // Player
 extern bool is_player_white;
+extern field bitfields[8];
 extern bool castle_left[2];
 extern bool castle_right[2];
 // Files

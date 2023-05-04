@@ -1,8 +1,11 @@
 #include "common.h"
+#include "bit_boards_util.h"
 
 bool is_player_white = true;
 bool castle_left[2] = {true, true};
 bool castle_right[2] = {true, true};
+
+field bitfields[8];
 
 field files[8] = {h_file, g_file, f_file, e_file, d_file, c_file, b_file, a_file};
 field rows[8] = {row_1, row_2, row_3, row_4, row_5, row_6, row_7, row_8};
