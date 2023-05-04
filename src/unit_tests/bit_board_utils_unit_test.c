@@ -1,6 +1,6 @@
 #include "common.h"
 #include "assertions.h"
-#include "bit_boards_util.h"
+#include "bit_board_utils.h"
 #include "stopwatch_utils.h"
 #include <stdbool.h>
 

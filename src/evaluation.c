@@ -1,6 +1,6 @@
 #include "evaluation.h"
 #include "math.h"
-#include "bit_boards_util.h"
+#include "bit_board_utils.h"
 #include "move_util.h"
 
 float evaluation(field bitfield[], field move_to, field move_from, int piece){

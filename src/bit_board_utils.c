@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "bit_boards_util.h"
+#include "bit_board_utils.h"
 
 field shift_diag_up(field diag, int n){
     return diag << 8*n;

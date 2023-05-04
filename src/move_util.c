@@ -1,5 +1,5 @@
 #include "move_util.h"
-#include "bit_boards_util.h"
+#include "bit_board_utils.h"
 #include "common.h"
 #include <math.h>
 

@@ -1,5 +1,5 @@
 #include "assertions.h"
-#include "bit_boards_util.h"
+#include "bit_board_utils.h"
 
 bool assert_bitboard_equal(field expected, field actual)
 {

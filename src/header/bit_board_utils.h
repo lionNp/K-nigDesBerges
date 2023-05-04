@@ -1,5 +1,5 @@
-#ifndef BIT_BOARDS_UTIL_H
-#define BIT_BOARDS_UTIL_H
+#ifndef BIT_BOARD_UTILS_H
+#define BIT_BOARD_UTILS_H
 
 #include "common.h"
 

@@ -1,6 +1,6 @@
 #include <pthread.h>
 #include <sys/time.h>
-#include "bit_boards_util.h"
+#include "bit_board_utils.h"
 #include "move_util.h"
 #include "common.h"
 
