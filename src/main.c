@@ -114,7 +114,7 @@ int main() {
             if(moves[max_rating_index] & h_file)
                 castle_right[is_player_white] = false;
 
-            if(moves[max_rating_index] & a_file)
+            else if(moves[max_rating_index] & a_file)
                 castle_left[is_player_white] = false;
         }
 
