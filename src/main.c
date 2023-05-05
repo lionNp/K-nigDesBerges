@@ -65,14 +65,18 @@ int main() {
         int piece_arr[2*counts[0]];
         int rating[2*counts[0]];
         int count = 0;
-        for(int i = 0; i < counts[1]; i++){
+
+        for(int i = 0; i < counts[1]; i++)
+        {
             // get number of moves for current_piece
             int piece_count = get_piece_count(legal_moves[i]);
             // split moves
             field single_move[piece_count];
             get_single_piece_boards(legal_moves[i], single_move, piece_count);
+            
             // match specific moves with current_piece and evaluate move
-            for(int k = 0; k < piece_count; k++){
+            for(int k = 0; k < piece_count; k++)
+            {
                 rating[count] = evaluation(bitfields, single_move[k], legal_moves_piece[i], piece_array[i]);
                 piece_arr[count] = piece_array[i];
                 moves[count] = legal_moves_piece[i];
