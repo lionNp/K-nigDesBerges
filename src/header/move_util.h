@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-field in_check(field position, field all_fields[]);
+field in_check(field position);
 field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position);
 field find_legal_rook_moves(field own_pieces, field enemy_pieces, field position);
 field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position);

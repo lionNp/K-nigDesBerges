@@ -67,7 +67,7 @@ int main() {
                 count++;
             }
         }
-        
+        // TODO MOVE TO FIND MAX FUNCTION
         //find first maximum rating
         int max_rating_index = 0;
         int total_legal_moves = counts[0];
@@ -78,7 +78,7 @@ int main() {
             if(rating[c] > rating[max_rating_index])
                 max_rating_index = c;
         }
-            
+        // TODO CREATE MOVE FUNCTION    
         // make move
         // move rook if castle
         if(piece_index[max_rating_index] == king){
@@ -92,18 +92,15 @@ int main() {
             }
         }
         // move current_piece in piece_board
+        // remove piece from old square
         bitfields[is_player_white] ^= moves[max_rating_index];
         bitfields[piece_index[max_rating_index]] ^= moves[max_rating_index];
-        for(int i = 0; i < 8; i++)
-            bitfields[i] ^= (moves[max_rating_index+1] & bitfields[i]); 
-        bitfields[is_player_white] ^= moves[max_rating_index+1];
-        bitfields[piece_index[max_rating_index]] ^= moves[max_rating_index+1];
 
-        //make actual move
+        // eliminate all pieces from moved to square
         for(int i = 0; i < 8; i++)
             bitfields[i] ^= (moves[max_rating_index+1] & bitfields[i]); 
 
-        // TODO: ? pls explain
+        // add piece at moved to square
         bitfields[is_player_white] ^= moves[max_rating_index+1];
         bitfields[piece_index[max_rating_index]] ^= moves[max_rating_index+1];
 

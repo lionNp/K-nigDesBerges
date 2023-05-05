@@ -103,25 +103,25 @@ void init_queen_moves(field queen_moves[]){
 // Check if King is checked
 //
 //
-field in_check(field position, field bitfieldss[]){
+field in_check(field position){
     field check_from = (field) 0;
     
     //check for bishop or queen
-    check_from |= (find_legal_diag_moves(bitfieldss[is_player_white], bitfieldss[!is_player_white], position) & ((bitfieldss[bishop] | bitfieldss[queen]) & bitfieldss[!is_player_white]) );
+    check_from |= (find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], position) & ((bitfields[bishop] | bitfields[queen]) & bitfields[!is_player_white]) );
 
     //check for rook or queen
-    check_from |= (find_legal_rook_moves(bitfieldss[is_player_white], bitfieldss[!is_player_white], position) & ((bitfieldss[rook] | bitfieldss[queen]) & bitfieldss[!is_player_white]) );
+    check_from |= (find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], position) & ((bitfields[rook] | bitfields[queen]) & bitfields[!is_player_white]) );
 
     //check for knight
     int bit = log2(position);
-    check_from |= (knight_moves[bit] & bitfieldss[!is_player_white]) & bitfieldss[knight];
+    check_from |= (knight_moves[bit] & bitfields[!is_player_white]) & bitfields[knight];
 
     // WARNING: beware board orientation
     //check for p
     if(is_player_white)
-        check_from |= (((position << 9) | (position << 7)) & (bitfieldss[pawn] & bitfieldss[!is_player_white]));
+        check_from |= (((position << 9) | (position << 7)) & (bitfields[pawn] & bitfields[!is_player_white]));
     else
-        check_from |= (((position >> 9) | (position >> 7)) & (bitfieldss[pawn] & bitfieldss[!is_player_white]));
+        check_from |= (((position >> 9) | (position >> 7)) & (bitfields[pawn] & bitfields[!is_player_white]));
 
     return check_from;
 }
