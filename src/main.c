@@ -55,7 +55,7 @@ int main() {
             // foreach move the current piece could do, evaluate that move
             for(int k = 0; k < piece_count; k++)
             {
-                rating[count] = evaluation(bitfields, single_moves[k], legal_moves_piece[i], piece_array[i]);
+                rating[count] = evaluation(single_moves[k], legal_moves_piece[i], piece_array[i]);
                 piece_index[count] = piece_array[i];
                 moves[count] = legal_moves_piece[i];
                 count++;

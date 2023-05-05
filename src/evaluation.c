@@ -4,37 +4,37 @@
 #include "move_util.h"
 #include <stdlib.h>
 
-float evaluation(field bitfield[], field move_to, field move_from, int piece)
+float evaluation(field move_to, field move_from, int piece)
 {
     float rating = 0.0f;
  
     // remove current and add targert position for piece
-    bitfield[is_player_white] ^= move_from;
-    bitfield[is_player_white] ^= move_to; //TODO: could be |=
+    bitfields[is_player_white] ^= move_from;
+    bitfields[is_player_white] ^= move_to; //TODO: could be |=
 
     // eliminate piece from other board if taken
     int hit_flag = 0;
-    if(move_to & bitfield[!is_player_white])
+    if(move_to & bitfields[!is_player_white])
     {
-        bitfield[!is_player_white] ^= (move_to & bitfield[!is_player_white]); //TODO: &.. is redundant
+        bitfields[!is_player_white] ^= (move_to & bitfields[!is_player_white]); //TODO: &.. is redundant
         hit_flag = 1;
     }
 
     // check if king is in check
     field king_position = (piece == king) 
-        ? bitfield[is_player_white] & move_to //TODO: could be just move_to
-        : bitfield[is_player_white] & bitfield[king];
+        ? bitfields[is_player_white] & move_to //TODO: could be just move_to
+        : bitfields[is_player_white] & bitfields[king];
 
-    field king_is_in_check = in_check(king_position, bitfield);
+    field king_is_in_check = in_check(king_position, bitfields);
     
     if(king_is_in_check)
     { 
         // unmake move
-        bitfield[is_player_white] ^= move_from; //TODO: |=
-        bitfield[is_player_white] ^= move_to;   
+        bitfields[is_player_white] ^= move_from; //TODO: |=
+        bitfields[is_player_white] ^= move_to;   
 
         if(hit_flag) 
-            bitfield[!is_player_white] |= move_to;
+            bitfields[!is_player_white] |= move_to;
 
         return -9999.0f;
     }
@@ -80,48 +80,48 @@ float evaluation(field bitfield[], field move_to, field move_from, int piece)
 
     //increase rating by piece count * piece_multiplier
     // matertial
-    //field turn_king = bitfield[is_player_white] & bitfield[king];
+    //field turn_king = bitfields[is_player_white] & bitfields[king];
     //rating += get_piece_count(turn_king)*100;
-    field turn_queen = bitfield[is_player_white] & bitfield[queen];
+    field turn_queen = bitfields[is_player_white] & bitfields[queen];
     rating += get_piece_count(turn_queen) * 9;
 
-    field turn_rook = bitfield[is_player_white] & bitfield[rook];
+    field turn_rook = bitfields[is_player_white] & bitfields[rook];
     rating += get_piece_count(turn_rook) * 5;
 
-    field turn_bishop = bitfield[is_player_white] & bitfield[bishop];
+    field turn_bishop = bitfields[is_player_white] & bitfields[bishop];
     rating += get_piece_count(turn_bishop) * 3;
 
-    field turn_knight = bitfield[is_player_white] & bitfield[knight];
+    field turn_knight = bitfields[is_player_white] & bitfields[knight];
     rating += get_piece_count(turn_knight) * 3;
 
-    field turn_pawns = bitfield[is_player_white] & bitfield[pawn];
+    field turn_pawns = bitfields[is_player_white] & bitfields[pawn];
     rating += get_piece_count(turn_pawns) * 1;
 
     //decrease rating by enemy players piece count * piece_multiplier
-    //field turn_next_king = bitfield[!is_player_white] & bitfield[king];
+    //field turn_next_king = bitfields[!is_player_white] & bitfields[king];
     //rating -= get_piece_count(turn_next_king)*100;
-    field turn_next_queen = bitfield[!is_player_white] & bitfield[queen];
+    field turn_next_queen = bitfields[!is_player_white] & bitfields[queen];
     rating -= get_piece_count(turn_next_queen) * 9;
 
-    field turn_next_rook = bitfield[!is_player_white] & bitfield[rook];
+    field turn_next_rook = bitfields[!is_player_white] & bitfields[rook];
     rating -= get_piece_count(turn_next_rook) * 5;
 
-    field turn_next_bishop = bitfield[!is_player_white] & bitfield[bishop];
+    field turn_next_bishop = bitfields[!is_player_white] & bitfields[bishop];
     rating -= get_piece_count(turn_next_bishop) * 3;
 
-    field turn_next_knight = bitfield[!is_player_white] & bitfield[knight];
+    field turn_next_knight = bitfields[!is_player_white] & bitfields[knight];
     rating -= get_piece_count(turn_next_knight) * 3;
 
-    field turn_next_pawns = bitfield[!is_player_white] & bitfield[pawn];
+    field turn_next_pawns = bitfields[!is_player_white] & bitfields[pawn];
     rating -= get_piece_count(turn_next_pawns) * 1;
 
     //unmake moves
-    bitfield[is_player_white] ^= move_from; //TODO: |=
-    bitfield[is_player_white] ^= move_to;   //same as &= ~move_to; right ?
+    bitfields[is_player_white] ^= move_from; //TODO: |=
+    bitfields[is_player_white] ^= move_to;   //same as &= ~move_to; right ?
 
     // unmake elimination if a piece was taken
     if(hit_flag)
-        bitfield[!is_player_white] |= move_to;
+        bitfields[!is_player_white] |= move_to;
 
     return rating;
 }

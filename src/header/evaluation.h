@@ -2,6 +2,6 @@
 #define EVALUATION_H
 #include "common.h"
 
-float evaluation(field bitfield[], field move_to, field move_from, int piece);
+float evaluation(field move_to, field move_from, int piece);
 
 #endif
