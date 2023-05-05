@@ -3,7 +3,6 @@
 #include "move_util.h"
 #include <math.h>
 
-//legal_moves[i] are all moves for piece "legal_moves_piece[i]". piece_array contains all player pieces. counts[0] is the total move count, count[1] is the total piece count for player
 void generate_moves(field legal_moves[], field legal_moves_piece[], int piece_array[], int counts[])
 {
     int bit_pos = 0;

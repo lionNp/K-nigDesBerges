@@ -31,13 +31,17 @@ int main() {
         // measure performance starting here
         stopwatch* time = start_stopwatch();
 
-        // generate all pseudo_moves
-
         //counts[0]: total move count. counts[1]: total piece count (player)
         int counts[2] = {0, 0};  
+
+        //contains all player pieces
         int piece_array[16];
+        
+        //legal_moves[i] are all moves for piece "legal_moves_piece[i]".
         field legal_moves[16];
         field legal_moves_piece[16];
+        
+        // generate all pseudo_moves
         generate_moves(legal_moves, legal_moves_piece, piece_array, counts);
 
         //castle check

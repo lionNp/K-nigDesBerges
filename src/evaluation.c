@@ -3,35 +3,40 @@
 #include "bit_boards_util.h"
 #include "move_util.h"
 
-float evaluation(field bitfield[], field move_to, field move_from, int piece){
-    float rating = 0.0;
-    // make move
-    // move piece in turn_board
+float evaluation(field bitfield[], field move_to, field move_from, int piece)
+{
+    float rating = 0.0f;
+ 
+    // remove current and add targert position for piece
     bitfield[is_player_white] ^= move_from;
-    bitfield[is_player_white] ^= move_to;
-    // elimenate piece if taken
-    int flag = 0;
-    if(move_to & bitfield[!is_player_white]){
-        bitfield[!is_player_white] ^= (move_to & bitfield[!is_player_white]);
-        flag = 1;
+    bitfield[is_player_white] ^= move_to; //TODO: could be |=
+
+    // eliminate piece from other board if taken
+    int hit_flag = 0;
+    if(move_to & bitfield[!is_player_white])
+    {
+        bitfield[!is_player_white] ^= (move_to & bitfield[!is_player_white]); //TODO: &.. is redundant
+        hit_flag = 1;
     }
-    // check for check
-    field king_position = 0UL;
-    if(piece == king)
-        king_position = bitfield[is_player_white] & move_to;
-    else
-        king_position = bitfield[is_player_white] & bitfield[king];
-    field checked = in_check(king_position, bitfield);
+
+    // check if king is in check
+    field king_position = (piece == king) 
+        ? bitfield[is_player_white] & move_to //TODO: could be just move_to
+        : bitfield[is_player_white] & bitfield[king];
+
+    field king_is_in_check = in_check(king_position, bitfield);
     
-    if(checked){ 
+    if(king_is_in_check)
+    { 
         // unmake move
         bitfield[is_player_white] ^= move_from;
         bitfield[is_player_white] ^= move_to;   
-        if(flag)
+        if(hit_flag)
             bitfield[!is_player_white] |= move_to;
         rating = -9999;
         return rating;
     }
+
     // evaluate move
     int pos_to = log2(move_to);
     int pos_from = log2(move_from);
@@ -96,7 +101,7 @@ float evaluation(field bitfield[], field move_to, field move_from, int piece){
     bitfield[is_player_white] ^= move_from;
     bitfield[is_player_white] ^= move_to;   
     // elimenate piece if taken
-    if(flag)
+    if(hit_flag)
         bitfield[!is_player_white] |= move_to;
 
     return rating;
