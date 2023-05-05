@@ -36,32 +36,10 @@ int main() {
         // generate all pseudo_moves
         generate_moves(legal_moves, legal_moves_piece, piece_array, counts);
 
-        //castle check
-        /*
-        field castling = (field) 0;
-        if(is_player_white){
-            if(castle_left[is_player_white]){
-                field rooks = bitfields[is_player_white] & bitfields[rook];
-            }
-            if(castle_right[is_player_white]){
-                field rooks = bitfields[is_player_white] & bitfields[rook];
-            }
-            count[0]++;
-        }
-        else{
-            if(castle_left[is_player_white]){
-                field rooks = bitfields[is_player_white] & bitfields[rook];
-                
-            }
-            if(castle_right[is_player_white]){
-                field rooks = bitfields[is_player_white] & bitfields[rook];
-            }
-            count[0]++;
-        }
-        */
-        field moves[2*counts[0]];
-        int piece_index[2*counts[0]];
-        int rating[2*counts[0]];
+        int arr_size = 2 * counts[0];
+        field moves[arr_size];
+        int piece_index[arr_size];
+        float rating[arr_size];
         int count = 0;
 
         //iterate over every moveset for a piece
@@ -93,18 +71,33 @@ int main() {
         //find first maximum rating
         int max_rating_index = 0;
         int total_legal_moves = counts[0];
-        for(int c = 0; c < 2*counts[0]; c++)
-        {
-            if(rating[c] == -9999.0f) //TODO: define const
+        for(int c = 0; c < arr_size; c++){
+            if(rating[c] == -9999.0f)
                 total_legal_moves--;
 
             if(rating[c] > rating[max_rating_index])
                 max_rating_index = c;
         }
             
-        // maximum rating move. remove piece on player and piece boards
+        // make move
+        // move rook if castle
+        if(piece_index[max_rating_index] == king){
+            if(log2(moves[max_rating_index]) - log2(moves[max_rating_index+1]) == 2){
+                bitfields[rook] ^= ((moves[max_rating_index+1] >> 1) |  (moves[max_rating_index+1] << 1));
+                bitfields[is_player_white] ^= ((moves[max_rating_index+1] >> 1) |  (moves[max_rating_index+1] << 1));
+            }
+            if(log2(moves[max_rating_index]) - log2(moves[max_rating_index+1]) == -2){
+                bitfields[rook] ^= ((moves[max_rating_index+1] << 2) |  (moves[max_rating_index+1] >> 1));
+                bitfields[is_player_white] ^= ((moves[max_rating_index+1] << 2) |  (moves[max_rating_index+1] >> 1));
+            }
+        }
+        // move current_piece in piece_board
         bitfields[is_player_white] ^= moves[max_rating_index];
         bitfields[piece_index[max_rating_index]] ^= moves[max_rating_index];
+        for(int i = 0; i < 8; i++)
+            bitfields[i] ^= (moves[max_rating_index+1] & bitfields[i]); 
+        bitfields[is_player_white] ^= moves[max_rating_index+1];
+        bitfields[piece_index[max_rating_index]] ^= moves[max_rating_index+1];
 
         //make actual move
         for(int i = 0; i < 8; i++)

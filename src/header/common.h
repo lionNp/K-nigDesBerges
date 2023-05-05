@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define game_string "rnbqkbnr/pp1p1ppp/4p3/1Pp5/8/2N5/P1PPPPPP/R1BQKBNR w"
+#define game_string "r3k2r/8/p6p/P6P/8/8/8/R1P1K2R w"
 
 typedef uint64_t field; 
 extern field files[8];
@@ -27,6 +27,15 @@ extern bool is_player_white;
 extern field bitfields[8];
 extern bool castle_left[2];
 extern bool castle_right[2];
+//castle
+extern field castle_black_left;
+extern field castle_black_right;
+extern field castle_black_right_check;
+extern field castle_black_left_check;
+extern field castle_white_left;
+extern field castle_white_right;
+extern field castle_white_right_check;
+extern field castle_white_left_check;
 // Files
 #define a_file 0x8080808080808080ull
 #define b_file 0x4040404040404040ull

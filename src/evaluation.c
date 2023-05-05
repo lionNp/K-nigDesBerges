@@ -2,6 +2,7 @@
 #include "math.h"
 #include "bit_boards_util.h"
 #include "move_util.h"
+#include <stdlib.h>
 
 float evaluation(field bitfield[], field move_to, field move_from, int piece)
 {
@@ -51,6 +52,10 @@ float evaluation(field bitfield[], field move_to, field move_from, int piece)
             break;
 
         case king: 
+            if((pos_from - pos_to) == 2)
+                rating += rook_values[pos_to + 1] - rook_values[pos_to - 1];
+            else if((pos_from - pos_to) == -2)
+                rating += rook_values[pos_to - 1] - rook_values[pos_to + 2];
             rating += is_player_white
                 ? white_king_values[pos_to] - white_king_values[pos_from]
                 : black_king_values[pos_to] - black_king_values[pos_from];

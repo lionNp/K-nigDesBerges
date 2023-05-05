@@ -60,5 +60,43 @@ void generate_moves(field legal_moves[], field legal_moves_piece[], int piece_ar
             x++;
         }
     }
+    field rooks = 0UL;
+    //castle check
+    if(is_player_white){
+        if(castle_left[is_player_white]){
+            rooks = bitfields[is_player_white] & castle_white_left_check;
+            if(rooks == castle_white_left){
+                // add castle left move
+                legal_moves[0] |= 0x0000000000000020ull;
+                counts[0]++;
+            }
+        }
+        if(castle_right[is_player_white]){
+            rooks = bitfields[is_player_white] & castle_white_right_check;
+            if(rooks == castle_white_right){
+                // add castle right move
+                legal_moves[0] |= 0x0000000000000002ull;
+                counts[0]++;
+            }
+        }
+    }
+    else{
+        if(castle_left[is_player_white]){
+            rooks = bitfields[is_player_white] & castle_black_left_check;
+            if(rooks == castle_black_left){
+                // add castle left move
+                legal_moves[0] |= 0x2000000000000000ull;
+                counts[0]++;
+            }
+        }
+        if(castle_right[is_player_white]){
+            rooks = bitfields[is_player_white] & castle_black_right_check;
+            if(rooks == castle_black_right){
+                // add castle right move
+                legal_moves[0] |= 0x0200000000000000ull;
+                counts[0]++;
+            }
+        }
+    }
 }
     
