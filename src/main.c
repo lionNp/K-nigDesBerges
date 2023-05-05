@@ -74,10 +74,24 @@ int main() {
         for(int c = 0; c < arr_size; c++){
             if(rating[c] == illegal_move)
                 total_legal_moves--;
-
-            if(rating[c] > rating[max_rating_index])
+            else if(rating[c] > rating[max_rating_index])
                 max_rating_index = c;
         }
+
+        if((bitfields[is_player_white] & bitfields[king]) & koth){
+            printf("Player won!\n");
+            return 0;
+        }
+
+        if(total_legal_moves == 0){
+            if(in_check(bitfields[is_player_white] & bitfields[king])){
+                printf("Opponent won!\n");
+                return 0;
+            }   
+            printf("Match ended in a forced draw!\n"); // -> REMI
+            return 0;
+        } 
+
         // TODO CREATE MOVE FUNCTION    
         // make move
         // move rook if castle
