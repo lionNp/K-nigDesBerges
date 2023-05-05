@@ -32,6 +32,8 @@ int main() {
         stopwatch* time = start_stopwatch();
 
         // generate all pseudo_moves
+
+        //counts[0]: total move count. counts[1]: total piece count (player)
         int counts[2] = {0, 0};  
         int piece_array[16];
         field legal_moves[16];
@@ -66,24 +68,28 @@ int main() {
         int rating[2*counts[0]];
         int count = 0;
 
+        //iterate over every moveset for a piece
         for(int i = 0; i < counts[1]; i++)
         {
-            // get number of moves for current_piece
+            // get number of moves for current piece i
             int piece_count = get_piece_count(legal_moves[i]);
-            // split moves
-            field single_move[piece_count];
-            get_single_piece_boards(legal_moves[i], single_move, piece_count);
-            
-            // match specific moves with current_piece and evaluate move
+
+            // split moves for piece into single bitboards
+            field single_moves[piece_count];
+            get_single_piece_boards(legal_moves[i], single_moves, piece_count);
+
+            // foreach move the current piece could do, evaluate that move
             for(int k = 0; k < piece_count; k++)
             {
-                rating[count] = evaluation(bitfields, single_move[k], legal_moves_piece[i], piece_array[i]);
+                rating[count] = evaluation(bitfields, single_moves[k], legal_moves_piece[i], piece_array[i]);
                 piece_arr[count] = piece_array[i];
                 moves[count] = legal_moves_piece[i];
                 count++;
+                
+                //whats happening here ?
                 rating[count] = 0;
                 piece_arr[count] = 0;
-                moves[count] = single_move[k];
+                moves[count] = single_moves[k];
                 count++;
             }
         }
