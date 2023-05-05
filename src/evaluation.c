@@ -36,7 +36,7 @@ float evaluation(field move_to, field move_from, int piece)
         if(hit_flag) 
             bitfields[!is_player_white] |= move_to;
 
-        return -9999.0f;
+        return illegal_move;
     }
 
     // evaluate move

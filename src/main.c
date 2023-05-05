@@ -72,7 +72,7 @@ int main() {
         int max_rating_index = 0;
         int total_legal_moves = counts[0];
         for(int c = 0; c < arr_size; c++){
-            if(rating[c] == -9999.0f)
+            if(rating[c] == illegal_move)
                 total_legal_moves--;
 
             if(rating[c] > rating[max_rating_index])

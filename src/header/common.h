@@ -36,6 +36,8 @@ extern field castle_white_left;
 extern field castle_white_right;
 extern field castle_white_right_check;
 extern field castle_white_left_check;
+// illegal move
+#define illegal_move -9999.0f
 // Files
 #define a_file 0x8080808080808080ull
 #define b_file 0x4040404040404040ull
