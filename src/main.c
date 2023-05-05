@@ -18,6 +18,7 @@ int main() {
     printf("%s board:\n", is_player_white ? "Blacks" : "Whites");
     print_board(bitfields[!is_player_white]);
     printf("\n");
+    bool gameover = false;
 
     for(int p = 0; p < 1; p++) // TODO: to be moved into own file
     { 
@@ -78,20 +79,10 @@ int main() {
             else if(rating[c] > rating[max_rating_index])
                 max_rating_index = c;
         }
-
-        if((bitfields[is_player_white] & bitfields[king]) & koth){
-            printf("Player won!\n");
+        
+        game_finished(gameover, total_legal_moves);
+        if(gameover)
             return 0;
-        }
-
-        if(total_legal_moves == 0){
-            if(in_check(bitfields[is_player_white] & bitfields[king])){
-                printf("Opponent won!\n");
-                return 0;
-            }   
-            printf("Match ended in a forced draw!\n"); // -> REMI
-            return 0;
-        } 
   
         // make move
         make_move(piece_index, moves, max_rating_index);

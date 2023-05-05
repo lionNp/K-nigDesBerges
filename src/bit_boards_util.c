@@ -41,6 +41,22 @@ int get_piece_count(field board) {
     return n;
 }
 
+void game_finished(bool gameover, int total_legal_moves){
+    if((bitfields[is_player_white] & bitfields[king]) & koth){
+        printf("Player won!\n");
+        gameover = true;
+    }
+
+    if(total_legal_moves == 0){
+        if(in_check(bitfields[is_player_white] & bitfields[king])){
+            printf("Opponent won!\n");
+            gameover = true;
+        }   
+        printf("Match ended in a forced draw!\n"); // -> REMI
+        gameover = true;
+    } 
+}
+
 void import_gamesting(field bitfields[], char gamestring[]) 
 {
     //initialise empty boards
