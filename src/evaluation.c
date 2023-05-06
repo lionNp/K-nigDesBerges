@@ -82,8 +82,11 @@ float evaluation(field move_to, field move_from, int piece)
     // matertial
     //field turn_king = bitfields[is_player_white] & bitfields[king];
     //rating += get_piece_count(turn_king)*100;
+    int promotion = 9;
+    if(piece == pawn & (move_to & (row_1 | row_8)))
+        promotion = 18;
     field turn_queen = bitfields[is_player_white] & bitfields[queen];
-    rating += get_piece_count(turn_queen) * 9;
+    rating += get_piece_count(turn_queen) * promotion;
 
     field turn_rook = bitfields[is_player_white] & bitfields[rook];
     rating += get_piece_count(turn_rook) * 5;
