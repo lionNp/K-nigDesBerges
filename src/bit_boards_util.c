@@ -1,5 +1,5 @@
 #include <string.h>
-
+#include "move_util.h"
 #include "bit_boards_util.h"
 
 field shift_diag_up(field diag, int n){

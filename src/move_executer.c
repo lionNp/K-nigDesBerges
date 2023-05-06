@@ -26,7 +26,7 @@ void make_move(int piece_index[], field moves[], int max_rating_index){
 
     // add piece at moved to square and check for promotion
     if(piece_index[max_rating_index] == pawn & (moves[max_rating_index+1] & (row_1 | row_8))){
-        bitfield[queen] ^= moves[max_rating_index+1];
+        bitfields[queen] ^= moves[max_rating_index+1];
         bitfields[is_player_white] ^= moves[max_rating_index+1];
     }
     else{
