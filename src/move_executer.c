@@ -20,8 +20,9 @@ void make_move(int piece_index[], field moves[], int max_rating_index){
     bitfields[piece_index[max_rating_index]] ^= moves[max_rating_index];
 
     // eliminate all pieces from moved to square
-    for(int i = 0; i < 8; i++)
-        bitfields[i] ^= (moves[max_rating_index+1] & bitfields[i]); 
+    if(moves[max_rating_index+1] & bitfields[!is_player_white]) // if for loop necessary
+        for(int i = 0; i < 8; i++)
+            bitfields[i] ^= (moves[max_rating_index+1] & bitfields[i]); 
 
     // add piece at moved to square and check for promotion
     if(piece_index[max_rating_index] == pawn & (moves[max_rating_index+1] & (row_1 | row_8))){
