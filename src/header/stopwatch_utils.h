@@ -9,7 +9,7 @@ struct s_stopwatch
     struct timeval stop_time;
 } typedef stopwatch;
 
-stopwatch* start_stopwatch();
-unsigned long stop_stopwatch(stopwatch* running);
+stopwatch start_stopwatch();
+unsigned long stop_stopwatch(stopwatch running);
 
 #endif

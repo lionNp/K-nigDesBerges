@@ -23,7 +23,7 @@ int main() {
     for(int p = 0; p < 1; p++) // TODO: to be moved into own file
     { 
         // measure performance starting here
-        stopwatch* time = start_stopwatch();
+        stopwatch time = start_stopwatch();
 
         //counts[0]: total move count. counts[1]: total piece count (player)
         int counts[2] = {0, 0};  

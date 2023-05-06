@@ -13,7 +13,7 @@ void main()
     unsigned long sum_time = 0;
     for (size_t i = 0; i < 64; i++)
     {
-        stopwatch* stopwatch1 = start_stopwatch();
+        stopwatch stopwatch1 = start_stopwatch();
         for (size_t j = 0; j < 100; j++)
         {
             field pos = (field) 1 << i;
@@ -43,7 +43,7 @@ void main()
     sum_time = 0;
     for (size_t i = 0; i < 64; i++)
     {
-        stopwatch* stopwatch2 = start_stopwatch();
+        stopwatch stopwatch2 = start_stopwatch();
         for (size_t j = 0; j < 100; j++)
         {
             field pos = (field) 1 << i;
