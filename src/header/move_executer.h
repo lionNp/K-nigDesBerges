@@ -3,5 +3,5 @@
 #include "common.h"
 
 void make_move(int piece, field moves_from, field moves_to, field captured[]);
-
+void unmake_move(int piece, field moves_from, field moves_to, field captured[]);
 #endif

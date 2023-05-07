@@ -13,11 +13,13 @@ int main() {
     import_gamesting(bitfields, game_string);
 
     // print game start
+    /*
     printf("%s board:\n", is_player_white ? "Whites" : "Blacks");
     print_board(bitfields[is_player_white]);
     printf("%s board:\n", is_player_white ? "Blacks" : "Whites");
     print_board(bitfields[!is_player_white]);
     printf("\n");
+    */
     bool gameover = false;
 
     for(int p = 0; p < 1; p++) // TODO: to be moved into own file
@@ -85,13 +87,19 @@ int main() {
             return 0;
   
         // make move
-        field captured[8];
+        field captured[8] = {0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL};
+        printf("Premove: %s board:\n", is_player_white ? "Whites" : "Blacks");
+        print_board(bitfields[is_player_white]);
         make_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
-        
+        printf("Postmove: %s board:\n", is_player_white ? "Whites" : "Blacks");
+        print_board(bitfields[is_player_white]);
+        unmake_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
+        printf("Premove: %s board:\n", is_player_white ? "Whites" : "Blacks");
+        print_board(bitfields[is_player_white]);
         // print results
         field t = stop_stopwatch(time);
         printf("Of all %d moves %d were legal moves and took %lu us\n", counts[0], total_legal_moves, t);
-        
+        /*
         printf("Best move for %s:\n", is_player_white ? "white" : "black");
         print_board(moves[max_rating_index]);
         printf("to:\n");
@@ -101,7 +109,7 @@ int main() {
         printf("%s board:\n", is_player_white ? "Blacks" : "Whites");
         print_board(bitfields[!is_player_white]);
         printf("\n");
-
+        */
         //switch sides
         is_player_white = 1 - is_player_white;
     }
