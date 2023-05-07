@@ -40,10 +40,10 @@ int main() {
         // generate all pseudo_moves
         generate_moves(legal_moves, legal_moves_piece, piece_array, counts);
 
-        int arr_size = 2 * counts[0];
-        field moves[arr_size];
-        int piece_index[arr_size];
-        float rating[arr_size];
+        field moves_from[counts[0]];
+        field moves_to[counts[0]];
+        int piece_index[counts[0]];
+        float rating[counts[0]];
         int count = 0;
 
         //iterate over every moveset for a piece
@@ -61,13 +61,8 @@ int main() {
             {
                 rating[count] = evaluation(single_moves[k], legal_moves_piece[i], piece_array[i]);
                 piece_index[count] = piece_array[i];
-                moves[count] = legal_moves_piece[i];
-                count++;
-                
-                //whats happening here ?
-                rating[count] = 0;
-                piece_index[count] = 0;
-                moves[count] = single_moves[k];
+                moves_from[count] = legal_moves_piece[i];
+                moves_to[count] = single_moves[k];
                 count++;
             }
         }
@@ -75,7 +70,7 @@ int main() {
         //find first maximum rating
         int max_rating_index = 0;
         int total_legal_moves = counts[0];
-        for(int c = 0; c < arr_size; c++){
+        for(int c = 0; c < counts[0]; c++){
             if(rating[c] == illegal_move)
                 total_legal_moves--;
             else if(rating[c] > rating[max_rating_index])
@@ -89,24 +84,24 @@ int main() {
         // make move
         field captured[8] = {0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL};
 
-        make_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
+        make_move(piece_index[max_rating_index], moves_from[max_rating_index], moves_to[max_rating_index], captured);
 
         //unmake_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
 
         // print results
         field t = stop_stopwatch(time);
         printf("Of all %d moves %d were legal moves and took %lu us\n", counts[0], total_legal_moves, t);
-        /*
+
         printf("Best move for %s:\n", is_player_white ? "white" : "black");
-        print_board(moves[max_rating_index]);
+        print_board(moves_from[max_rating_index]);
         printf("to:\n");
-        print_board(moves[max_rating_index+1]);
+        print_board(moves_to[max_rating_index]);
         printf("%s board:\n", is_player_white ? "Whites" : "Blacks");
         print_board(bitfields[is_player_white]);
         printf("%s board:\n", is_player_white ? "Blacks" : "Whites");
         print_board(bitfields[!is_player_white]);
         printf("\n");
-        */
+
         //switch sides
         is_player_white = 1 - is_player_white;
     }
