@@ -88,14 +88,11 @@ int main() {
   
         // make move
         field captured[8] = {0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL};
-        printf("Premove: %s board:\n", is_player_white ? "Whites" : "Blacks");
-        print_board(bitfields[is_player_white]);
+
         make_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
-        printf("Postmove: %s board:\n", is_player_white ? "Whites" : "Blacks");
-        print_board(bitfields[is_player_white]);
-        unmake_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
-        printf("Premove: %s board:\n", is_player_white ? "Whites" : "Blacks");
-        print_board(bitfields[is_player_white]);
+
+        //unmake_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
+
         // print results
         field t = stop_stopwatch(time);
         printf("Of all %d moves %d were legal moves and took %lu us\n", counts[0], total_legal_moves, t);
