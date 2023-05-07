@@ -85,7 +85,8 @@ int main() {
             return 0;
   
         // make move
-        make_move(piece_index, moves, max_rating_index);
+        field captured[8];
+        make_move(piece_index[max_rating_index], moves[max_rating_index], move[max_rating_index + 1], captured);
         
         // print results
         field t = stop_stopwatch(time);
