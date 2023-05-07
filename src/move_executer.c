@@ -22,7 +22,7 @@ void make_move(int piece, field moves_from, field moves_to, field captured[]){
     // eliminate all pieces from moved to square
     if(moves_to & bitfields[!is_player_white]) // if for loop necessary
         for(int i = 0; i < 8; i++){
-             caputred_fig[i] = (moves_to & bitfields[i]);
+             captured[i] = (moves_to & bitfields[i]);
              bitfields[i] ^= (moves_to & bitfields[i]);
         }
              
