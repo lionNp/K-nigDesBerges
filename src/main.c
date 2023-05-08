@@ -24,7 +24,7 @@ int main() {
     // set to true if game is finished
     bool gameover = false;
 
-    for(int p = 0; p < 100; p++) // TODO: to be moved into own file
+    for(int p = 0; !gameover; p++) // TODO: to be moved into own file
     { 
         // measure performance starting here
         stopwatch time = start_stopwatch();
@@ -85,12 +85,16 @@ int main() {
                 max_rating_indices[0] = c;
             }     
         }
-        game_finished(gameover, total_legal_moves);
-        if(gameover)
+
+        game_finished(gameover, total_legal_moves); // TODO GAME REPETITION DRAW (every time when a piece is taken -> reset table)
+        if(gameover){
+            print_full_board();
             return 0;
+        }
+            
         
         int idx = max_rating_index;
-        if((max_rating_indices[0] + max_rating_indices[1] + max_rating_indices[2]) / (3 * rating[max_rating_index]) > 0.5)
+        if((max_rating_indices[0] + max_rating_indices[1] + max_rating_indices[2]) / (3 * rating[max_rating_index]) > 0.2)
             idx = max_rating_indices[rand() % 3];
         // make move
         make_move(piece_index[idx], moves_from[idx], moves_to[idx], captured);
@@ -107,7 +111,7 @@ int main() {
         print_board(moves_to[max_rating_index]);
         */
         printf("board:\n");
-        print_full_board();
+        
         //switch sides
         is_player_white = 1 - is_player_white;
     }
