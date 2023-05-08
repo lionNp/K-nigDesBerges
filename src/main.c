@@ -22,7 +22,7 @@ int main() {
     */
     bool gameover = false;
 
-    for(int p = 0; p < 10; p++) // TODO: to be moved into own file
+    for(int p = 0; p < 20; p++) // TODO: to be moved into own file
     { 
         // measure performance starting here
         stopwatch time = start_stopwatch();
