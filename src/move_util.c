@@ -161,12 +161,14 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
         /*if(y == 1 && ( ((position << 8) & (own_pieces | enemy_pieces)) == (field) 0) ){
             moves = moves | (((position << 16) & (own_pieces | enemy_pieces)) ^ (position << 16));
         }*/
-
-        //capture right
-        moves |= ((position << 7) & enemy_pieces);
-
-        //capture left
-        moves |= ((position << 9) & enemy_pieces);
+        if(position & h_file)
+            moves |= ((position << 7) & enemy_pieces);
+        else if(position & a_file)
+            moves |= ((position << 9) & enemy_pieces);
+        else{
+            moves |= ((position << 7) & enemy_pieces);
+            moves |= ((position << 9) & enemy_pieces);
+        }       
     }
     else{
         //one forward
@@ -180,12 +182,14 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
         /*if(y == 6 && ( ((position >> 8) & (own_pieces | enemy_pieces)) == (field) 0) ){
             moves = moves | (((position >> 16) & (own_pieces | enemy_pieces)) ^ (position >> 16));
         }*/
-
-        //capture right
-        moves |= ((position >> 7) & enemy_pieces);
-
-        //capture left
-        moves |= ((position >> 9) & enemy_pieces);
+        if(position & h_file)
+            moves |= ((position >> 7) & enemy_pieces);
+        else if(position & a_file)
+            moves |= ((position >> 9) & enemy_pieces);
+        else{
+            moves |= ((position >> 7) & enemy_pieces);
+            moves |= ((position >> 9) & enemy_pieces);
+        }
     }
     return moves;
 }
