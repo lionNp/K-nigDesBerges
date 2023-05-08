@@ -8,6 +8,7 @@
 #include "move_generator.h"
 #include "move_executer.h"
 #include <stdlib.h>
+#include "hashset.h"
 
 int main() {
     
@@ -101,7 +102,7 @@ int main() {
             idx = max_rating_indices[rand() % non_zero-1];
         // make move
         make_move(piece_index[idx], moves_from[idx], moves_to[idx], captured);
-
+        hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
         //unmake_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
 
         // print results

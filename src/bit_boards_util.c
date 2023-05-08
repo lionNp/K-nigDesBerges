@@ -1,6 +1,7 @@
 #include <string.h>
 #include "move_util.h"
 #include "bit_boards_util.h"
+#include "hashset.h"
 
 field shift_diag_up(field diag, int n){
     return diag << 8*n;
@@ -44,6 +45,11 @@ int get_piece_count(field board) {
 bool game_finished(int total_legal_moves){
     if((bitfields[is_player_white] & bitfields[king]) & koth){
         printf("%s won!\n", is_player_white ? "white" : "black");
+        return true;
+    }
+
+    if(hashset_duplicates() == 3){
+        printf("Match ended in a draw by repetition!\n"); // -> REMI
         return true;
     }
 
