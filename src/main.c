@@ -72,7 +72,7 @@ int main() {
         }
         // TODO MOVE TO FIND MAX FUNCTION
         //find first maximum rating
-        int max_rating_indices[3] = {0, 0, 0};
+        int max_rating_indices[5] = {0, 0, 0};
         int max_rating_index = 0;
         int total_legal_moves = counts[0];
         for(int c = 0; c < counts[0]; c++){
@@ -80,22 +80,25 @@ int main() {
                 total_legal_moves--;
             else if(rating[c] > rating[max_rating_index]){
                 max_rating_index = c;
+                max_rating_indices[4] = max_rating_indices[3];
+                max_rating_indices[3] = max_rating_indices[2];
                 max_rating_indices[2] = max_rating_indices[1];
                 max_rating_indices[1] = max_rating_indices[0];
                 max_rating_indices[0] = c;
             }     
         }
-
-        game_finished(gameover, total_legal_moves); // TODO GAME REPETITION DRAW (every time when a piece is taken -> reset table)
-        if(gameover){
-            print_full_board();
-            return 0;
-        }
-            
+        for(int i = 0; i < 5; i++)
+            printf("%d, ", max_rating_indices[i]);
+        printf("\n");
+        int non_zero = 0;
+        for(int i = 0; i < 5; i++){
+            if(max_rating_indices[i] != 0)
+                non_zero++;
+        }    
         
         int idx = max_rating_index;
-        if((max_rating_indices[0] + max_rating_indices[1] + max_rating_indices[2]) / (3 * rating[max_rating_index]) > 0.2)
-            idx = max_rating_indices[rand() % 3];
+        if(((max_rating_indices[0] + max_rating_indices[1] + max_rating_indices[2] + max_rating_indices[3] + max_rating_indices[4]) / (5 * rating[max_rating_index])) > 0.2)
+            idx = max_rating_indices[rand() % non_zero-1];
         // make move
         make_move(piece_index[idx], moves_from[idx], moves_to[idx], captured);
 
@@ -110,9 +113,15 @@ int main() {
         printf("to:\n");
         print_board(moves_to[max_rating_index]);
         */
-        printf("board:\n");
-        
+        printf("%s move:\n", is_player_white ? "white" : "black");
+        //print_full_board();
         //switch sides
+        gameover = game_finished(total_legal_moves); // TODO GAME REPETITION DRAW (every time when a piece is taken -> reset table)
+        if(gameover){
+            printf("Game Over\n");
+            print_full_board();
+            break;
+        }
         is_player_white = 1 - is_player_white;
     }
     

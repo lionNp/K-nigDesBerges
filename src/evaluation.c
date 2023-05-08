@@ -57,7 +57,7 @@ float evaluation(field move_to, field move_from, int piece)
             rating += bishop_values[pos_to] - bishop_values[pos_from];
             break;
     }   
-    rating /= 50;
+    rating /= 5;
     
 
     // increase rating by piece count * piece_multiplier
