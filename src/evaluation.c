@@ -7,18 +7,6 @@
 float evaluation(field move_to, field move_from, int piece)
 {
     float rating = 0.0f;
- 
-    // remove current and add targert position for piece
-    bitfields[is_player_white] ^= move_from;
-    bitfields[is_player_white] |= move_to;
-
-    // eliminate piece from other board if taken
-    int hit_flag = 0;
-    if(move_to & bitfields[!is_player_white])
-    {
-        bitfields[!is_player_white] ^= move_to;
-        hit_flag = 1;
-    }
 
     // check if king is in check
     field king_position = (piece == king) 
@@ -28,16 +16,7 @@ float evaluation(field move_to, field move_from, int piece)
     field king_is_in_check = in_check(king_position);
     
     if(king_is_in_check)
-    { 
-        // unmake move
-        bitfields[is_player_white] |= move_from;
-        bitfields[is_player_white] ^= move_to;   
-
-        if(hit_flag) 
-            bitfields[!is_player_white] |= move_to;
-
         return illegal_move;
-    }
 
     // evaluate move
     int pos_to = log2(move_to);
@@ -117,14 +96,6 @@ float evaluation(field move_to, field move_from, int piece)
 
     field turn_next_pawns = bitfields[!is_player_white] & bitfields[pawn];
     rating -= get_piece_count(turn_next_pawns) * 1;
-
-    //unmake moves
-    bitfields[is_player_white] |= move_from;
-    bitfields[is_player_white] ^= move_to;
-
-    // unmake elimination if a piece was taken
-    if(hit_flag)
-        bitfields[!is_player_white] |= move_to;
 
     return rating;
 }

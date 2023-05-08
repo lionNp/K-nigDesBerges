@@ -22,7 +22,7 @@ int main() {
     */
     bool gameover = false;
 
-    for(int p = 0; p < 1; p++) // TODO: to be moved into own file
+    for(int p = 0; p < 10; p++) // TODO: to be moved into own file
     { 
         // measure performance starting here
         stopwatch time = start_stopwatch();
@@ -45,7 +45,7 @@ int main() {
         int piece_index[counts[0]];
         float rating[counts[0]];
         int count = 0;
-
+        field captured[8];
         //iterate over every moveset for a piece
         for(int i = 0; i < counts[1]; i++)
         {
@@ -59,7 +59,9 @@ int main() {
             // foreach move the current piece could do, evaluate that move
             for(int k = 0; k < piece_count; k++)
             {
+                make_move(piece_array[i], legal_moves_piece[i], single_moves[k], captured);
                 rating[count] = evaluation(single_moves[k], legal_moves_piece[i], piece_array[i]);
+                unmake_move(piece_array[i], legal_moves_piece[i], single_moves[k], captured);
                 piece_index[count] = piece_array[i];
                 moves_from[count] = legal_moves_piece[i];
                 moves_to[count] = single_moves[k];
@@ -82,8 +84,6 @@ int main() {
             return 0;
   
         // make move
-        field captured[8] = {0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL};
-
         make_move(piece_index[max_rating_index], moves_from[max_rating_index], moves_to[max_rating_index], captured);
 
         //unmake_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
@@ -91,17 +91,14 @@ int main() {
         // print results
         field t = stop_stopwatch(time);
         printf("Of all %d moves %d were legal moves and took %lu us\n", counts[0], total_legal_moves, t);
-
+        /*
         printf("Best move for %s:\n", is_player_white ? "white" : "black");
         print_board(moves_from[max_rating_index]);
         printf("to:\n");
         print_board(moves_to[max_rating_index]);
-        printf("%s board:\n", is_player_white ? "Whites" : "Blacks");
-        print_board(bitfields[is_player_white]);
-        printf("%s board:\n", is_player_white ? "Blacks" : "Whites");
-        print_board(bitfields[!is_player_white]);
-        printf("\n");
-
+        */
+        printf("board:\n");
+        print_full_board();
         //switch sides
         is_player_white = 1 - is_player_white;
     }

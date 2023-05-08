@@ -152,21 +152,106 @@ void import_gamesting(field bitfields[], char gamestring[])
     iterate++;
     if(gamestring[iterate] == 'b') is_player_white = 0;
 }
-
+/*
+    bits will be printied from top left (highest value bit)
+    to bottom right (lowest value bit)    
+*/
 void print_board(field board){
-    /*
-        bits will be printied from top left (highest value bit)
-        to bottom right (lowest value bit)    
-    */
-
-    for(int y=7; y>=0; y--){
-        for(int x=7; x>=0; x--){
-            if((board >> (x+ 8*y))%2 != 0){
-                printf("%d ", 1);
+    for(int y = 7; y >= 0; y--){
+        for(int x = 7; x >= 0; x--){
+            field bit = 1UL << (x + 8*y);
+            if((bit & board)){
+                for(int i = 2; i < 8; i++){
+                    if((bit & bitfields[i])){
+                        switch(i){
+                            case 2:
+                                printf("%c ", 'k');
+                                break;
+                            case 3:
+                                printf("%c ", 'q');
+                                break;
+                            case 4:
+                                printf("%c ", 'r');
+                                break;
+                            case 5:
+                                printf("%c ", 'b');
+                                break;
+                            case 6:
+                                printf("%c ", 'n');
+                                break;
+                            case 7:
+                                printf("%c ", 'p');
+                                break;
+                        }
+                    }
+                }
             }
-            else{
+            else
                 printf("%d ", 0);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+void print_full_board(){
+    for(int y = 7; y >= 0; y--){
+        for(int x = 7; x >= 0; x--){
+            field bit = 1UL << (x + 8*y);
+            if((bit & (bitfields[0]))){
+                for(int i = 2; i < 8; i++){
+                    if((bit & bitfields[i])){
+                        switch(i){
+                            case 2:
+                                printf("%c ", 'k');
+                                break;
+                            case 3:
+                                printf("%c ", 'q');
+                                break;
+                            case 4:
+                                printf("%c ", 'r');
+                                break;
+                            case 5:
+                                printf("%c ", 'b');
+                                break;
+                            case 6:
+                                printf("%c ", 'n');
+                                break;
+                            case 7:
+                                printf("%c ", 'p');
+                                break;
+                        }
+                    }
+                }
             }
+            else if((bit & (bitfields[1]))){
+                for(int i = 2; i < 8; i++){
+                    if((bit & bitfields[i])){
+                        switch(i){
+                            case 2:
+                                printf("%c ", 'K');
+                                break;
+                            case 3:
+                                printf("%c ", 'Q');
+                                break;
+                            case 4:
+                                printf("%c ", 'R');
+                                break;
+                            case 5:
+                                printf("%c ", 'B');
+                                break;
+                            case 6:
+                                printf("%c ", 'N');
+                                break;
+                            case 7:
+                                printf("%c ", 'P');
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+                printf("%d ", 0);
         }
         printf("\n");
     }
