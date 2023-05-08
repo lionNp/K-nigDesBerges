@@ -177,9 +177,9 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
             moves = moves | (((position << 16) & (own_pieces | enemy_pieces)) ^ (position << 16));
         }*/
         if(position & h_file)
-            moves |= ((position << 7) & enemy_pieces);
-        else if(position & a_file)
             moves |= ((position << 9) & enemy_pieces);
+        else if(position & a_file)
+            moves |= ((position << 7) & enemy_pieces);
         else{
             moves |= ((position << 7) & enemy_pieces);
             moves |= ((position << 9) & enemy_pieces);

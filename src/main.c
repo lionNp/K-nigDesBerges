@@ -7,6 +7,7 @@
 #include "stopwatch_utils.h"
 #include "move_generator.h"
 #include "move_executer.h"
+#include <stdlib.h>
 
 int main() {
     
@@ -20,9 +21,10 @@ int main() {
     print_board(bitfields[!is_player_white]);
     printf("\n");
     */
+    // set to true if game is finished
     bool gameover = false;
 
-    for(int p = 0; p < 20; p++) // TODO: to be moved into own file
+    for(int p = 0; p < 100; p++) // TODO: to be moved into own file
     { 
         // measure performance starting here
         stopwatch time = start_stopwatch();
@@ -70,21 +72,28 @@ int main() {
         }
         // TODO MOVE TO FIND MAX FUNCTION
         //find first maximum rating
+        int max_rating_indices[3] = {0, 0, 0};
         int max_rating_index = 0;
         int total_legal_moves = counts[0];
         for(int c = 0; c < counts[0]; c++){
             if(rating[c] == illegal_move)
                 total_legal_moves--;
-            else if(rating[c] > rating[max_rating_index])
+            else if(rating[c] > rating[max_rating_index]){
                 max_rating_index = c;
+                max_rating_indices[2] = max_rating_indices[1];
+                max_rating_indices[1] = max_rating_indices[0];
+                max_rating_indices[0] = c;
+            }     
         }
-        
         game_finished(gameover, total_legal_moves);
         if(gameover)
             return 0;
-  
+        
+        int idx = max_rating_index;
+        if((max_rating_indices[0] + max_rating_indices[1] + max_rating_indices[2]) / (3 * rating[max_rating_index]) > 0.5)
+            idx = max_rating_indices[rand() % 3];
         // make move
-        make_move(piece_index[max_rating_index], moves_from[max_rating_index], moves_to[max_rating_index], captured);
+        make_move(piece_index[idx], moves_from[idx], moves_to[idx], captured);
 
         //unmake_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
 

@@ -28,7 +28,7 @@ void make_move(int piece, field moves_from, field moves_to, field captured[]){
     }
             
     // add piece at moved to square and check for promotion
-    if(piece == pawn & (moves_to & (row_1 | row_8))){
+    if(piece == pawn && (moves_to & (row_1 | row_8))){
         bitfields[queen] ^= moves_to;
         bitfields[is_player_white] ^= moves_to;
     }

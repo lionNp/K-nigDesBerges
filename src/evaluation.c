@@ -57,8 +57,10 @@ float evaluation(field move_to, field move_from, int piece)
             rating += bishop_values[pos_to] - bishop_values[pos_from];
             break;
     }   
+    rating /= 50;
+    
 
-    //increase rating by piece count * piece_multiplier
+    // increase rating by piece count * piece_multiplier
     // matertial
     //field turn_king = bitfields[is_player_white] & bitfields[king];
     //rating += get_piece_count(turn_king)*100;
