@@ -118,11 +118,26 @@ field in_check(field position){
 
     // WARNING: beware board orientation
     //check for p
-    if(is_player_white)
-        check_from |= (((position << 9) | (position << 7)) & (bitfields[pawn] & bitfields[!is_player_white]));
-    else
-        check_from |= (((position >> 9) | (position >> 7)) & (bitfields[pawn] & bitfields[!is_player_white]));
-
+    if(is_player_white){
+        if(position & h_file)
+            check_from |= ((position << 7) & (bitfields[pawn] & bitfields[!is_player_white]));
+        else if(position & a_file)
+            check_from |= ((position << 9) & (bitfields[pawn] & bitfields[!is_player_white]));
+        else{
+            check_from |= ((position << 7) & (bitfields[pawn] & bitfields[!is_player_white]));
+            check_from |= ((position << 9) & (bitfields[pawn] & bitfields[!is_player_white]));
+        }     
+    }
+    else{
+        if(position & h_file)
+            check_from |= ((position >> 7) & (bitfields[pawn] & bitfields[!is_player_white]));
+        else if(position & a_file)
+            check_from |= ((position >> 9) & (bitfields[pawn] & bitfields[!is_player_white]));
+        else{
+            check_from |= ((position >> 7) & (bitfields[pawn] & bitfields[!is_player_white]));
+            check_from |= ((position >> 9) & (bitfields[pawn] & bitfields[!is_player_white]));
+        }
+    }
     return check_from;
 }
 
