@@ -8,26 +8,64 @@
 #define game_string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w"
 
 typedef uint64_t field; 
+// each file set to 1 separately
 extern field files[8];
-extern field rows[8];
+
+// each rank set to 1 separately
+extern field ranks[8];
+
+// each right diagonal set to 1 separately
 extern field diag_r[15];
+
+// each left diagonal set to 1 separately
 extern field diag_l[15];
+
+// define value array to assign value to squares for white pawns pieces
 extern int white_pawn_values[64];
+
+// define value array to assign value to squares for black pawns pieces
 extern int black_pawn_values[64];
+
+// define value array to assign value to squares for knight pieces
 extern int knight_values[64];
+
+// define value array to assign value to squares for bishop pieces
 extern int bishop_values[64];
+
+// define value array to assign value to squares for rook pieces
 extern int rook_values[64];
+
+// define value array to assign value to squares for queen pieces
 extern int queen_values[64];
+
+// define value array to assign value to squares for white king pieces
 extern int white_king_values[64];
+
+// define value array to assign value to squares for black king pieces
 extern int black_king_values[64];
+
+// define move_masks for knight as their moves are independant of blocking pieces
 extern field knight_moves[64];
+
+// define move_masks for king as their moves are independant of blocking pieces
 extern field king_moves[64];
-// Player
+
+// IMPORTANT: sets current player
 extern bool is_player_white;
+
+// defines all bitfields: (0, white pieces), (1, black pieces), (2, king pieces), (3, queen pieces), (4, rook pieces),
+// (5, bishop pieces), (6, knight pieces), (7, pawn pieces)
 extern field bitfields[8];
+
+// boolean array to determine if black and white can castle left
 extern bool castle_left[2];
+
+// boolean array to determine if black and white can castle right
 extern bool castle_right[2];
-//castle
+
+// castling
+
+// field set to easily check if pieces are on correct squares
 extern field castle_black_left;
 extern field castle_black_right;
 extern field castle_black_right_check;
@@ -36,10 +74,13 @@ extern field castle_white_left;
 extern field castle_white_right;
 extern field castle_white_right_check;
 extern field castle_white_left_check;
+
 // illegal move
 #define illegal_move -9999.0f
-// Center Square
+
+// Center Square (King of the Hill square)
 #define koth 0x0000001818000000ull
+
 // Files
 #define a_file 0x8080808080808080ull
 #define b_file 0x4040404040404040ull
@@ -49,15 +90,17 @@ extern field castle_white_left_check;
 #define f_file 0x0404040404040404ull
 #define g_file 0x0202020202020202ull
 #define h_file 0x0101010101010101ull
-// rows
-#define row_1 0x00000000000000ffull
-#define row_2 0x000000000000ff00ull
-#define row_3 0x0000000000ff0000ull
-#define row_4 0x00000000ff000000ull
-#define row_5 0x000000ff00000000ull
-#define row_6 0x0000ff0000000000ull
-#define row_7 0x00ff000000000000ull
-#define row_8 0xff00000000000000ull 
+
+// ranks
+#define rank_1 0x00000000000000ffull
+#define rank_2 0x000000000000ff00ull
+#define rank_3 0x0000000000ff0000ull
+#define rank_4 0x00000000ff000000ull
+#define rank_5 0x000000ff00000000ull
+#define rank_6 0x0000ff0000000000ull
+#define rank_7 0x00ff000000000000ull
+#define rank_8 0xff00000000000000ull 
+
 // diagonals left corner
 #define diag_l_1 0x0000000000000080ull
 #define diag_l_2 0x0000000000008040ull
@@ -74,6 +117,7 @@ extern field castle_white_left_check;
 #define diag_l_13 0x0402010000000000ull
 #define diag_l_14 0x0201000000000000ull
 #define diag_l_15 0x0100000000000000ull
+
 // diagonals right corner
 #define diag_r_1 0x0000000000000001ull
 #define diag_r_2 0x0000000000000102ull
@@ -91,12 +135,9 @@ extern field castle_white_left_check;
 #define diag_r_14 0x4080000000000000ull
 #define diag_r_15 0x8000000000000000ull
 
-#define down_diag 0x8040201008040201;
-#define up_diag 0x102040810204080;
-#define horizontal 0xFF;
-#define vertical 0x8080808080808080;
 #define figure_count 8
 
+// enumerate pieces for easy access and better readability
 enum figure {
     black = 0,
     white = 1,

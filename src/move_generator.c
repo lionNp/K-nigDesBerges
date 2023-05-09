@@ -25,17 +25,17 @@ void generate_moves(field legal_moves[], field legal_moves_piece[], int piece_ar
             switch(current_piece)
             {
                 case pawn:
-                    legal_moves[x] = find_legal_pawn_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                    legal_moves[x] = find_legal_pawn_moves(single_piece_boards[i]);
                     counts[0] += get_piece_count(legal_moves[x]);
                     break;
 
                 case rook:
-                    legal_moves[x] = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                    legal_moves[x] = find_legal_rook_moves(single_piece_boards[i]);
                     counts[0] += get_piece_count(legal_moves[x]);
                     break;
 
                 case bishop:
-                    legal_moves[x] = find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                    legal_moves[x] = find_legal_diag_moves(single_piece_boards[i]);
                     counts[0] += get_piece_count(legal_moves[x]);
                     break;
 
@@ -46,8 +46,8 @@ void generate_moves(field legal_moves[], field legal_moves_piece[], int piece_ar
                     break;
 
                 case queen: ;
-                    field legal_moves_queen_1 = find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
-                    field legal_moves_queen_2 = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                    field legal_moves_queen_1 = find_legal_diag_moves(single_piece_boards[i]);
+                    field legal_moves_queen_2 = find_legal_rook_moves(single_piece_boards[i]);
                     legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
                     counts[0] += get_piece_count(legal_moves[x]);
                     break;

@@ -26,14 +26,6 @@ int main(){
     // test_add_to_board_coords();
     print_all_boards(bitfield_fig);
 
-    //print_board(down_diag);
-    //print_board(up_diag);
-    //print_board(horizontal);
-    //print_board(vertical);
-
-    /*for(int i=0; i<8; i++){
-        print_board(shift_diag_up(up_diag, i));
-    }*/
 
 
     /*//imagine we are white
