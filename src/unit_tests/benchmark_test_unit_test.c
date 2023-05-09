@@ -7,12 +7,13 @@
 
 void test_move_generator()
 {
-    import_gamestring(bitfields, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w");
-    int move_count = 0;
     int counts[2] = {0, 0};  
     int piece_array[16];
     field legal_moves[16];
     field legal_moves_piece[16];
+
+    //repeat from here
+    import_gamestring(bitfields, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w");
     stopwatch time = start_stopwatch();
     field t = 0UL;
     for(int i = 0; i < 1000; i++){
@@ -23,6 +24,23 @@ void test_move_generator()
     }
     t /= 1000;
     printf("%d pseudo legal moves took an avg of %lu us\n", counts[0], t);
+    assert(counts[0] == 20);
+    
+    /*
+    //repeat from here
+    import_gamestring(bitfields, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w");
+    stopwatch time = start_stopwatch();
+    field t = 0UL;
+    for(int i = 0; i < 1000; i++){
+        counts[0] = 0;
+        counts[1] = 0;
+        generate_moves(legal_moves, legal_moves_piece, piece_array, counts);
+        t = stop_stopwatch(time);
+    }
+    t /= 1000;
+    printf("%d pseudo legal moves took an avg of %lu us\n", counts[0], t);
+    assert(counts[0] == 20);
+    */
 }
 
 int main()
