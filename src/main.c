@@ -12,7 +12,7 @@
 
 int main() {
     
-    import_gamesting(bitfields, game_string);
+    import_gamestring(bitfields, game_string);
 
     // print game start
     /*
@@ -25,7 +25,7 @@ int main() {
     // set to true if game is finished
     bool gameover = false;
 
-    for(int p = 0; !gameover; p++) // TODO: to be moved into own file
+    for(int p = 0; p < 1; p++) // TODO: to be moved into own file
     { 
         // measure performance starting here
         stopwatch time = start_stopwatch();

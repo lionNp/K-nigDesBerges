@@ -162,22 +162,11 @@ field find_legal_pawn_moves(field position){
 
         //one forward
         moves |= (((position << 8) & (own_pieces | enemy_pieces)) ^ (position << 8));
-/*
-        //two forward (with magical optimisation to avoid saving and loading of registers in assembly)
-        moves |= ((((position << 16) & (own_pieces | enemy_pieces)) ^ (position << 16))
-                        ^ ((position >> 16) << 32))        // check ob y = 1: wenn, dann ist pos >> 16 0, also ist pos >> 16 << 32 auch 0 -> pos >> 16 != 0
-                        & ((((position << 8) & (own_pieces | enemy_pieces)) ^ (position << 8)) << 8) // check ob 1 vor frei ist
-        ;    
-*/
-        
-        //same as above, but with one more register loaded from memory
-        moves |= ((((position << 16) & (own_pieces | enemy_pieces)) ^ (position << 16))
-                        ^ (position & rank_2) << 16)       
-                        & ((((position << 8) & (own_pieces | enemy_pieces)) ^ (position << 8)) << 8);
 
-        /*if(y == 1 && ( ((position << 8) & (own_pieces | enemy_pieces)) == (field) 0) ){
-            moves = moves | (((position << 16) & (own_pieces | enemy_pieces)) ^ (position << 16));
-        }*/
+        //two forward
+        if((position & rank_2) && !((position << 16) & (own_pieces | enemy_pieces)))
+            moves |= (position << 16);      
+
         if(position & h_file)
             moves |= ((position << 9) & enemy_pieces);
         else if(position & a_file)
@@ -191,11 +180,11 @@ field find_legal_pawn_moves(field position){
         //one forward
         moves |= (((position >> 8) & (own_pieces | enemy_pieces)) ^ (position >> 8));
 
-        //two forward (with magical optimisation to avoid saving and loading of registers in assembly)
-        moves |= ((((position >> 16) & (own_pieces | enemy_pieces)) ^ (position >> 16))
-                        ^ ((position & rank_7) >> 16))        // check ob y = 1: wenn, dann ist pos >> 16 0, also ist pos >> 16 << 32 auch 0 -> pos >> 16 != 0
-                        & ((((position >> 8) & (own_pieces | enemy_pieces)) ^ (position >> 8)) >> 8); // check ob 1 vor frei ist  
-        
+        //two forward
+        if((position & rank_7) && !((position >> 16) & (own_pieces | enemy_pieces))){
+            moves |= (position >> 16); 
+        }
+              
         /*if(y == 6 && ( ((position >> 8) & (own_pieces | enemy_pieces)) == (field) 0) ){
             moves = moves | (((position >> 16) & (own_pieces | enemy_pieces)) ^ (position >> 16));
         }*/

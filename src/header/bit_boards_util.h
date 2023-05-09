@@ -4,10 +4,13 @@
 #include "common.h"
 
 // import a FEN string and populate bitboards
-void import_gamesting(field boards[], char gamestring[]);
+void import_gamestring(field boards[], char gamestring[]);
 
 // print a random bitboard
 void print_board(field board);
+
+// print a random move bitboard
+void print_move_board(field board);
 
 // print current chessboard
 void print_full_board();

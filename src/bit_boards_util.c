@@ -56,7 +56,7 @@ bool game_finished(int total_legal_moves){
     return false;
 }
 
-void import_gamesting(field bitfields[], char gamestring[]) 
+void import_gamestring(field bitfields[], char gamestring[]) 
 {
     //initialise empty boards
     for(int i = 0; i < figure_count; i++) {
@@ -159,9 +159,12 @@ void print_board(field board){
     for(int y = 7; y >= 0; y--){
         for(int x = 7; x >= 0; x--){
             field bit = 1UL << (x + 8*y);
-            if((bit & board)){
-                for(int i = 2; i < 8; i++){
-                    if((bit & bitfields[i])){
+            if((bit & board))
+            {
+                for(int i = 2; i < 8; i++)
+                {
+                    if((bit & bitfields[i]))
+                    {
                         switch(i){
                             case 2:
                                 printf("%c ", 'k');
@@ -185,6 +188,20 @@ void print_board(field board){
                     }
                 }
             }
+            else
+                printf("%d ", 0);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+void print_move_board(field board){
+    for(int y = 7; y >= 0; y--){
+        for(int x = 7; x >= 0; x--){
+            field bit = 1UL << (x + 8*y);
+            if((bit & board))
+                printf("%d ", 1);
             else
                 printf("%d ", 0);
         }

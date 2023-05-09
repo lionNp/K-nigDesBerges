@@ -9,7 +9,7 @@ int main(){
     field bitfield_fig[figure_count];
     char feld_string[] = "rn1qkbnr/pppppppp/8/b7/3PP3/8/PPP2PPP/RNBQKBNR";
     //"1n1rk1n1/pp1ppppp/b2q2b1/8/2p5/3K3r/PPPPPPPP/RNBQ1BNR";
-    import_gamesting(bitfield_fig, feld_string);
+    import_gamestring(bitfield_fig, feld_string);
 
     //get single pieces
     //field board_to_split = (bitfield_fig[bishop] & bitfield_fig[white]) | bitfield_fig[rook] | bitfield_fig[knight];

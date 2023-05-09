@@ -37,7 +37,7 @@ bool test_get_single_piece_boards()
     start_unit_test("get_single_piece_boards");
 
     field bitboards[figure_count];
-    import_gamesting(bitboards, "8/8/2pp1p2/8/8/8/8/8");
+    import_gamestring(bitboards, "8/8/2pp1p2/8/8/8/8/8");
 
     int piece_count = 3;
     field all_black_pawns = bitboards[!is_player_white] & bitboards[pawn];
