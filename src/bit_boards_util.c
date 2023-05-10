@@ -145,7 +145,6 @@ void import_gamestring(field bitfields[], char gamestring[])
                 i--;
                 break;
         }
-
         i++;
     }
     iterate++;
@@ -165,8 +164,6 @@ void import_gamestring(field bitfields[], char gamestring[])
     castle_left[0] = false;
     for(int i = iterate; i < str_len;i++){
         char c = gamestring[i];
-        if(c == ' ')
-            break;
         switch(c){
             default:
                 break;
@@ -183,6 +180,8 @@ void import_gamestring(field bitfields[], char gamestring[])
                 castle_left[0] = true;
                 break;
         }
+        if(c == ' ')
+            break;
     }
 }
 /*
