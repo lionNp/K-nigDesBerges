@@ -7,17 +7,6 @@
 float evaluation(field move_to, field move_from, int piece)
 {
     float rating = 0.0f;
-
-    // check if king is in check
-    field king_position = (piece == king) 
-        ? move_to
-        : bitfields[is_player_white] & bitfields[king];
-
-    field king_is_in_check = in_check(king_position);
-    
-    if(king_is_in_check)
-        return illegal_move;
-
     // evaluate move
     int pos_to = log2(move_to);
     int pos_from = log2(move_from);

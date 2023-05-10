@@ -25,7 +25,7 @@ void test_move_generator()
     }
     t = stop_stopwatch(time);
     t /= 1000;
-    printf("%d legal moves took an avg of %lu us\n \n", counts[0], t);
+    printf("%d legal moves took an avg of %lu μs\n \n", counts[0], t);
     //assert(counts[0] == 20);
 
     //repeat from here
@@ -39,11 +39,11 @@ void test_move_generator()
     }
     t = stop_stopwatch(time);
     t /= 1000;
-    printf("%d legal moves took an avg of %lu us\n \n", counts[0], t);
+    printf("%d legal moves took an avg of %lu μs\n \n", counts[0], t);
     //assert(counts[0] == 43);
 
     //repeat from here
-    import_gamestring(bitfields, "8/5p2/2PP2k1/2p1P3/5K1P/1R2n3/p7/8 w - - 0 1");
+    import_gamestring(bitfields, "4k2r/r2n1pbp/3B2p1/p1p3P1/2p4P/7B/PP2K3/1R4NR w k");
     time = start_stopwatch();
     t = 0UL;
     for(int i = 0; i < 1000; i++){
@@ -53,7 +53,7 @@ void test_move_generator()
     }
     t = stop_stopwatch(time);
     t /= 1000;
-    printf("%d legal moves took an avg of %lu us\n \n", counts[0], t);
+    printf("%d legal moves took an avg of %lu μs\n \n", counts[0], t);
     //assert(counts[0] == 31);
 
     //repeat from here
@@ -67,7 +67,7 @@ void test_move_generator()
     }
     t = stop_stopwatch(time);
     t /= 1000;
-    printf("%d legal moves took an avg of %lu us\n \n", counts[0], t);
+    printf("%d legal moves took an avg of %lu μs\n \n", counts[0], t);
     //assert(counts[0] == 45);
 
     //repeat from here
@@ -81,7 +81,7 @@ void test_move_generator()
     }
     t = stop_stopwatch(time);
     t /= 1000;
-    printf("%d legal moves took an avg of %lu us\n \n", counts[0], t);
+    printf("%d legal moves took an avg of %lu μs\n \n", counts[0], t);
     //assert(counts[0] == 45);
 
     
@@ -96,7 +96,7 @@ void test_move_generator()
     }
     t = stop_stopwatch(time);
     t /= 1000;
-    printf("%d legal moves took an avg of %lu us\n \n", counts[0], t);
+    printf("%d legal moves took an avg of %lu μs\n \n", counts[0], t);
     //assert(counts[0] == 42);
 
     //repeat from here
@@ -110,7 +110,7 @@ void test_move_generator()
     }
     t = stop_stopwatch(time);
     t /= 1000;
-    printf("%d legal moves took an avg of %lu us\n \n", counts[0], t);
+    printf("%d legal moves took an avg of %lu μs\n \n", counts[0], t);
     //assert(counts[0] == 42);
 }
 

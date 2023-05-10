@@ -24,11 +24,12 @@ int main() {
     */
     // set to true if game is finished
     bool gameover = false;
-
+    stopwatch time = start_stopwatch();
+    int move_counter = 0;
     for(int p = 0; !gameover; p++) // TODO: to be moved into own file
     { 
         // measure performance starting here
-        stopwatch time = start_stopwatch();
+        
 
         //counts[0]: total move count. counts[1]: total piece count (player)
         int counts[2] = {0, 0};  
@@ -99,25 +100,27 @@ int main() {
             idx = max_rating_indices[rand() % non_zero-1];
         // make move
         make_move(piece_index[idx], moves_from[idx], moves_to[idx], captured);
+        move_counter++;
         hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
         //unmake_move(piece_index[max_rating_index], moves[max_rating_index], moves[max_rating_index + 1], captured);
 
         // print results
         field t = stop_stopwatch(time);
-        printf("Of all %d moves %d were legal moves and took %lu us\n", counts[0], total_legal_moves, t);
+        //printf("Of all %d moves %d were legal moves and took %lu us\n", counts[0], total_legal_moves, t);
         /*
         printf("Best move for %s:\n", is_player_white ? "white" : "black");
         print_board(moves_from[max_rating_index]);
         printf("to:\n");
         print_board(moves_to[max_rating_index]);
         */
-        printf("%s move:\n", is_player_white ? "white" : "black");
-        print_full_board();
+        //printf("%s move:\n", is_player_white ? "white" : "black");
         //switch sides
         gameover = game_finished(total_legal_moves); // TODO GAME REPETITION DRAW (every time when a piece is taken -> reset table)
         if(gameover){
+            field t = stop_stopwatch(time);
             printf("Game Over\n");
             print_full_board();
+            printf("Match with %d moves took %lu us\n", move_counter, t);
             break;
         }
         is_player_white = 1 - is_player_white;
