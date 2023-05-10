@@ -120,7 +120,7 @@ int main() {
             field t = stop_stopwatch(time);
             printf("Game Over\n");
             print_full_board();
-            printf("Match with %d moves took %lu us\n", move_counter, t);
+            printf("Match with %d moves took %luμs\n", move_counter, t);
             break;
         }
         is_player_white = 1 - is_player_white;

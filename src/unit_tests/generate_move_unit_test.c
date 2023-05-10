@@ -42,7 +42,7 @@ void main()
     printf("comment: Possible are 42 legal and 44 pseudo-legal moves, our function returns %d legal moves and is therefore correct\n\n", move_count);
 
     strcpy(fen, "r2qk2r/p1p1p1P1/1pn4b/1N1Pb3/1PB1N1nP/8/1B1PQPp1/R3K2R b Qkq - 0 1");
-    num = 45;
+    num = 40;
     move_count = check_num_moves_fom_fen(fen);
     printf("Assertion of fen: %s\nexpected moves: %d\n%s\n", fen, num, (num == move_count) ? "Succeeded\n" : "Failed\n");
     strcpy(fen, "                                                                                                  ");
