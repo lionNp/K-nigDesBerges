@@ -72,7 +72,8 @@ void import_gamestring(field bitfields[], char gamestring[])
     for(; iterate < str_len; iterate++) 
     {
         char c = gamestring[iterate];
-
+        if(c == ' ')
+            break;
         switch(c) 
         {
             case 'r': 
@@ -147,9 +148,15 @@ void import_gamestring(field bitfields[], char gamestring[])
 
         i++;
     }
-
     iterate++;
-    if(gamestring[iterate] == 'b') is_player_white = 0;
+    if(gamestring[iterate] == 'b'){
+        printf("set player black\n");
+        is_player_white = 0;
+    } 
+    else if(gamestring[iterate] == 'w'){
+        is_player_white = 1;
+        printf("set player white\n");
+    } 
 }
 /*
     bits will be printied from top left (highest value bit)
