@@ -100,7 +100,7 @@ void generate_moves(field legal_moves[], field legal_moves_piece[], int piece_ar
     }
 }
 
-field find_legal_moves_for_piece(field piece_pos, int piece_type)
+field find_pseudo_moves_for_piece(field piece_pos, int piece_type)
 {
     switch(piece_type)
     {
@@ -165,11 +165,11 @@ typedef struct s_piece_info
 {
     int piece;
     field piece_pos;
-    field legal_moves;
+    field pseudo_moves;
     int num_moves;
-} piece_info;
+} piece_move_info;
 
-int generate_pseudo_moves(piece_info* results, int* total_piece_count)
+int generate_pseudo_moves(piece_move_info* results, int* total_piece_count)
 {
     int total_move_count = 0;
     int res_index = 0;
@@ -187,12 +187,12 @@ int generate_pseudo_moves(piece_info* results, int* total_piece_count)
         for(int i = 0; i < piece_count; i++)
         {
             field current_piece = single_piece_boards[i];
-            field legal_moves = find_legal_moves_for_piece(current_piece, piece_type);
-            int num_moves = get_piece_count(legal_moves);
+            field pseudo_moves = find_pseudo_moves_for_piece(current_piece, piece_type);
+            int num_moves = get_piece_count(pseudo_moves);
             
             results[res_index].piece = piece_type;
             results[res_index].piece_pos = current_piece;
-            results[res_index].legal_moves = legal_moves;
+            results[res_index].pseudo_moves = pseudo_moves;
             results[res_index].num_moves = num_moves;
 
             total_move_count += num_moves;
