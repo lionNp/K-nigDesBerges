@@ -164,7 +164,7 @@ field find_legal_pawn_moves(field position){
         moves |= (((position << 8) & (own_pieces | enemy_pieces)) ^ (position << 8) );
 
         //two forward
-        if((position & rank_2) && !((position << 16) & (own_pieces | enemy_pieces)) && !((position >> 8) & (own_pieces | enemy_pieces)))
+        if((position & rank_2) && !(((position << 16) ^ (position << 8)) & (own_pieces | enemy_pieces)))
             moves |= (position << 16);      
 
         if(position & h_file)
@@ -181,9 +181,8 @@ field find_legal_pawn_moves(field position){
         moves |= (((position >> 8) & (own_pieces | enemy_pieces)) ^ (position >> 8));
 
         //two forward
-        if((position & rank_7) && !((position >> 16) & (own_pieces | enemy_pieces)) && !((position >> 8) & (own_pieces | enemy_pieces))){
-            moves |= (position >> 16); 
-        }
+        if((position & rank_7) && !(((position >> 16) ^ (position >> 8)) & (own_pieces | enemy_pieces)))
+            moves |= (position >> 16);
               
         /*if(y == 6 && ( ((position >> 8) & (own_pieces | enemy_pieces)) == (field) 0) ){
             moves = moves | (((position >> 16) & (own_pieces | enemy_pieces)) ^ (position >> 16));
