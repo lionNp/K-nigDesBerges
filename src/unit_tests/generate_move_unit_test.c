@@ -21,7 +21,7 @@ bool check_num_moves_fom_fen(char* fen, int num)
 
 void main()
 {
-    char fen[100] = "";
+    char fen[10] = "  ";
     int num;
 
     strcpy(fen, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w");

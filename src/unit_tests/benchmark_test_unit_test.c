@@ -65,7 +65,7 @@ void test_move_generator_legal()
     field legal_moves_piece[16];
 
     field attacking_moves[16];
-    generate_attacking_moves(attacking_moves);
+    generate_attack_squares(attacking_moves);
     field danger = 0UL;
     for(int i = 0; i < 16; i++)
         danger |= attacking_moves[i];
