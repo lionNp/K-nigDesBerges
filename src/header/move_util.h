@@ -17,8 +17,6 @@ field find_rook_pins(field own_pieces, field enemy_pieces, field position);
 // find all possible vertical/horizontal and diagonal moves
 field find_legal_rook_moves(field own_pieces, field enemy_pieces, field position);
 field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position);
-field find_rook_pins(field own_pieces, field enemy_pieces, field position);
-field find_bishop_pins(field own_pieces, field enemy_pieces, field position);
 
 // initialize move_masks || currently no longer used
 void init_knight_moves(field knight_moves[]);

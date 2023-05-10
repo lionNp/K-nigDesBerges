@@ -181,6 +181,7 @@ field find_bishop_pins(field own_pieces, field enemy_pieces, field position){
             own_count++;
         if(((position << (9*i)) & (enemy_pieces & (bitfields[bishop] | bitfields[queen])))) {
             pin = 1;
+            
             break;
         }
     }
@@ -191,7 +192,6 @@ field find_bishop_pins(field own_pieces, field enemy_pieces, field position){
         moves_old = moves;
     }
     own_count = 0;    
-
     //check up right
     max_steps = x;
     if(7-y < x) max_steps = 7-y;
@@ -223,7 +223,6 @@ field find_bishop_pins(field own_pieces, field enemy_pieces, field position){
             break;
         }  
     }
-
     if(!pin || own_count != 1)
         moves = moves_old;
     else{

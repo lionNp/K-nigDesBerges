@@ -109,19 +109,36 @@ void test_move_generator_legal()
     
     //repeat from here
     import_gamestring(bitfields, "8/8/4r3/b7/1P5b/4P3/r4Q2/rRN1K3 w");
+    
+    
+    stopwatch time = start_stopwatch();
+    field t = 0UL;
+    field king_position = bitfields[is_player_white] & bitfields[king];
+    field king_pinned = pinned_piece_check(king_position);
+
+    field king_pin_l_diag = 0UL;
+    field king_pin_r_diag = 0UL;
+    field king_pin_hori = 0UL;
+    field king_pin_vert = 0UL;
+
     field attacked_squares[16];
     for(int i = 0; i < 16; i++)
         attacked_squares[i] = 0UL;
     generate_attacked_squares(attacked_squares);
     field danger = 0UL;
-    for(int i = 0; i < 16; i++)
+    for(int i = 0; i < 16; i++){
+        if(king_position & diag_l[i])
+            king_pin_l_diag |= diag_l[i] & king_pinned;
+        if(king_position & diag_r[i])
+            king_pin_r_diag |= diag_r[i] & king_pinned;
         danger |= attacked_squares[i];
-    field king_position = bitfields[is_player_white] & bitfields[king];
-    field king_pinned = pinned_piece_check(king_position);
-    print_move_board(king_pinned);
-    print_move_board(danger);
-    stopwatch time = start_stopwatch();
-    field t = 0UL;
+    }
+    for(int i = 0; i < 8; i++){
+        if(king_position & ranks[i])
+            king_pin_hori |= ranks[i] & king_pinned;
+        if(king_position & files[i])
+            king_pin_vert |= files[i] & king_pinned;
+    }
     int move_count = 0;
     for(int i = 0; i < 1000; i++){
         counts[0] = 0;
@@ -129,25 +146,29 @@ void test_move_generator_legal()
         generate_moves(legal_moves, legal_moves_piece, piece_array, counts);
         legal_moves[0] ^= legal_moves[0] & danger;
         move_count = 0;
-        for(int k = 0; k < 16; k++){
-            if(legal_moves_piece[k] & king_pinned){
-                legal_moves[k] &= king_pinned;
+        for(int k = 0; k < count[1]; k++){
+            for(int x = 0; x < 4; x++){
+                if(legal_moves_piece[k] & king_pin_l_diag)
+                    legal_moves[k] &= king_pin_l_diag;
+                else if(legal_moves_piece[k] & king_pin_r_diag)
+                    legal_moves[k] &= king_pin_r_diag;
+                else if(legal_moves_piece[k] & king_pin_hori)
+                    legal_moves[k] &= king_pin_hori;
+                else if(legal_moves_piece[k] & king_pin_vert)
+                    legal_moves[k] &= king_pin_vert;
             }
             move_count += get_piece_count(legal_moves[k]);
         }
     }
-    
     t = stop_stopwatch(time);
     t /= 1000;
-    for(int i = 0; i < 16; i++)
-        print_move_board(legal_moves[i]);
     printf("%d pseudo legal moves took an avg of %lu us\n \n", counts[0], t);
     printf("%d legal moves took an avg of %lu us\n \n", move_count, t);
-    assert(counts[0] == 20);
+    assert(move_count == 13);
 }
 
 int main(){
-    test_move_generator();
-    //test_move_generator_legal();
+    //test_move_generator();
+    test_move_generator_legal();
     return 0;
 }
