@@ -156,7 +156,35 @@ void import_gamestring(field bitfields[], char gamestring[])
     else if(gamestring[iterate] == 'w'){
         is_player_white = 1;
         printf("set player white\n");
-    } 
+    }
+    iterate++;
+    castle_right[1] = false;
+    castle_left[1] = false;
+    castle_right[0] = false;
+    castle_left[0] = false;
+    if(iterate < str_len){
+        for(int i = iterate;;i++){
+            char c = gamestring[i];
+            if(c == ' ')
+                break;
+            switch(c){
+                default:
+                    break;
+                case 'K':
+                    castle_right[1] = true;
+                    break;
+                case 'Q':
+                    castle_left[1] = true;
+                    break;
+                case 'k':
+                    castle_right[0] = true;
+                    break;
+                case 'q':
+                    castle_left[0] = true;
+                    break;
+            }
+        }
+    }
 }
 /*
     bits will be printied from top left (highest value bit)
