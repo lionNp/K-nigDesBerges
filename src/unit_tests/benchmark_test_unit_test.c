@@ -42,7 +42,7 @@ void test_move_generator()
     assert(counts[0] == 43);
 
     //repeat from here
-    import_gamestring(bitfields, "r1bqk1nr/ppp2ppp/2n5/3pp3/1bB1P3/5N2/PPPP1PPP/RNBQK2R w");
+    import_gamestring(bitfields, "r1bqk1nr/ppp2ppp/2n5/3pp3/1bB1P3/5N2/PPPP1PPP/RNBQK2R w KQkq");
     time = start_stopwatch();
     t = 0UL;
     for(int i = 0; i < 1000; i++){
@@ -50,6 +50,7 @@ void test_move_generator()
         counts[1] = 0;
         generate_moves(legal_moves, legal_moves_piece, piece_array, counts);
     }
+    print_move_board(legal_moves[0]);
     t = stop_stopwatch(time);
     t /= 1000;
     printf("%d pseudo legal moves took an avg of %lu us\n \n", counts[0], t);
@@ -115,6 +116,6 @@ void test_move_generator_legal()
 
 int main(){
     test_move_generator();
-    test_move_generator_legal();
+    //test_move_generator_legal();
     return 0;
 }
