@@ -169,7 +169,7 @@ typedef struct s_piece_info
     int num_moves;
 } piece_info;
 
-int generate_legal_moves(piece_info* results, int* total_piece_count)
+int generate_pseudo_moves(piece_info* results, int* total_piece_count)
 {
     int total_move_count = 0;
     int res_index = 0;
