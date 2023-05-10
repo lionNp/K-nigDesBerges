@@ -165,7 +165,6 @@ void import_gamestring(field bitfields[], char gamestring[])
     castle_left[0] = false;
     for(int i = iterate; i < str_len;i++){
         char c = gamestring[i];
-        printf("%c\n", c);
         if(c == ' ')
             break;
         switch(c){
