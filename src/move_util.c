@@ -107,10 +107,10 @@ field in_check(field position){
     field check_from = (field) 0;
     
     //check for bishop or queen
-    check_from |= (find_legal_diag_moves(position) & ((bitfields[bishop] | bitfields[queen]) & bitfields[!is_player_white]));
+    check_from |= (find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], position) & ((bitfields[bishop] | bitfields[queen]) & bitfields[!is_player_white]));
 
     //check for rook or queen
-    check_from |= (find_legal_rook_moves(position) & ((bitfields[rook] | bitfields[queen]) & bitfields[!is_player_white]));
+    check_from |= (find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], position) & ((bitfields[rook] | bitfields[queen]) & bitfields[!is_player_white]));
 
     //check for knight
     int bit = log2(position);
@@ -146,10 +146,8 @@ field in_check(field position){
 // get legal moves
 //
 //
-field find_legal_pawn_moves(field position){
+field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position){
     field moves = (field) 0;
-    field own_pieces = bitfields[is_player_white];
-    field enemy_pieces = bitfields[!is_player_white];
 
     int bit_num = log2(position);
 
@@ -199,10 +197,39 @@ field find_legal_pawn_moves(field position){
     return moves;
 }
 
-field find_legal_rook_moves(field position){
+field find_legal_pawn_attacks(field own_pieces, field enemy_pieces, field position){
     field moves = (field) 0;
-    field own_pieces = bitfields[is_player_white];
-    field enemy_pieces = bitfields[!is_player_white];
+
+    int bit_num = log2(position);
+
+    int x = bit_num % 8;
+    int y = bit_num / 8;
+
+    if(is_player_white){
+        if(position & h_file)
+            moves |= ((position << 9) & enemy_pieces);
+        else if(position & a_file)
+            moves |= ((position << 7) & enemy_pieces);
+        else{
+            moves |= ((position << 7) & enemy_pieces);
+            moves |= ((position << 9) & enemy_pieces);
+        }       
+    }
+    else{
+        if(position & h_file)
+            moves |= ((position >> 7) & enemy_pieces);
+        else if(position & a_file)
+            moves |= ((position >> 9) & enemy_pieces);
+        else {
+            moves |= ((position >> 7) & enemy_pieces);
+            moves |= ((position >> 9) & enemy_pieces);
+        }
+    }
+    return moves;
+}
+
+field find_legal_rook_moves(field own_pieces, field enemy_pieces, field position){
+    field moves = (field) 0;
 
     int bit_num = log2(position);
 
@@ -254,10 +281,8 @@ field find_legal_rook_moves(field position){
     return moves;
 }
 
-field find_legal_diag_moves(field position){
+field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position){
     field moves = (field) 0;
-    field own_pieces = bitfields[is_player_white];
-    field enemy_pieces = bitfields[!is_player_white];
 
     int bit_num = 1;
     for(;bit_num < 64; bit_num++){
