@@ -65,7 +65,7 @@ void import_gamestring(field bitfields[], char gamestring[])
 
     int str_len = strlen(gamestring);
 
-    printf("Gamestring: %s\n", gamestring);
+    // printf("Gamestring: %s\n", gamestring);
 
     int i = 0;
     int iterate = 0;
@@ -150,12 +150,12 @@ void import_gamestring(field bitfields[], char gamestring[])
     }
     iterate++;
     if(gamestring[iterate] == 'b'){
-        printf("set player black\n");
+        // printf("set player black\n");
         is_player_white = 0;
     } 
     else if(gamestring[iterate] == 'w'){
         is_player_white = 1;
-        printf("set player white\n");
+        // printf("set player white\n");
     }
     iterate++;
     iterate++;
@@ -165,7 +165,7 @@ void import_gamestring(field bitfields[], char gamestring[])
     castle_left[0] = false;
     for(int i = iterate; i < str_len;i++){
         char c = gamestring[i];
-        printf("%c\n", c);
+        // printf("%c\n", c);
         if(c == ' ')
             break;
         switch(c){

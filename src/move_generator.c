@@ -57,6 +57,7 @@ void generate_moves(field legal_moves[], field legal_moves_piece[], int piece_ar
                     legal_moves[x] = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[is_player_white]); 
                     counts[0] += get_piece_count(legal_moves[x]);
             }
+            //print_move_board(legal_moves[x]);
             x++;
         }
     }
