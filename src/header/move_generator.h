@@ -9,5 +9,6 @@
 // an empty int array (counts) saves all possible pseudolegal moves and the number of pieces
 void generate_moves(field legal_moves[], field legal_moves_piece[], int piece_array[], int counts[]);
 void generate_attacked_squares(field attacked_squares[]);
+field filter_pin_moves(field pinned, field piece, field moves, field position);
 
 #endif

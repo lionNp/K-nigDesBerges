@@ -148,7 +148,6 @@ field in_check(field position){
 //
 field pinned_piece_check(field position){
     field pinned = 0UL;
-    int bit = log2(position);
     //check for bishop or queen
     pinned |= find_bishop_pins(bitfields[is_player_white], bitfields[!is_player_white], position);
 

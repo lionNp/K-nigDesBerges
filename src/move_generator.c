@@ -5,63 +5,91 @@
 
 void generate_moves(field legal_moves[], field legal_moves_piece[], int piece_array[], int counts[])
 {
+    field king_position = bitfields[is_player_white] & bitfields[king];
+    field king_pinned = pinned_piece_check(king_position);
+    field pin_l_diag = 0UL;
+    field pin_r_diag = 0UL;
+    field pin_hori = 0UL;
+    field pin_vert = 0UL;
+    field attacked_squares[16];
+    field danger = 0UL;
     int bit_pos = 0;
     int x = 0;
+    for(int i = 0; i < 16; i++)
+        attacked_squares[i] = 0UL;
+    generate_attacked_squares(attacked_squares);
+    
+    for(int i = 0; i < 16; i++){
+        if(king_position & diag_l[i])
+            pin_l_diag |= diag_l[i] & king_pinned;
+        if(king_position & diag_r[i])
+            pin_r_diag |= diag_r[i] & king_pinned;
+        danger |= attacked_squares[i];
+    }
+    for(int i = 0; i < 8; i++){
+        if(king_position & ranks[i])
+            pin_hori |= ranks[i] & king_pinned;
+        if(king_position & files[i])
+            pin_vert |= files[i] & king_pinned;
+    }
 
     for(int current_piece = king; current_piece <= pawn; current_piece++)
     {
         field player_piece_board = bitfields[is_player_white] & bitfields[current_piece];
         int piece_count = get_piece_count(player_piece_board);
-
         field single_piece_boards[piece_count];
         get_single_piece_boards(player_piece_board, single_piece_boards, piece_count);
-
         for(int i = 0; i < piece_count; i++)
         {
             counts[1]++;
             piece_array[x] = current_piece;
             legal_moves_piece[x] = single_piece_boards[i];
-
             switch(current_piece)
             {
                 case pawn:
                     legal_moves[x] = find_legal_pawn_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
-                    counts[0] += get_piece_count(legal_moves[x]);
                     break;
 
                 case rook:
                     legal_moves[x] = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
-                    counts[0] += get_piece_count(legal_moves[x]);
                     break;
 
                 case bishop:
                     legal_moves[x] = find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
-                    counts[0] += get_piece_count(legal_moves[x]);
                     break;
 
                 case knight:
                     bit_pos = log2(single_piece_boards[i]);
                     legal_moves[x] = knight_moves[bit_pos] ^ (knight_moves[bit_pos] & bitfields[is_player_white]);
-                    counts[0] += get_piece_count(legal_moves[x]);
                     break;
 
                 case queen: ;
                     field legal_moves_queen_1 = find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
                     field legal_moves_queen_2 = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
                     legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
-                    counts[0] += get_piece_count(legal_moves[x]);
                     break;
                     
                 case king:
                     bit_pos = log2(single_piece_boards[i]);
                     legal_moves[x] = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[is_player_white]); 
-                    counts[0] += get_piece_count(legal_moves[x]);
+                    legal_moves[x] ^= legal_moves[x] & danger;
             }
+            for(int x = 0; x < 4; x++){
+                if(legal_moves_piece[x] & pin_l_diag)
+                    legal_moves[x] &= pin_l_diag;
+                else if(legal_moves_piece[x] & pin_r_diag)
+                    legal_moves[x] &= pin_r_diag;
+                else if(legal_moves_piece[x] & pin_hori)
+                    legal_moves[x] &= pin_hori;
+                else if(legal_moves_piece[x] & pin_vert)
+                    legal_moves[x] &= pin_vert;
+            }
+            counts[0] += get_piece_count(legal_moves[x]);
             x++;
         }
     }
-    field rooks = 0UL;
     //castle check
+    field rooks = 0UL;
     if(is_player_white){
         if(castle_left[is_player_white]){
             rooks = bitfields[is_player_white] & castle_white_left_check;
@@ -98,6 +126,37 @@ void generate_moves(field legal_moves[], field legal_moves_piece[], int piece_ar
             }
         }
     }
+}
+
+// pinned example: field king_pinned = pinned_piece_check(king_position);
+field filter_pin_moves(field pinned, field piece, field moves, field position){
+    field pin_l_diag = 0UL;
+    field pin_r_diag = 0UL;
+    field pin_hori = 0UL;
+    field pin_vert = 0UL;
+    for(int i = 0; i < 16; i++){
+        if(position & diag_l[i])
+            pin_l_diag |= diag_l[i] & pinned;
+        if(position & diag_r[i])
+            pin_r_diag |= diag_r[i] & pinned;
+    }
+    for(int i = 0; i < 8; i++){
+        if(position & ranks[i])
+            pin_hori |= ranks[i] & pinned;
+        if(position & files[i])
+            pin_vert |= files[i] & pinned;
+    }
+    for(int x = 0; x < 4; x++){
+        if(piece & pin_l_diag)
+            moves &= pin_l_diag;
+        else if(piece & pin_r_diag)
+            moves &= pin_r_diag;
+        else if(piece & pin_hori)
+            moves &= pin_hori;
+        else if(piece & pin_vert)
+            moves &= pin_vert;
+    }
+    return moves;
 }
 
 
