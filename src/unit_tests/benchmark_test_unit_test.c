@@ -122,24 +122,32 @@ void test_move_generator_legal()
     print_move_board(danger);
     stopwatch time = start_stopwatch();
     field t = 0UL;
+    int move_count = 0;
     for(int i = 0; i < 1000; i++){
         counts[0] = 0;
         counts[1] = 0;
         generate_moves(legal_moves, legal_moves_piece, piece_array, counts);
         legal_moves[0] ^= legal_moves[0] & danger;
-        //for(int k = 0; k < 16; k++){
-        //    if(legal_moves_piece[k] & king_pinned)
-        //}
+        move_count = 0;
+        for(int k = 0; k < 16; k++){
+            if(legal_moves_piece[k] & king_pinned){
+                legal_moves[k] &= king_pinned;
+            }
+            move_count += get_piece_count(legal_moves[k]);
+        }
     }
+    
     t = stop_stopwatch(time);
     t /= 1000;
-    print_move_board(legal_moves[0]);
+    for(int i = 0; i < 16; i++)
+        print_move_board(legal_moves[i]);
     printf("%d pseudo legal moves took an avg of %lu us\n \n", counts[0], t);
+    printf("%d legal moves took an avg of %lu us\n \n", move_count, t);
     assert(counts[0] == 20);
 }
 
 int main(){
-    //test_move_generator();
-    test_move_generator_legal();
+    test_move_generator();
+    //test_move_generator_legal();
     return 0;
 }
