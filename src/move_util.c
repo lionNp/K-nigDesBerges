@@ -161,10 +161,10 @@ field find_legal_pawn_moves(field position){
         //might be smarter and faster, might be shit (^ is bitwise xor)
 
         //one forward
-        moves |= (((position << 8) & (own_pieces | enemy_pieces)) ^ (position << 8));
+        moves |= (((position << 8) & (own_pieces | enemy_pieces)) ^ (position << 8) );
 
         //two forward
-        if((position & rank_2) && !((position << 16) & (own_pieces | enemy_pieces)))
+        if((position & rank_2) && !((position << 16) & (own_pieces | enemy_pieces)) && !((position >> 8) & (own_pieces | enemy_pieces)))
             moves |= (position << 16);      
 
         if(position & h_file)
@@ -181,7 +181,7 @@ field find_legal_pawn_moves(field position){
         moves |= (((position >> 8) & (own_pieces | enemy_pieces)) ^ (position >> 8));
 
         //two forward
-        if((position & rank_7) && !((position >> 16) & (own_pieces | enemy_pieces))){
+        if((position & rank_7) && !((position >> 16) & (own_pieces | enemy_pieces)) && !((position >> 8) & (own_pieces | enemy_pieces))){
             moves |= (position >> 16); 
         }
               
