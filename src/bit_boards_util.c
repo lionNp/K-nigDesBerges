@@ -148,14 +148,10 @@ void import_gamestring(field bitfields[], char gamestring[])
         i++;
     }
     iterate++;
-    if(gamestring[iterate] == 'b'){
-        printf("set player black\n");
+    if(gamestring[iterate] == 'b')
         is_player_white = 0;
-    } 
-    else if(gamestring[iterate] == 'w'){
+    else if(gamestring[iterate] == 'w')
         is_player_white = 1;
-        printf("set player white\n");
-    }
     iterate++;
     iterate++;
     castle_right[1] = false;
