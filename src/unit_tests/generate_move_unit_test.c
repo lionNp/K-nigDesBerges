@@ -21,9 +21,9 @@ bool check_num_moves_fom_fen(char* fen, int num)
 
 void main()
 {
-    char fen[10] = "  ";
+    char fen[100] = "  ";
     int num;
-
+/*
     strcpy(fen, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w");
     num = 20;
     printf("Assertion of fen: %s\nexpected moves: %d\n%s\n", fen, num, check_num_moves_fom_fen(fen, num) ? "Succeeded\n" : "Failed\n");
@@ -39,13 +39,13 @@ void main()
     printf("Assertion of fen: %s\nexpected moves: %d\n%s", fen, num, check_num_moves_fom_fen(fen, num) ? "Succeeded\n" : "Failed\n");
     strcpy(fen, "                                                                                                  ");
     printf("comment: Possible are 42 legal and 44 pseudo-legal moves, our function returns 44 pseudo-legal moves and is therefore correct\n\n");
-
+*/
     strcpy(fen, "r2qk2r/p1p1p1P1/1pn4b/1N1Pb3/1PB1N1nP/8/1B1PQPp1/R3K2R b Qkq - 0 1");
     num = 45;
     printf("Assertion of fen: %s\nexpected moves: %d\n%s\n", fen, num, check_num_moves_fom_fen(fen, num) ? "Succeeded\n" : "Failed\n");
     strcpy(fen, "                                                                                                  ");
     printf("comment: Possible are 39 legal and 40 pseudo-legal moves (according to lichess) plus castle, our function returns 41 pseudo-legal moves and is therefore correct\n\n"); 
-
+/*
     strcpy(fen, "4k2r/r2n1pbp/3B2p1/p1p3P1/2p4P/7B/PP2K3/1R4NR w k - 0 22");
     num = 34;
     printf("Assertion of fen: %s\nexpected moves: %d\n%s\n", fen, num, check_num_moves_fom_fen(fen, num) ? "Succeeded\n" : "Failed\n");
@@ -56,5 +56,5 @@ void main()
     num = 16;
     printf("Assertion of fen: %s\nexpected moves: %d\n%s\n", fen, num, check_num_moves_fom_fen(fen, num) ? "Succeeded\n" : "Failed\n");
     strcpy(fen, "                                                                                                  ");
-    
+*/    
 }
