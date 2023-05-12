@@ -35,6 +35,8 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
             pin_r_diag |= diag_r[i] & king_pinned;
         danger |= attacked_squares[i];
     }
+    //print_full_board();
+    //print_move_board(danger);
     for(int i = 0; i < 8; i++){
         if(king_position & ranks[i])
             pin_hori |= ranks[i] & king_pinned;
@@ -80,6 +82,7 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
                     legal_moves[x] = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[is_player_white]); 
                     legal_moves[x] |= castle_move();
                     legal_moves[x] ^= legal_moves[x] & danger;
+                    break;
             }
             for(int x = 0; x < 4; x++){
                 if(legal_moves_piece[x] & pin_l_diag)
@@ -196,11 +199,11 @@ void generate_attacked_squares(field attacked_squares[])
                     break;
 
                 case rook:
-                    attacked_squares[x] = find_legal_rook_moves(bitfields[!is_player_white], bitfields[is_player_white] ^ own_king, single_piece_boards[i]);
+                    attacked_squares[x] = find_legal_rook_attacks(bitfields[!is_player_white], bitfields[is_player_white] ^ own_king, single_piece_boards[i]);
                     break;
 
                 case bishop:
-                    attacked_squares[x] = find_legal_diag_moves(bitfields[!is_player_white], bitfields[is_player_white] ^ own_king, single_piece_boards[i]);
+                    attacked_squares[x] = find_legal_diag_attacks(bitfields[!is_player_white], bitfields[is_player_white] ^ own_king, single_piece_boards[i]);
                     break;
 
                 case knight:
@@ -209,8 +212,8 @@ void generate_attacked_squares(field attacked_squares[])
                     break;
 
                 case queen: ;
-                    field legal_moves_queen_1 = find_legal_diag_moves(bitfields[!is_player_white], bitfields[is_player_white] ^ own_king, single_piece_boards[i]);
-                    field legal_moves_queen_2 = find_legal_rook_moves(bitfields[!is_player_white], bitfields[is_player_white] ^ own_king, single_piece_boards[i]);
+                    field legal_moves_queen_1 = find_legal_diag_attacks(bitfields[!is_player_white], bitfields[is_player_white] ^ own_king, single_piece_boards[i]);
+                    field legal_moves_queen_2 = find_legal_rook_attacks(bitfields[!is_player_white], bitfields[is_player_white] ^ own_king, single_piece_boards[i]);
                     attacked_squares[x] = legal_moves_queen_1 | legal_moves_queen_2;
                     break;
                     

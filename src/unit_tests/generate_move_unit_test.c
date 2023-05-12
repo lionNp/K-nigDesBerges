@@ -6,14 +6,10 @@
 int check_num_moves_fen(char* fen)
 {
     import_gamestring(bitfields, fen);
-
-    int counts[2] = {0, 0};  
-
-    int piece_array[16];
-    field legal_moves[16];
-    field legal_moves_piece[16];
-    generate_moves(legal_moves, legal_moves_piece, piece_array, counts);
-    return counts[0];
+    int piece_idx[max_move_count];
+    field move_from[max_move_count];
+    field move_to[max_move_count];
+    return generate_moves(move_from, move_to, piece_idx);
 }
 
 void main()
