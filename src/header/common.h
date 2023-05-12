@@ -78,6 +78,8 @@ extern field castle_white_left_check;
 // illegal move
 #define illegal_move -9999.0f
 
+#define max_move_count 100
+
 // Center Square (King of the Hill square)
 #define koth 0x0000001818000000ull
 

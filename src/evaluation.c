@@ -4,7 +4,7 @@
 #include "move_util.h"
 #include <stdlib.h>
 
-float evaluation(field move_to, field move_from, int piece)
+float evaluation(field move_from, field move_to, int piece)
 {
     float rating = 0.0f;
     // evaluate move
