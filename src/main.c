@@ -27,7 +27,7 @@ int main() {
         int piece_idx[max_move_count] = {0};
         float rating[max_move_count] = {0.0f};
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
-        for(int depth = 1; t < 1000; depth++){   
+        for(int depth = 1; t < 10000; depth++){   
             //iterate over every moveset for a piece
             for(int i = 0; i < move_count; i++){
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
@@ -37,7 +37,9 @@ int main() {
             for(int i = 0; i < depth; i++){
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = 1 - is_player_white;
-                rating[i] -= alphabeta(depth - 1);
+                float new_rating = alphabeta(depth - 1, time);
+                if(new_rating < rating[i])
+                    rating[i] = new_rating;
                 is_player_white = 1 - is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             }
