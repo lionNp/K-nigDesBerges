@@ -2,6 +2,7 @@
 #include "bit_boards_util.h"
 
 bool is_player_white = true;
+bool gameover = false;
 bool castle_left[2] = {true, true};
 bool castle_right[2] = {true, true};
 
