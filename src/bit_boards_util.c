@@ -3,15 +3,7 @@
 #include "bit_boards_util.h"
 #include "hashset.h"
 
-field shift_diag_up(field diag, int n){
-    return diag << 8*n;
-}
 
-field shift_diag_down(field diag, int n){
-    return diag >> 8*n;
-}
-
-//takes a board and splits every piece into a seperate board containing only that piece
 void get_single_piece_boards(field board, field single_piece_boards[], int piece_count) 
 {
     //set result boards to 0
@@ -31,7 +23,7 @@ void get_single_piece_boards(field board, field single_piece_boards[], int piece
     }
 }
 
-//counts all pieces on the provided board
+
 int get_piece_count(field board) {
     int n = 0;
     for(int i = 0; i < 64; i++) {
@@ -64,7 +56,7 @@ bool game_finished(int total_legal_moves){
     return false;
 }
 
-void import_gamesting(field bitfields[], char gamestring[]) 
+void import_gamestring(field bitfields[], char gamestring[]) 
 {
     //initialise empty boards
     for(int i = 0; i < figure_count; i++) {
@@ -80,7 +72,8 @@ void import_gamesting(field bitfields[], char gamestring[])
     for(; iterate < str_len; iterate++) 
     {
         char c = gamestring[iterate];
-
+        if(c == ' ')
+            break;
         switch(c) 
         {
             case 'r': 
@@ -152,12 +145,40 @@ void import_gamesting(field bitfields[], char gamestring[])
                 i--;
                 break;
         }
-
         i++;
     }
-
     iterate++;
-    if(gamestring[iterate] == 'b') is_player_white = 0;
+    if(gamestring[iterate] == 'b')
+        is_player_white = 0;
+    else if(gamestring[iterate] == 'w')
+        is_player_white = 1;
+    iterate++;
+    iterate++;
+    castle_right[1] = false;
+    castle_left[1] = false;
+    castle_right[0] = false;
+    castle_left[0] = false;
+    for(int i = iterate; i < str_len;i++){
+        char c = gamestring[i];
+        switch(c){
+            default:
+                break;
+            case 'K':
+                castle_right[1] = true;
+                break;
+            case 'Q':
+                castle_left[1] = true;
+                break;
+            case 'k':
+                castle_right[0] = true;
+                break;
+            case 'q':
+                castle_left[0] = true;
+                break;
+        }
+        if(c == ' ')
+            break;
+    }
 }
 /*
     bits will be printied from top left (highest value bit)
@@ -167,9 +188,12 @@ void print_board(field board){
     for(int y = 7; y >= 0; y--){
         for(int x = 7; x >= 0; x--){
             field bit = 1UL << (x + 8*y);
-            if((bit & board)){
-                for(int i = 2; i < 8; i++){
-                    if((bit & bitfields[i])){
+            if((bit & board))
+            {
+                for(int i = 2; i < 8; i++)
+                {
+                    if((bit & bitfields[i]))
+                    {
                         switch(i){
                             case 2:
                                 printf("%c ", 'k');
@@ -193,6 +217,20 @@ void print_board(field board){
                     }
                 }
             }
+            else
+                printf("%d ", 0);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+void print_move_board(field board){
+    for(int y = 7; y >= 0; y--){
+        for(int x = 7; x >= 0; x--){
+            field bit = 1UL << (x + 8*y);
+            if((bit & board))
+                printf("%d ", 1);
             else
                 printf("%d ", 0);
         }
@@ -296,14 +334,14 @@ void print_all_boards(field *boards){
 void print_pos(field position){
     char start[] = "xx";
     uint64_t col[] = {a_file, b_file, c_file, d_file, e_file, f_file, g_file, h_file};
-    uint64_t rows[] = {row_1, row_2, row_3, row_4, row_5, row_6, row_7, row_8};
+    uint64_t ranks[] = {rank_1, rank_2, rank_3, rank_4, rank_5, rank_6, rank_7, rank_8};
     int r= 0;
     int c = 0;
     int stop = 0;
 
     while(c < 8){
         while(r < 8 && stop == 0){
-            if((col[c] & rows[r]) == position)
+            if((col[c] & ranks[r]) == position)
                 stop = 1;
             r++;
         }

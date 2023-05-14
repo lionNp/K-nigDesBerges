@@ -2,6 +2,7 @@
 #include "bit_boards_util.h"
 
 bool is_player_white = true;
+bool gameover = false;
 bool castle_left[2] = {true, true};
 bool castle_right[2] = {true, true};
 
@@ -16,7 +17,7 @@ field castle_white_right_check = 0x000000000000000full;
 field castle_white_left_check = 0x00000000000000f8ull;
 
 field files[8] = {h_file, g_file, f_file, e_file, d_file, c_file, b_file, a_file};
-field rows[8] = {row_1, row_2, row_3, row_4, row_5, row_6, row_7, row_8};
+field ranks[8] = {rank_1, rank_2, rank_3, rank_4, rank_5, rank_6, rank_7, rank_8};
 field diag_l[15] = {diag_l_1, diag_l_2, diag_l_3, diag_l_4, diag_l_5, diag_l_6, diag_l_7, diag_l_8, diag_l_9, diag_l_10, diag_l_11, 
                             diag_l_12, diag_l_13, diag_l_14, diag_l_15};
 field diag_r[15] = {diag_r_1, diag_r_2, diag_r_3, diag_r_4, diag_r_5, diag_r_6, diag_r_7, diag_r_8, diag_r_9, diag_r_10, diag_r_11, 
