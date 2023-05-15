@@ -19,79 +19,167 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     int bit_pos = 0;
     int x = 0;
     generate_attacked_squares(attacked_squares);
-    
+
+    field king_mask = 0UL;
     for(int i = 0; i < 16; i++){
-        if(king_position & diag_l[i])
-            pin_l_diag |= diag_l[i] & king_pinned;
-        if(king_position & diag_r[i])
-            pin_r_diag |= diag_r[i] & king_pinned;
         danger |= attacked_squares[i];
     }
-
-    for(int i = 0; i < 8; i++){
-        if(king_position & ranks[i])
-            pin_hori |= ranks[i] & king_pinned;
-        if(king_position & files[i])
-            pin_vert |= files[i] & king_pinned;
+    for(int i = 0; i < 16; i++){
+        if(king_position & diag_l[i]){
+            pin_l_diag |= diag_l[i] & king_pinned;
+            king_mask |= diag_l[i];
+        }
+        if(king_position & diag_r[i]){
+            pin_r_diag |= diag_r[i] & king_pinned;
+            king_mask |= diag_r[i];
+        }
     }
+    for(int i = 0; i < 8; i++){
+        if(king_position & ranks[i]){
+            pin_hori |= ranks[i] & king_pinned;
+            king_mask |= ranks[i];
+        }
+        if(king_position & files[i]){
+            pin_vert |= files[i] & king_pinned;
+            king_mask |= files[i];
+        }
+    }
+    int bit = log2(king_position);
+    king_mask |= knight_moves[bit];
 
-    for(int current_piece = king; current_piece <= pawn; current_piece++)
-    {
-        field player_piece_board = bitfields[is_player_white] & bitfields[current_piece];
-        int piece_count = get_piece_count(player_piece_board);
-        field single_piece_boards[piece_count];
-        get_single_piece_boards(player_piece_board, single_piece_boards, piece_count);
-        for(int i = 0; i < piece_count; i++)
-        {
-            switch(current_piece)
+    if(((bitfields[king] & bitfields[is_player_white]) & danger)){
+        field checked_from = in_check(king_position);
+        int checkers = get_piece_count(checked_from & bitfields[!is_player_white]);
+        if(checkers > 1){
+            legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfields[is_player_white]); 
+            legal_moves[x] |= castle_move();
+            legal_moves[x] ^= legal_moves[x] & danger;
+        }
+        else{
+            for(int current_piece = king; current_piece <= pawn; current_piece++)
             {
-                case pawn:
-                    legal_moves[x] = find_legal_pawn_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
-                    break;
+                field player_piece_board = bitfields[is_player_white] & bitfields[current_piece];
+                int piece_count = get_piece_count(player_piece_board);
+                field single_piece_boards[piece_count];
+                get_single_piece_boards(player_piece_board, single_piece_boards, piece_count);
+                for(int i = 0; i < piece_count; i++)
+                {
+                    switch(current_piece)
+                    {
+                        case pawn:
+                            legal_moves[x] = find_legal_pawn_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                            break;
 
-                case rook:
-                    legal_moves[x] = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
-                    break;
+                        case rook:
+                            legal_moves[x] = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                            break;
 
-                case bishop:
-                    legal_moves[x] = find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
-                    break;
+                        case bishop:
+                            legal_moves[x] = find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                            break;
 
-                case knight:
-                    bit_pos = log2(single_piece_boards[i]);
-                    legal_moves[x] = knight_moves[bit_pos] ^ (knight_moves[bit_pos] & bitfields[is_player_white]);
-                    break;
+                        case knight:
+                            bit_pos = log2(single_piece_boards[i]);
+                            legal_moves[x] = knight_moves[bit_pos] ^ (knight_moves[bit_pos] & bitfields[is_player_white]);
+                            break;
 
-                case queen: ;
-                    field legal_moves_queen_1 = find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
-                    field legal_moves_queen_2 = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
-                    legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
-                    break;
-                    
-                case king:
-                    bit_pos = log2(single_piece_boards[i]);
-                    legal_moves[x] = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[is_player_white]); 
-                    legal_moves[x] |= castle_move();
-                    legal_moves[x] ^= legal_moves[x] & danger;
-                    break;
+                        case queen: ;
+                            field legal_moves_queen_1 = find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                            field legal_moves_queen_2 = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                            legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
+                            break;
+                            
+                        case king:
+                            bit_pos = log2(single_piece_boards[i]);
+                            legal_moves[x] = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[is_player_white]); 
+                            legal_moves[x] |= castle_move();
+                            legal_moves[x] ^= legal_moves[x] & danger;
+                            break;
+                    }
+                    if(current_piece != king)
+                        legal_moves[x] &= checked_from;
+                    if(king_pinned){
+                        for(int x = 0; x < 4; x++){
+                            if(legal_moves_piece[x] & pin_l_diag)
+                                legal_moves[x] &= pin_l_diag;
+                            else if(legal_moves_piece[x] & pin_r_diag)
+                                legal_moves[x] &= pin_r_diag;
+                            else if(legal_moves_piece[x] & pin_hori)
+                                legal_moves[x] &= pin_hori;
+                            else if(legal_moves_piece[x] & pin_vert)
+                                legal_moves[x] &= pin_vert;
+                        }
+                    }
+                    if(legal_moves[x]){
+                        piece_array[x] = current_piece;
+                        legal_moves_piece[x] = single_piece_boards[i];
+                        x++;
+                    }
+                }
             }
-            for(int x = 0; x < 4; x++){
-                if(legal_moves_piece[x] & pin_l_diag)
-                    legal_moves[x] &= pin_l_diag;
-                else if(legal_moves_piece[x] & pin_r_diag)
-                    legal_moves[x] &= pin_r_diag;
-                else if(legal_moves_piece[x] & pin_hori)
-                    legal_moves[x] &= pin_hori;
-                else if(legal_moves_piece[x] & pin_vert)
-                    legal_moves[x] &= pin_vert;
-            }
-            if(legal_moves[x]){
-                piece_array[x] = current_piece;
-                legal_moves_piece[x] = single_piece_boards[i];
-                x++;
+        }
+    }else{
+        for(int current_piece = king; current_piece <= pawn; current_piece++)
+        {
+            field player_piece_board = bitfields[is_player_white] & bitfields[current_piece];
+            int piece_count = get_piece_count(player_piece_board);
+            field single_piece_boards[piece_count];
+            get_single_piece_boards(player_piece_board, single_piece_boards, piece_count);
+            for(int i = 0; i < piece_count; i++)
+            {
+                switch(current_piece)
+                {
+                    case pawn:
+                        legal_moves[x] = find_legal_pawn_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                        break;
+
+                    case rook:
+                        legal_moves[x] = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                        break;
+
+                    case bishop:
+                        legal_moves[x] = find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                        break;
+
+                    case knight:
+                        bit_pos = log2(single_piece_boards[i]);
+                        legal_moves[x] = knight_moves[bit_pos] ^ (knight_moves[bit_pos] & bitfields[is_player_white]);
+                        break;
+
+                    case queen: ;
+                        field legal_moves_queen_1 = find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                        field legal_moves_queen_2 = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], single_piece_boards[i]);
+                        legal_moves[x] = legal_moves_queen_1 | legal_moves_queen_2;
+                        break;
+                        
+                    case king:
+                        bit_pos = log2(single_piece_boards[i]);
+                        legal_moves[x] = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[is_player_white]); 
+                        legal_moves[x] |= castle_move();
+                        legal_moves[x] ^= legal_moves[x] & danger;
+                        break;
+                }
+                if(king_pinned){
+                    for(int x = 0; x < 4; x++){
+                        if(legal_moves_piece[x] & pin_l_diag)
+                            legal_moves[x] &= pin_l_diag;
+                        else if(legal_moves_piece[x] & pin_r_diag)
+                            legal_moves[x] &= pin_r_diag;
+                        else if(legal_moves_piece[x] & pin_hori)
+                            legal_moves[x] &= pin_hori;
+                        else if(legal_moves_piece[x] & pin_vert)
+                            legal_moves[x] &= pin_vert;
+                    }
+                }
+                if(legal_moves[x]){
+                    piece_array[x] = current_piece;
+                    legal_moves_piece[x] = single_piece_boards[i];
+                    x++;
+                }
             }
         }
     }
+    
     int move_count = 0;
     for(int i = 0; i < x; i++){
         int current_mc = get_piece_count(legal_moves[i]);

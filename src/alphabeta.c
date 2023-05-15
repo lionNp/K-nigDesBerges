@@ -21,7 +21,6 @@ float alphabeta(int depth){
         rating[i] = evaluation(moves_from[i], moves_to[i], piece_idx[i]);
         unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
     }
-    //printf("Depth: %d\n", depth);
     for(int d = depth; d > 0; d--){
         //iterate over every moveset for a piece
         for(int i = 0; i < move_count; i++){

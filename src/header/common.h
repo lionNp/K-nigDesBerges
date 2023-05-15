@@ -81,7 +81,7 @@ extern field castle_white_left_check;
 
 // winning move rating
 #define winning_move 9999.0f
-
+#define losing_move -9999.0f
 #define max_move_count 100
 
 // Center Square (King of the Hill square)
