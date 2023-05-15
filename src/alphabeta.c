@@ -8,38 +8,39 @@
 #include "alphabeta.h"
 #include "stopwatch_utils.h"
 
-float alphabeta(int depth, stopwatch time){
+float alphabeta(int depth){
     //printf("%d\n", depth);
-    if(depth == 0)
-        return 0;
-    field t = 0UL;
-    field moves_from[max_move_count] = {0UL};
-    field moves_to[max_move_count] = {0UL};
-    int piece_idx[max_move_count] = {0};
-    float rating[max_move_count] = {0.0f};
+    field captured[8];
+    field moves_from[max_move_count];
+    field moves_to[max_move_count];
+    int piece_idx[max_move_count];
+    float rating[max_move_count];
     int move_count = generate_moves(moves_from, moves_to, piece_idx);
-    for(int d = depth; d > 0 || t < 10000; d--){
-        field captured[8];
+    for(int i = 0; i < move_count; i++){
+        make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+        rating[i] = evaluation(moves_from[i], moves_to[i], piece_idx[i]);
+        unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+    }
+    //printf("Depth: %d\n", depth);
+    for(int d = depth; d > 0; d--){
         //iterate over every moveset for a piece
         for(int i = 0; i < move_count; i++){
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-            rating[i] = evaluation(moves_from[i], moves_to[i], piece_idx[i]);
-            unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-        }
-        for(int i = 0; i < d; i++){
-            make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            rating[i] -= alphabeta(d - 1, time);
+            if(d % 2 == 0)
+                rating[i] += alphabeta(d - 1);
+            else
+                rating[i] -= alphabeta(d - 1);
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
         }
-        t = stop_stopwatch(time);
     }
-    int max_idx = 0;
+    
+    int idx = 0;
     for(int i = 0; i < move_count; i++){
-        if(rating[max_idx] < rating[i])
-            max_idx = i;
+        if(rating[idx] < rating[i])
+            idx = i;
     }
-    return rating[max_idx];
+    return rating[idx];
 }
     

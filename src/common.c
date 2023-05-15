@@ -1,5 +1,6 @@
 #include "common.h"
 #include "bit_boards_util.h"
+#include "stopwatch_utils.h"
 
 bool is_player_white = true;
 bool gameover = false;

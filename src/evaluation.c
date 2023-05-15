@@ -48,9 +48,9 @@ float evaluation(field move_from, field move_to, int piece)
             rating += bishop_values[pos_to] - bishop_values[pos_from];
             break;
     }   
+
     rating /= 5;
     
-
     // increase rating by piece count * piece_multiplier
     // matertial
     //field turn_king = bitfields[is_player_white] & bitfields[king];
@@ -94,7 +94,7 @@ float evaluation(field move_from, field move_to, int piece)
     return rating;
 }
 
-int max_rating(float rating[], int move_count){
+int random_max_rating(float rating[], int move_count){
     int max_rating_indices[3] = {0, 0, 0};
     int max_rating_index = 0;
     for(int c = 0; c < move_count; c++){

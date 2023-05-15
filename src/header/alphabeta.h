@@ -3,6 +3,6 @@
 #include "common.h"
 #include "stopwatch_utils.h"
 
-float alphabeta(int depth, stopwatch time);
+float alphabeta(int depth);
 
 #endif

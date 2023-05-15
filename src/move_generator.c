@@ -11,21 +11,13 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     field pin_r_diag = 0UL;
     field pin_hori = 0UL;
     field pin_vert = 0UL;
-    field attacked_squares[16]  = {0UL};
-    int piece_array[16] = {0};
-    field legal_moves[16] = {0UL};
-    field legal_moves_piece[16] = {0UL};
+    field attacked_squares[16] = {0UL};
+    int piece_array[16];
+    field legal_moves[16];
+    field legal_moves_piece[16];
     field danger = 0UL;
     int bit_pos = 0;
     int x = 0;
-    /*
-    for(int i = 0; i < 16; i++){
-        piece_array[i] = 0;
-        attacked_squares[i] = 0UL;
-        legal_moves[i] = 0UL;
-        legal_moves_piece[i] = 0UL;
-    }
-    */ 
     generate_attacked_squares(attacked_squares);
     
     for(int i = 0; i < 16; i++){
@@ -35,8 +27,7 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
             pin_r_diag |= diag_r[i] & king_pinned;
         danger |= attacked_squares[i];
     }
-    //print_full_board();
-    //print_move_board(danger);
+
     for(int i = 0; i < 8; i++){
         if(king_position & ranks[i])
             pin_hori |= ranks[i] & king_pinned;

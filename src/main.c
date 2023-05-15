@@ -14,45 +14,47 @@
 int main() {
     
     import_gamestring(bitfields, game_string);
-    
-    stopwatch total_time = start_stopwatch();
     int count_total_moves = 0;
-    while(!gameover)
+    //while(!gameover)
+    for(int r = 0; r < 1; r++)
     { 
         stopwatch time = start_stopwatch();
         field t = 0UL;
         field captured[8];
-        field moves_from[max_move_count] = {0UL};
-        field moves_to[max_move_count] = {0UL};
-        int piece_idx[max_move_count] = {0};
-        float rating[max_move_count] = {0.0f};
+        field moves_from[max_move_count];
+        field moves_to[max_move_count];
+        int piece_idx[max_move_count];
+        float rating[max_move_count];
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
-        for(int depth = 1; t < 10000; depth++){   
-            //iterate over every moveset for a piece
+        
+        t = stop_stopwatch(time);
+        printf("time: %ldμs after genMoves\n", t);
+
+        for(int i = 0; i < move_count; i++){
+            make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+            rating[i] = evaluation(moves_from[i], moves_to[i], piece_idx[i]);
+            unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+        }
+
+        t = stop_stopwatch(time);
+        printf("time: %ldμs after first Eval\n", t);
+
+        for(int depth = 0; depth < 3 ; depth++){   //t < 1000
             for(int i = 0; i < move_count; i++){
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-                rating[i] = evaluation(moves_from[i], moves_to[i], piece_idx[i]);
-                unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-            }
-            for(int i = 0; i < depth; i++){
-                make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = 1 - is_player_white;
-                float new_rating = alphabeta(depth - 1, time);
-                if(new_rating < rating[i])
-                    rating[i] = new_rating;
+                rating[i] -= alphabeta(depth);
                 is_player_white = 1 - is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             }
             t = stop_stopwatch(time);
-            printf("time: %ld at depth: %d\n", t, depth);
+            printf("time: %ldμs at depth: %d\n", t, depth);
         }
-        //find first maximum rating
-        int idx = max_rating(rating, move_count);
-        
+        int idx = random_max_rating(rating, move_count);
+        printf("Execute Move: %d\n", idx);
         // make move
-        //printf("Picked: %d\n", idx);
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
-        //print_full_board();
+        print_full_board();
         hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
 
         // print results
@@ -60,10 +62,9 @@ int main() {
         count_total_moves++;
         gameover = game_finished(move_count);
         if(gameover){
-            field tt = stop_stopwatch(total_time);
             printf("Game Over\n");
             print_full_board();
-            printf("Match with %d moves took %luμs\n", count_total_moves, tt);
+            printf("Match took %d moves\n", count_total_moves);
             break;
         }
         is_player_white = 1 - is_player_white;
