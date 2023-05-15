@@ -109,3 +109,30 @@ int black_king_values[64] = {0, 0, 0, 0, 0, 0, 0, 0,
                             5, 5, 5, 25, 25, 5, 5, 5,
                              15, 15, 25, 5, 5, 25, 15, 15,
                             15, 20, 10, 5, 5, 15, 20, 15};
+
+char* get_piece_name(int piece_type)
+{
+    switch (piece_type)
+    {
+        case king:
+            return "king";
+        
+        case queen:
+            return "queen";
+
+        case rook:
+            return "rook";
+
+        case bishop:
+            return "bishop";
+
+        case knight:
+            return "knight";
+
+        case pawn:
+            return "pawn";
+        
+        default:
+            return "";
+    }
+}

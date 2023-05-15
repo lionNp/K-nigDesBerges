@@ -184,41 +184,54 @@ void import_gamestring(field bitfields[], char gamestring[])
     bits will be printied from top left (highest value bit)
     to bottom right (lowest value bit)    
 */
-void print_board(field board){
-    for(int y = 7; y >= 0; y--){
-        for(int x = 7; x >= 0; x--){
+void print_board(field board)
+{
+    for(int y = 7; y >= 0; y--)
+    {
+        for(int x = 7; x >= 0; x--)
+        {
             field bit = 1UL << (x + 8*y);
             if((bit & board))
             {
-                for(int i = 2; i < 8; i++)
+                bool found = false;
+                for(int i = king; i <= pawn; i++)
                 {
                     if((bit & bitfields[i]))
                     {
-                        switch(i){
-                            case 2:
-                                printf("%c ", 'k');
+                        switch(i)
+                        {
+                            case king:
+                                printf("k ");
+                                found = true;
                                 break;
-                            case 3:
-                                printf("%c ", 'q');
+                            case queen:
+                                printf("q ");
+                                found = true;
                                 break;
-                            case 4:
-                                printf("%c ", 'r');
+                            case rook:
+                                printf("r ");
+                                found = true;
                                 break;
-                            case 5:
-                                printf("%c ", 'b');
+                            case bishop:
+                                printf("b ");
+                                found = true;
                                 break;
-                            case 6:
-                                printf("%c ", 'n');
+                            case knight:
+                                printf("n ");
+                                found = true;
                                 break;
-                            case 7:
-                                printf("%c ", 'p');
+                            case pawn:
+                                printf("p ");
+                                found = true;
                                 break;
                         }
                     }
                 }
+                if(!found) 
+                    printf("1 ");
             }
             else
-                printf("%d ", 0);
+                printf("0 ");
         }
         printf("\n");
     }

@@ -228,6 +228,7 @@ void generate_attacked_squares(field attacked_squares[])
 
 field find_pseudo_moves_for_piece(field piece_pos, int piece_type)
 {
+    int bit_pos = 0;
     switch(piece_type)
     {
         case pawn:
@@ -239,7 +240,7 @@ field find_pseudo_moves_for_piece(field piece_pos, int piece_type)
         case bishop:
             return find_legal_diag_moves(bitfields[is_player_white], bitfields[!is_player_white], piece_pos);
 
-        case knight:
+        case knight: ;
             bit_pos = log2(piece_pos);
             return knight_moves[bit_pos] ^ (knight_moves[bit_pos] & bitfields[is_player_white]);
 
@@ -248,7 +249,7 @@ field find_pseudo_moves_for_piece(field piece_pos, int piece_type)
             field legal_moves_queen_2 = find_legal_rook_moves(bitfields[is_player_white], bitfields[!is_player_white], piece_pos);
             return legal_moves_queen_1 | legal_moves_queen_2;
             
-        case king:
+        case king: ;
             bit_pos = log2(piece_pos);
             field moves = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[is_player_white]); 
 
@@ -305,9 +306,9 @@ int generate_pseudo_moves(piece_move_info* results, int* total_piece_count)
         field pieces = bitfields[is_player_white] & bitfields[piece_type];
         int piece_count = get_piece_count(pieces);
 
-        *total_move_count += piece_count;
+        *total_piece_count += piece_count;
 
-        field[] single_piece_boards;
+        field single_piece_boards[piece_count];
         get_single_piece_boards(pieces, single_piece_boards, piece_count);
 
         for(int i = 0; i < piece_count; i++)

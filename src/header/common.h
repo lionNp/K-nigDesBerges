@@ -142,6 +142,8 @@ extern field castle_white_left_check;
 
 #define figure_count 8
 
+char* get_piece_name(int piece_type);
+
 // enumerate pieces for easy access and better readability
 enum figure {
     black = 0,
