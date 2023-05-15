@@ -90,11 +90,6 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
                 legal_moves_piece[x] = single_piece_boards[i];
                 x++;
             }
-<<<<<<< HEAD
-            print_move_board(legal_moves[x]);
-            x++;
-=======
->>>>>>> AB-Jan
         }
     }
     int move_count = 0;
