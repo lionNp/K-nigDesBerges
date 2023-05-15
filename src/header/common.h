@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include "stopwatch_utils.h"
 
 #define game_string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w"
 
@@ -53,6 +54,9 @@ extern field king_moves[64];
 // IMPORTANT: sets current player
 extern bool is_player_white;
 
+// IMPORTANT: sets gamestate
+extern bool gameover;
+
 // defines all bitfields: (0, white pieces), (1, black pieces), (2, king pieces), (3, queen pieces), (4, rook pieces),
 // (5, bishop pieces), (6, knight pieces), (7, pawn pieces)
 extern field bitfields[8];
@@ -75,8 +79,10 @@ extern field castle_white_right;
 extern field castle_white_right_check;
 extern field castle_white_left_check;
 
-// illegal move
-#define illegal_move -9999.0f
+// winning move rating
+#define winning_move 9999.0f
+
+#define max_move_count 100
 
 // Center Square (King of the Hill square)
 #define koth 0x0000001818000000ull

@@ -7,7 +7,9 @@
 // and an empty field array (legal_moves_piece) in which all moves for a piece are saved.
 // An empty in array save the enumerated piece integer and 
 // an empty int array (counts) saves all possible pseudolegal moves and the number of pieces
-void generate_moves(field legal_moves[], field legal_moves_piece[], int piece_array[], int counts[]);
-void generate_attacking_moves(field attacking_moves[]);
+int generate_moves(field moves_from[], field moves_to[], int piece_idx[]);
+void generate_attacked_squares(field attacked_squares[]);
+field castle_move();
+field filter_pin_moves(field pinned, field piece, field moves, field position);
 
 #endif

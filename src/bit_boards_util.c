@@ -145,18 +145,23 @@ void import_gamestring(field bitfields[], char gamestring[])
                 i--;
                 break;
         }
-
         i++;
     }
     iterate++;
+<<<<<<< HEAD
     if(gamestring[iterate] == 'b'){
         // printf("set player black\n");
+=======
+    if(gamestring[iterate] == 'b')
+>>>>>>> AB-Jan
         is_player_white = 0;
-    } 
-    else if(gamestring[iterate] == 'w'){
+    else if(gamestring[iterate] == 'w')
         is_player_white = 1;
+<<<<<<< HEAD
         // printf("set player white\n");
     }
+=======
+>>>>>>> AB-Jan
     iterate++;
     iterate++;
     castle_right[1] = false;
@@ -165,9 +170,12 @@ void import_gamestring(field bitfields[], char gamestring[])
     castle_left[0] = false;
     for(int i = iterate; i < str_len;i++){
         char c = gamestring[i];
+<<<<<<< HEAD
         // printf("%c\n", c);
         if(c == ' ')
             break;
+=======
+>>>>>>> AB-Jan
         switch(c){
             default:
                 break;
@@ -184,6 +192,8 @@ void import_gamestring(field bitfields[], char gamestring[])
                 castle_left[0] = true;
                 break;
         }
+        if(c == ' ')
+            break;
     }
 }
 /*

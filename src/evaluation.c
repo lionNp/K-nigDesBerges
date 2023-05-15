@@ -4,20 +4,9 @@
 #include "move_util.h"
 #include <stdlib.h>
 
-float evaluation(field move_to, field move_from, int piece)
+float evaluation(field move_from, field move_to, int piece)
 {
     float rating = 0.0f;
-
-    // check if king is in check
-    field king_position = (piece == king) 
-        ? move_to
-        : bitfields[is_player_white] & bitfields[king];
-
-    field king_is_in_check = in_check(king_position);
-    
-    if(king_is_in_check)
-        return illegal_move;
-
     // evaluate move
     int pos_to = log2(move_to);
     int pos_from = log2(move_from);
@@ -31,6 +20,8 @@ float evaluation(field move_to, field move_from, int piece)
             break;
 
         case king: 
+            if(move_to & koth)
+                return winning_move;
             if((pos_from - pos_to) == 2)
                 rating += rook_values[pos_to + 1] - rook_values[pos_to - 1];
             else if((pos_from - pos_to) == -2)
@@ -57,9 +48,9 @@ float evaluation(field move_to, field move_from, int piece)
             rating += bishop_values[pos_to] - bishop_values[pos_from];
             break;
     }   
-    rating /= 10;
-    
 
+    rating /= 5;
+    
     // increase rating by piece count * piece_multiplier
     // matertial
     //field turn_king = bitfields[is_player_white] & bitfields[king];
@@ -101,4 +92,29 @@ float evaluation(field move_to, field move_from, int piece)
     rating -= get_piece_count(turn_next_pawns) * 1;
 
     return rating;
+}
+
+int random_max_rating(float rating[], int move_count){
+    int max_rating_indices[3] = {0, 0, 0};
+    int max_rating_index = 0;
+    for(int c = 0; c < move_count; c++){
+        if(rating[c] > rating[max_rating_index]){
+            max_rating_index = c;
+            max_rating_indices[2] = max_rating_indices[1];
+            max_rating_indices[1] = max_rating_indices[0];
+            max_rating_indices[0] = c;
+        }     
+    }
+    int comp = 0;
+    int non_zero = 0;
+    for(int i = 0; i < 3; i++){
+        //printf("%d ", max_rating_indices[i]);
+        comp += rating[max_rating_indices[i]];     
+    }
+    //printf("\n");
+    int idx = max_rating_index;
+    if((comp / 3 * rating[max_rating_index]) > 0.6)
+        idx = max_rating_indices[rand() % 2];
+    
+    return idx;
 }
