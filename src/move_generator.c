@@ -20,33 +20,22 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     int x = 0;
     generate_attacked_squares(attacked_squares);
 
-    field king_mask = 0UL;
     for(int i = 0; i < 16; i++){
         danger |= attacked_squares[i];
     }
     for(int i = 0; i < 16; i++){
-        if(king_position & diag_l[i]){
+        if(king_position & diag_l[i])
             pin_l_diag |= diag_l[i] & king_pinned;
-            king_mask |= diag_l[i];
-        }
-        if(king_position & diag_r[i]){
+        if(king_position & diag_r[i])
             pin_r_diag |= diag_r[i] & king_pinned;
-            king_mask |= diag_r[i];
-        }
     }
     for(int i = 0; i < 8; i++){
-        if(king_position & ranks[i]){
+        if(king_position & ranks[i])
             pin_hori |= ranks[i] & king_pinned;
-            king_mask |= ranks[i];
-        }
-        if(king_position & files[i]){
+        if(king_position & files[i])
             pin_vert |= files[i] & king_pinned;
-            king_mask |= files[i];
-        }
     }
     int bit = log2(king_position);
-    king_mask |= knight_moves[bit];
-
     if(((bitfields[king] & bitfields[is_player_white]) & danger)){
         field checked_from = in_check(king_position);
         int checkers = get_piece_count(checked_from & bitfields[!is_player_white]);
