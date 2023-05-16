@@ -62,6 +62,8 @@ void alpha_beta_search(ab_node* node, int depth, float alpha, float beta, bool i
             }
             free(move_node);
 
+            is_player_white = !is_player_white;
+
             if(maxValue > beta)
                 break;
 
@@ -93,6 +95,8 @@ void alpha_beta_search(ab_node* node, int depth, float alpha, float beta, bool i
                 copy_node(node, move_node);
             }
             free(move_node);
+
+            is_player_white = !is_player_white;
 
             if(-blackMaxValue < alpha)
                 break;

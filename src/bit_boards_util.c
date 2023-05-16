@@ -198,30 +198,31 @@ void print_board(field board)
                 {
                     if((bit & bitfields[i]))
                     {
+                        bool white = (bit & bitfields[1]);
                         switch(i)
                         {
                             case king:
-                                printf("k ");
+                                printf("%c ", white ? 'K' : 'k');
                                 found = true;
                                 break;
                             case queen:
-                                printf("q ");
+                                printf("%c ", white ? 'Q' : 'q');
                                 found = true;
                                 break;
                             case rook:
-                                printf("r ");
+                                printf("%c ", white ? 'R' : 'r');
                                 found = true;
                                 break;
                             case bishop:
-                                printf("b ");
+                                printf("%c ", white ? 'B' : 'b');
                                 found = true;
                                 break;
                             case knight:
-                                printf("n ");
+                                printf("%c ", white ? 'N' : 'n');
                                 found = true;
                                 break;
                             case pawn:
-                                printf("p ");
+                                printf("%c ", white ? 'P' : 'p');
                                 found = true;
                                 break;
                         }
