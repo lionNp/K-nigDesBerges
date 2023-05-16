@@ -16,6 +16,8 @@ float alphabeta(int depth){
     int piece_idx[max_move_count];
     float rating[max_move_count];
     int move_count = generate_moves(moves_from, moves_to, piece_idx);
+    if(move_count == 0)
+        return winning_move;
     for(int i = 0; i < move_count; i++){
         make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
         rating[i] = evaluation(moves_from[i], moves_to[i], piece_idx[i]);

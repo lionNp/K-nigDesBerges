@@ -26,7 +26,10 @@ int main() {
         int piece_idx[max_move_count];
         float rating[max_move_count];
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
-        
+        if(move_count == 0){
+            gameover = true;
+            break;
+        }
         t = stop_stopwatch(time);
         printf("time: %ldμs after genMoves\n", t);
 
@@ -38,7 +41,7 @@ int main() {
 
         t = stop_stopwatch(time);
         printf("time: %ldμs after first Eval\n", t);
-        for(int depth = 0; depth < 3; depth++){   //t < 1000
+        for(int depth = 0; depth < 4; depth++){   //t < 1000
             for(int i = 0; i < move_count && depth > 0; i++){
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = 1 - is_player_white;
