@@ -3,6 +3,7 @@
 #include "move_executer.h"
 #include "move_generator.h"
 #include "alpha_beta_v2.h"
+#include "bit_boards_util.h"
 
 #include <stdlib.h>
 
@@ -29,8 +30,17 @@ void alpha_beta_search(ab_node* node, int depth, float alpha, float beta, bool i
     if(depth == 0)
     {
         node->rating = evaluation(node->piece_from, node->piece_to, node->piece_type);
+
+        printf("Evaluation from: \n");
+        print_board(node->piece_from);
+        printf("Evaluation to: \n");
+        print_board(node->piece_to);
+        printf("Evaluation rating: %f\n", node->rating);
+
         return;
     }
+
+    is_player_white = is_maxing;
 
     //generate child nodes
     field from[max_move_count];
@@ -43,6 +53,8 @@ void alpha_beta_search(ab_node* node, int depth, float alpha, float beta, bool i
         float maxValue = INT_MIN;
         for(int i = 0; i < moves; i++)
         {
+            is_player_white = is_maxing;
+
             field captured[8];
             make_move(piece_types[i], from[i], to[i], captured);
 
@@ -53,6 +65,8 @@ void alpha_beta_search(ab_node* node, int depth, float alpha, float beta, bool i
 
             alpha_beta_search(move_node, depth - 1, alpha, beta, false);
 
+            is_player_white = is_maxing;
+
             unmake_move(piece_types[i], from[i], to[i], captured);
 
             if(move_node->rating > maxValue)
@@ -61,8 +75,6 @@ void alpha_beta_search(ab_node* node, int depth, float alpha, float beta, bool i
                 copy_node(node, move_node);
             }
             free(move_node);
-
-            is_player_white = !is_player_white;
 
             if(maxValue > beta)
                 break;
@@ -77,6 +89,8 @@ void alpha_beta_search(ab_node* node, int depth, float alpha, float beta, bool i
         float blackMaxValue = INT_MIN;
         for(int i = 0; i < moves; i++)
         {
+            is_player_white = is_maxing;
+
             field captured[8];
             make_move(piece_types[i], from[i], to[i], captured);
 
@@ -87,6 +101,8 @@ void alpha_beta_search(ab_node* node, int depth, float alpha, float beta, bool i
 
             alpha_beta_search(move_node, depth - 1, alpha, beta, true);
 
+            is_player_white = is_maxing;
+
             unmake_move(piece_types[i], from[i], to[i], captured);
 
             if(move_node->rating > blackMaxValue)
@@ -95,8 +111,6 @@ void alpha_beta_search(ab_node* node, int depth, float alpha, float beta, bool i
                 copy_node(node, move_node);
             }
             free(move_node);
-
-            is_player_white = !is_player_white;
 
             if(-blackMaxValue < alpha)
                 break;
