@@ -10,7 +10,7 @@ float evaluation(field move_from, field move_to, int piece)
     // evaluate move
     int pos_to = log2(move_to);
     int pos_from = log2(move_from);
-
+    
     switch(piece)
     {
         case pawn: 
@@ -55,6 +55,9 @@ float evaluation(field move_from, field move_to, int piece)
     // matertial
     //field turn_king = bitfields[is_player_white] & bitfields[king];
     //rating += get_piece_count(turn_king)*100;
+    field turn_king = bitfields[is_player_white] & bitfields[king];
+    rating += get_piece_count(turn_king) * 100;
+    
     int promotion = 9;
     if(piece == pawn & (move_to & (rank_1 | rank_8)))
         promotion = 18;
@@ -76,6 +79,9 @@ float evaluation(field move_from, field move_to, int piece)
     //decrease rating by enemy players piece count * piece_multiplier
     //field turn_next_king = bitfields[!is_player_white] & bitfields[king];
     //rating -= get_piece_count(turn_next_king)*100;
+    field turn_next_king = bitfields[!is_player_white] & bitfields[king];
+    rating += get_piece_count(turn_next_king) * 100;
+    
     field turn_next_queen = bitfields[!is_player_white] & bitfields[queen];
     rating -= get_piece_count(turn_next_queen) * 9;
 

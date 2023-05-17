@@ -15,8 +15,8 @@ int main() {
     
     import_gamestring(bitfields, game_string);
     int count_total_moves = 0;
-    //while(!gameover)
-    for(int r = 0; r < 1; r++)
+    while(!gameover)
+    //for(int r = 0; r < 1; r++)
     { 
         stopwatch time = start_stopwatch();
         field t = 0UL;
@@ -26,7 +26,10 @@ int main() {
         int piece_idx[max_move_count];
         float rating[max_move_count];
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
-        
+        if(move_count == 0){
+            gameover = true;
+            break;
+        }
         t = stop_stopwatch(time);
         printf("time: %ldμs after genMoves\n", t);
 
@@ -38,23 +41,20 @@ int main() {
 
         t = stop_stopwatch(time);
         printf("time: %ldμs after first Eval\n", t);
-
-        for(int depth = 0; depth < 3 ; depth++){   //t < 1000
-            for(int i = 0; i < move_count; i++){
+        for(int depth = 0; depth < 4; depth++){   //t < 1000
+            for(int i = 0; i < move_count && depth > 0; i++){
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = 1 - is_player_white;
-                rating[i] -= alphabeta(depth);
+                rating[i] -= alphabeta(depth - 1);
                 is_player_white = 1 - is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             }
             t = stop_stopwatch(time);
-            printf("time: %ldμs at depth: %d\n", t, depth);
+            printf("time: %ldμs at depth: %d with %d moves\n", t, depth, move_count);
         }
         int idx = random_max_rating(rating, move_count);
-        printf("Execute Move: %d\n", idx);
         // make move
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
-        print_full_board();
         hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
 
         // print results
