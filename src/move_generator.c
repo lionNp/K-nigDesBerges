@@ -85,8 +85,12 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
                             legal_moves[x] ^= legal_moves[x] & danger;
                             break;
                     }
-                    if(current_piece != king)
+                    if(legal_moves[x])
+                        print_move_board(legal_moves[x]);
+                    if(current_piece != king){
                         legal_moves[x] &= checked_from;
+                        print_move_board(legal_moves[x]);
+                    }
                     if(king_pinned){
                         if(single_piece_boards[i] & pin_l_diag)
                             legal_moves[x] &= pin_l_diag;
