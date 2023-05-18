@@ -18,12 +18,12 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     field danger = 0UL;
     int bit_pos = 0;
     int x = 0;
-    generate_attacked_squares(attacked_squares, is_player_white);
-
-    for(int i = 0; i < 16; i++){
+    int attackers = generate_attacked_squares(attacked_squares, is_player_white);
+    for(int i = 0; i < attackers; i++)
         danger |= attacked_squares[i];
-    }
+    
     for(int i = 0; i < 16; i++){
+        
         if(king_position & diag_l[i])
             pin_l_diag |= diag_l[i] & king_pinned;
         if(king_position & diag_r[i])
@@ -37,6 +37,12 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     }
     int bit = log2(king_position);
     if(((bitfields[king] & bitfields[is_player_white]) & danger)){
+        /*
+        printf("IN CHECK\n");
+        for(int i = 0; i < attackers; i++)
+            print_move_board(attacked_squares[i]);
+        print_move_board(danger);
+        */
         field checked_from = in_check(king_position);
         int checkers = get_piece_count(checked_from & bitfields[!is_player_white]);
         if(checkers > 1){
@@ -85,12 +91,10 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
                             legal_moves[x] ^= legal_moves[x] & danger;
                             break;
                     }
-                    if(legal_moves[x])
-                        print_move_board(legal_moves[x]);
+                    if(!legal_moves[x]) continue;
                     if(current_piece != king){
                         legal_moves[x] &= checked_from;
-                        print_move_board(legal_moves[x]);
-                    }
+                    } 
                     if(king_pinned){
                         if(single_piece_boards[i] & pin_l_diag)
                             legal_moves[x] &= pin_l_diag;
@@ -100,8 +104,10 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
                             legal_moves[x] &= pin_hori;
                         else if(single_piece_boards[i] & pin_vert)
                             legal_moves[x] &= pin_vert;
-                    }
+                    }   
                     if(legal_moves[x]){
+                        printf("%d\n", current_piece);
+                        print_move_board(legal_moves[x]);
                         piece_array[x] = current_piece;
                         legal_moves_piece[x] = single_piece_boards[i];
                         x++;
@@ -249,7 +255,7 @@ field castle_move(){
     return move;
 }
 
-void generate_attacked_squares(field attacked_squares[], bool player)
+int generate_attacked_squares(field attacked_squares[], bool player)
 {
     int bit_pos = 0;
     int x = 0;
@@ -290,9 +296,11 @@ void generate_attacked_squares(field attacked_squares[], bool player)
                 case king:
                     bit_pos = log2(single_piece_boards[i]);
                     attacked_squares[x] = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[player]); 
+                    break;
             }
             x++;
         }
     }
+    return x;
 }
     

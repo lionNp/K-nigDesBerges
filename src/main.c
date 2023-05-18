@@ -45,7 +45,7 @@ int main() {
             break;
         }
 
-        for(int depth = 0; t < 10000; depth++){ //t < 1000
+        for(int depth = 0; depth < 3; depth++){ //t < 1000
             for(int i = 0; i < move_count; i++){
                 field captured[8] = {0UL};
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
