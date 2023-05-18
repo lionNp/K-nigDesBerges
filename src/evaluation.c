@@ -158,9 +158,9 @@ float evaluation(bool max_player)
     material -= get_piece_count(turn_next_pawns) * 1;
 
 
-    total_rating = 3 * material + 0.1 * position + 2 * control;
+    total_rating = 5 * material + 0.1 * position + 2 * control;
     time = stop_stopwatch(eval_time);
-    printf("eval: %f took: %ldμs\n",total_rating,  time);
+    //printf("eval: %f took: %ldμs\n",total_rating,  time);
     return total_rating;
 }
 
@@ -187,4 +187,13 @@ int random_max_rating(float rating[], int move_count){
         idx = max_rating_indices[rand() % 2];
     
     return idx;
+}
+
+int max_rating(float rating[], int move_count){
+    int max_rating_index = 0;
+    for(int c = 0; c < move_count; c++){
+        if(rating[c] > rating[max_rating_index])
+            max_rating_index = c; 
+    } 
+    return max_rating_index;
 }

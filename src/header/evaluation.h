@@ -7,4 +7,5 @@
 // and a field (move_to) to where the piece is moved. The piece is specified by its enumerated int value
 float evaluation(bool max_player);
 int random_max_rating(float rating[], int move_count);
+int max_rating(float rating[], int move_count);
 #endif

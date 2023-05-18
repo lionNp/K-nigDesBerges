@@ -20,8 +20,8 @@ int main() {
     stopwatch total_time = start_stopwatch();
     field match_duration;
 
-    //while(!gameover)
-    for(int r = 0; r < 1; r++)
+    while(!gameover)
+    //for(int r = 0; r < 1; r++)
     {
         //time
         stopwatch turn_time = start_stopwatch();
@@ -45,7 +45,7 @@ int main() {
             break;
         }
 
-        for(int depth = 0; t < 1000; depth++){ //t < 1000
+        for(int depth = 0; t < 10000; depth++){ //t < 1000
             for(int i = 0; i < move_count; i++){
                 field captured[8] = {0UL};
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
@@ -58,7 +58,7 @@ int main() {
             printf("time: %ldμs at depth: %d\n", t, depth);
         }
 
-        int idx = random_max_rating(rating, move_count);
+        int idx = max_rating(rating, move_count);
         print_full_board();
         //make move
         field captured[8] = {0UL};
