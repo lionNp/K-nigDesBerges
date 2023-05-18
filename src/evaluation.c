@@ -7,10 +7,13 @@
 
 float evaluation(bool max_player)
 {
-    float rating = 0.0f;
+    float total_rating = 0.0f;
+    float position = 0.0f;
+    float control = 0.0f;
+    float material = 0.0f;
     // evaluate move
-    //stopwatch eval_time = start_stopwatch();
-    //field time = 0UL;
+    stopwatch eval_time = start_stopwatch();
+    field time = 0UL;
     field max_board = bitfields[max_player];
     field min_board = bitfields[!max_player];
 
@@ -29,7 +32,7 @@ float evaluation(bool max_player)
             switch(i)
             {
                 case pawn: 
-                    rating += max_player
+                    position += max_player
                         ? white_pawn_values[bit]
                         : black_pawn_values[bit];
                     break;
@@ -37,25 +40,25 @@ float evaluation(bool max_player)
                 case king:
                     if(max_pieces & koth)
                         return winning_move;       
-                    rating += max_player
+                    position += max_player
                         ? white_king_values[bit]
                         : black_king_values[bit];
                     break;
 
                 case queen: 
-                    rating += queen_values[bit];
+                    position += queen_values[bit];
                     break;
 
                 case rook: 
-                    rating += rook_values[bit];
+                    position += rook_values[bit];
                     break;
 
                 case knight: 
-                    rating += knight_values[bit];
+                    position += knight_values[bit];
                     break;
 
                 case bishop: 
-                    rating += bishop_values[bit];
+                    position += bishop_values[bit];
                     break;
             }
             bit = log2(single_min_piece_boards[k]);
@@ -63,7 +66,7 @@ float evaluation(bool max_player)
                 switch(i)
                 {
                     case pawn: 
-                        rating -= !max_player
+                        position -= !max_player
                             ? white_pawn_values[bit]
                             : black_pawn_values[bit];
                         break;
@@ -71,36 +74,36 @@ float evaluation(bool max_player)
                     case king:
                         if(min_pieces & koth)
                             return losing_move;       
-                        rating -= !max_player
+                        position -= !max_player
                             ? white_king_values[bit]
                             : black_king_values[bit];
                         break;
 
                     case queen: 
-                        rating -= queen_values[bit];
+                        position -= queen_values[bit];
                         break;
 
                     case rook: 
-                        rating -= rook_values[bit];
+                        position -= rook_values[bit];
                         break;
 
                     case knight: 
-                        rating -= knight_values[bit];
+                        position -= knight_values[bit];
                         break;
 
                     case bishop: 
-                        rating -= bishop_values[bit];
+                        position -= bishop_values[bit];
                         break;
                 }
             }
         }
     }
-    rating /= 10;
+
     
     field max_danger_squares[16] = {0UL};
     field min_danger_squares[16] = {0UL};
     generate_attacked_squares(max_danger_squares, max_player);
-    generate_attacked_squares(max_danger_squares, !max_player);
+    generate_attacked_squares(min_danger_squares, !max_player);
     for(int i = 0; i < 16; i++){
         max_danger_squares[0] |= max_danger_squares[i];
         min_danger_squares[0] |= min_danger_squares[i];
@@ -109,54 +112,56 @@ float evaluation(bool max_player)
     field min_danger = min_danger_squares[0] & (max_danger_squares[0] ^ min_danger_squares[0]);
     int max_control = get_piece_count(max_danger);
     int min_control = get_piece_count(min_danger);
-    rating += max_control - min_control;
+    control = max_control - min_control;
     
     // increase rating by piece count * piece_multiplier
     // matertial
     //field turn_king = bitfields[is_player_white] & bitfields[king];
     //rating += get_piece_count(turn_king)*100;
     field turn_king = bitfields[max_player] & bitfields[king];
-    rating += get_piece_count(turn_king) * 100;
+    material += get_piece_count(turn_king) * 100;
     
     field turn_queen = bitfields[max_player] & bitfields[queen];
-    rating += get_piece_count(turn_queen) * 9;
+    material += get_piece_count(turn_queen) * 9;
 
     field turn_rook = bitfields[max_player] & bitfields[rook];
-    rating += get_piece_count(turn_rook) * 5;
+    material += get_piece_count(turn_rook) * 5;
 
     field turn_bishop = bitfields[max_player] & bitfields[bishop];
-    rating += get_piece_count(turn_bishop) * 3;
+    material += get_piece_count(turn_bishop) * 3;
 
     field turn_knight = bitfields[max_player] & bitfields[knight];
-    rating += get_piece_count(turn_knight) * 3;
+    material += get_piece_count(turn_knight) * 3;
 
     field turn_pawns = bitfields[max_player] & bitfields[pawn];
-    rating += get_piece_count(turn_pawns) * 1;
+    material += get_piece_count(turn_pawns) * 1;
 
     //decrease rating by enemy players piece count * piece_multiplier
     //field turn_next_king = bitfields[!is_player_white] & bitfields[king];
     //rating -= get_piece_count(turn_next_king)*100;
     field turn_next_king = bitfields[!max_player] & bitfields[king];
-    rating += get_piece_count(turn_next_king) * 100;
+    material -= get_piece_count(turn_next_king) * 100;
     
     field turn_next_queen = bitfields[!max_player] & bitfields[queen];
-    rating -= get_piece_count(turn_next_queen) * 9;
+    material -= get_piece_count(turn_next_queen) * 9;
 
     field turn_next_rook = bitfields[!max_player] & bitfields[rook];
-    rating -= get_piece_count(turn_next_rook) * 5;
+    material -= get_piece_count(turn_next_rook) * 5;
 
     field turn_next_bishop = bitfields[!max_player] & bitfields[bishop];
-    rating -= get_piece_count(turn_next_bishop) * 3;
+    material -= get_piece_count(turn_next_bishop) * 3;
 
     field turn_next_knight = bitfields[!max_player] & bitfields[knight];
-    rating -= get_piece_count(turn_next_knight) * 3;
+    material -= get_piece_count(turn_next_knight) * 3;
 
     field turn_next_pawns = bitfields[!max_player] & bitfields[pawn];
-    rating -= get_piece_count(turn_next_pawns) * 1;
-    
-    //time = stop_stopwatch(eval_time);
-    //printf("eval took: %ldμs\n", time);
-    return rating;
+    material -= get_piece_count(turn_next_pawns) * 1;
+
+
+    total_rating = 3 * material + 0.1 * position + 2 * control;
+    time = stop_stopwatch(eval_time);
+    printf("eval: %f took: %ldμs\n",total_rating,  time);
+    return total_rating;
 }
 
 int random_max_rating(float rating[], int move_count){

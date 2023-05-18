@@ -13,7 +13,6 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
     if(depth == 0)
         return evaluation(max_player);
     
-    field captured[8];
     field moves_from[max_move_count];
     field moves_to[max_move_count];
     int piece_idx[max_move_count];
@@ -23,17 +22,17 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
     
     if(move_count == 0){
         if(is_player_white == max_player)
-            return winning_move;
-        else
             return losing_move;
+        else
+            return winning_move;
     }
 
     float value;
-
     if(is_player_white == max_player){
         //iterate over every moveset for a piece
         value = losing_move;
         for(int i = 0; i < move_count; i++){
+            field captured[8] = {0UL};
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
             value = fmax(value, alphabeta(depth - 1, alpha, beta, max_player));
@@ -49,6 +48,7 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
         //iterate over every moveset for a piece
         value = winning_move;
         for(int i = 0; i < move_count; i++){
+            field captured[8] = {0UL};
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
             value = fmin(value, alphabeta(depth - 1, alpha, beta, max_player));

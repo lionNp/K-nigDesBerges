@@ -20,23 +20,23 @@ int main() {
     stopwatch total_time = start_stopwatch();
     field match_duration;
 
-    while(!gameover)
-    //for(int r = 0; r < 1; r++)
-    { 
+    //while(!gameover)
+    for(int r = 0; r < 1; r++)
+    {
         //time
         stopwatch turn_time = start_stopwatch();
         field t = 0UL;
         //initilizing moves
-        field captured[8];
         field moves_from[max_move_count];
         field moves_to[max_move_count];
         int piece_idx[max_move_count];
         //alpha beta initilizing
-        float alpha = -9999.0f;
-        float beta = 9999.0f;
+        float alpha = losing_move;
+        float beta = winning_move;
         bool max_player = is_player_white;
         //get moves and set rating
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
+
         float rating[move_count];
 
         if(move_count == 0){
@@ -45,25 +45,27 @@ int main() {
             break;
         }
 
-        for(int depth = 0; depth < 3; depth++){   //t < 1000
+        for(int depth = 0; t < 1000; depth++){ //t < 1000
             for(int i = 0; i < move_count; i++){
+                field captured[8] = {0UL};
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = !is_player_white;
-                rating[i] = alphabeta(depth, alpha, beta, max_player); //alphabeta(depth, -9999.0f, rating[i]);
+                rating[i] = alphabeta(depth, alpha, beta, max_player);
                 is_player_white = !is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             }
             t = stop_stopwatch(turn_time);
-            //printf("time: %ldμs at depth: %d with %d moves\n", t, depth, move_count);
+            printf("time: %ldμs at depth: %d\n", t, depth);
         }
 
         int idx = random_max_rating(rating, move_count);
-        //print_full_board();
-        // make move
+        print_full_board();
+        //make move
+        field captured[8] = {0UL};
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
         hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
-        //print_full_board();
-        // print results
+        print_full_board();
+        //print results
         //switch sides
         count_total_moves++;
         gameover = game_finished(move_count);
