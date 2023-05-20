@@ -12,6 +12,9 @@ void print_board(field board);
 // print a random move bitboard
 void print_move_board(field board);
 
+void white_piece_print(int piece_type);
+void black_piece_print(int piece_type);
+
 // print current chessboard
 void print_full_board();
 

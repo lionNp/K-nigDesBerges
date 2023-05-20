@@ -239,6 +239,56 @@ void print_move_board(field board){
     printf("\n");
 }
 
+void white_piece_print(int piece_type)
+{
+    switch (piece_type)
+    {
+        case king:
+            printf("K ");
+            break;
+        case queen:
+            printf("Q ");
+            break;
+        case rook:
+            printf("R ");
+            break;
+        case bishop:
+            printf("B ");
+            break;
+        case knight:
+            printf("N ");
+            break;
+        case pawn:
+            printf("P ");
+            break;
+    }
+}
+
+void black_piece_print(int piece_type)
+{
+    switch (piece_type)
+    {
+        case king:
+            printf("k ");
+            break;
+        case queen:
+            printf("q ");
+            break;
+        case rook:
+            printf("r ");
+            break;
+        case bishop:
+            printf("b ");
+            break;
+        case knight:
+            printf("n ");
+            break;
+        case pawn:
+            printf("p ");
+            break;
+    }
+}
+
 void print_full_board(){
     for(int y = 7; y >= 0; y--){
         for(int x = 7; x >= 0; x--){
@@ -246,52 +296,14 @@ void print_full_board(){
             if((bit & (bitfields[0]))){
                 for(int i = 2; i < 8; i++){
                     if((bit & bitfields[i])){
-                        switch(i){
-                            case 2:
-                                printf("%c ", 'k');
-                                break;
-                            case 3:
-                                printf("%c ", 'q');
-                                break;
-                            case 4:
-                                printf("%c ", 'r');
-                                break;
-                            case 5:
-                                printf("%c ", 'b');
-                                break;
-                            case 6:
-                                printf("%c ", 'n');
-                                break;
-                            case 7:
-                                printf("%c ", 'p');
-                                break;
-                        }
+                        black_piece_print(i);
                     }
                 }
             }
             else if((bit & (bitfields[1]))){
                 for(int i = 2; i < 8; i++){
                     if((bit & bitfields[i])){
-                        switch(i){
-                            case 2:
-                                printf("%c ", 'K');
-                                break;
-                            case 3:
-                                printf("%c ", 'Q');
-                                break;
-                            case 4:
-                                printf("%c ", 'R');
-                                break;
-                            case 5:
-                                printf("%c ", 'B');
-                                break;
-                            case 6:
-                                printf("%c ", 'N');
-                                break;
-                            case 7:
-                                printf("%c ", 'P');
-                                break;
-                        }
+                        white_piece_print(i);
                     }
                 }
             }

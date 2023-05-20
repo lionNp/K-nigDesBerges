@@ -41,6 +41,7 @@ int main() {
 
         if(move_count == 0){
             printf("No more moves\n");
+            printf("%s won!\n", !is_player_white ? "white" : "black");
             gameover = true;
             break;
         }
@@ -54,14 +55,15 @@ int main() {
                 is_player_white = !is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             }
-            t = stop_stopwatch(turn_time);
-            printf("time: %ldμs at depth: %d\n", t, depth);
+            //t = stop_stopwatch(turn_time);
+            //printf("time: %ldμs at depth: %d\n", t, depth);
         }
 
         int idx = max_rating(rating, move_count);
         print_full_board();
         //make move
         field captured[8] = {0UL};
+        print_move_board(moves_from[idx] ^ moves_to[idx]);
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
         hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
         print_full_board();
