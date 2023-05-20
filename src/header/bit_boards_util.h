@@ -10,7 +10,7 @@ void import_gamestring(field boards[], char gamestring[]);
 void print_board(field board);
 
 // print a random move bitboard
-void print_move_board(field board);
+void print_move(field board);
 
 void white_piece_print(int piece_type);
 void black_piece_print(int piece_type);
@@ -38,8 +38,5 @@ void get_single_piece_boards(field bitfields, field single_pieces_color[], int s
 
 // print a position
 void print_pos(field position);
-
-// print a move from start to end
-void print_move(field start, field end);
 
 #endif

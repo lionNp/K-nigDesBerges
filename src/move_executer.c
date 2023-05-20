@@ -5,11 +5,11 @@
 
 
 void castle(field moves_from, field moves_to){
-    if(moves_to & 0x0200000000000002ull){
+    if((moves_to & 0x0200000000000002ull) && (moves_from & 0x0800000000000008ull)){
         bitfields[rook] ^= ((moves_to << 2) |  (moves_to >> 1));
         bitfields[is_player_white] ^= ((moves_to << 2) |  (moves_to >> 1));
     }
-    else if(moves_to & 0x2000000000000020ull){
+    else if((moves_to & 0x2000000000000020ull) && (moves_from & 0x0800000000000008ull)){
         bitfields[rook] ^= ((moves_to >> 1) |  (moves_to << 1));
         bitfields[is_player_white] ^= ((moves_to >> 1) |  (moves_to << 1));
     }

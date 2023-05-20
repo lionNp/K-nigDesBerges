@@ -225,7 +225,7 @@ void print_board(field board){
     printf("\n");
 }
 
-void print_move_board(field board){
+void print_move(field board){
     for(int y = 7; y >= 0; y--){
         for(int x = 7; x >= 0; x--){
             field bit = 1UL << (x + 8*y);
@@ -316,7 +316,7 @@ void print_full_board(){
 }
 
 void add_to_board_coords(field *board, int x, int y){
-    *board = *board | ((field) 1<<(7-x + 8*y));
+    *board |= ((field) 1 << (7-x + 8*y));
 }
 
 //n=0 is top left, n=63 is bottom right
@@ -391,11 +391,4 @@ void print_pos(field position){
     }
     start[1] = r + '0';
     printf("%s", start);
-}
-
-void print_move(field start, field end){
-    print_pos(start);
-    printf("-");
-    print_pos(end);
-    printf("\n");
 }

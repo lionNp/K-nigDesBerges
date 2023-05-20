@@ -63,7 +63,7 @@ int main() {
         print_full_board();
         //make move
         field captured[8] = {0UL};
-        print_move_board(moves_from[idx] ^ moves_to[idx]);
+        print_move(moves_from[idx] ^ moves_to[idx]);
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
         hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
         print_full_board();
