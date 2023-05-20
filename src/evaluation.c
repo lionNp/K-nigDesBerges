@@ -14,8 +14,8 @@ float evaluation(bool max_player)
     float position = evaluate_position(max_player);
     float control = evaluate_control(max_player);
     float material = evaluate_material(max_player);
-
-    total_rating = 20 * material + 0.05 * position + 10 * control;
+    //printf("Material: %f\nCrontrol: %f\nPosition: %f\n", material, control, position);
+    total_rating = 20 * material + 1 * position + 10 * control;
     time = stop_stopwatch(eval_time);
     //printf("eval: %f took: %ldμs\n",total_rating,  time);
     return total_rating;
