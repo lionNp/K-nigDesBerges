@@ -83,6 +83,8 @@ extern field castle_white_right;
 extern field castle_white_right_check;
 extern field castle_white_left_check;
 
+extern int num_moves_iterated;
+
 // winning move rating
 #define winning_move 9999.0f
 #define losing_move -9999.0f

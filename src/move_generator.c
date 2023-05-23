@@ -22,7 +22,7 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     for(int i = 0; i < attackers; i++)
         danger |= attacked_squares[i];
     
-    for(int i = 0; i < 16; i++){
+    for(int i = 0; i < 15; i++){
         if(king_position & diag_l[i])
             pin_l_diag |= diag_l[i] & king_pinned;
         if(king_position & diag_r[i])
@@ -36,12 +36,6 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     }
     int bit = log2(king_position);
     if(((bitfields[king] & bitfields[is_player_white]) & danger)){
-        /*
-        printf("IN CHECK\n");
-        for(int i = 0; i < attackers; i++)
-            print_move_board(attacked_squares[i]);
-        print_move_board(danger);
-        */
         field checked_from = in_check(king_position);
         int checkers = get_piece_count(checked_from & bitfields[!is_player_white]);
         if(checkers > 1){
@@ -173,7 +167,7 @@ field filter_pin_moves(field pinned, field piece, field moves, field position){
     field pin_r_diag = 0UL;
     field pin_hori = 0UL;
     field pin_vert = 0UL;
-    for(int i = 0; i < 16; i++){
+    for(int i = 0; i < 15; i++){
         if(position & diag_l[i])
             pin_l_diag |= diag_l[i] & pinned;
         if(position & diag_r[i])
@@ -258,7 +252,7 @@ int generate_attacked_squares(field attacked_squares[], bool player)
 
                 case knight:
                     bit_pos = log2(single_piece_boards[i]);
-                    attacked_squares[x] = knight_moves[bit_pos] ^ (knight_moves[bit_pos] & bitfields[player]);
+                    attacked_squares[x] = knight_moves[bit_pos];
                     break;
 
                 case queen: ;
@@ -269,7 +263,7 @@ int generate_attacked_squares(field attacked_squares[], bool player)
                     
                 case king:
                     bit_pos = log2(single_piece_boards[i]);
-                    attacked_squares[x] = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[player]); 
+                    attacked_squares[x] = king_moves[bit_pos]; 
                     break;
             }
             x++;
