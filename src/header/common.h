@@ -60,6 +60,8 @@ extern bool is_player_white;
 // IMPORTANT: sets gamestate
 extern bool gameover;
 
+extern int num_moves_iterated;
+
 // defines all bitfields: (0, white pieces), (1, black pieces), (2, king pieces), (3, queen pieces), (4, rook pieces),
 // (5, bishop pieces), (6, knight pieces), (7, pawn pieces)
 extern field bitfields[8];

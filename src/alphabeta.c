@@ -11,8 +11,11 @@
 float alphabeta(int depth, float alpha, float beta, bool max_player){
     //printf("%d\n", depth);
     if(depth == 0)
+    {
         //return 1;
+        num_moves_iterated++;
         return evaluation(max_player);
+    }
     
     field moves_from[max_move_count];
     field moves_to[max_move_count];
@@ -40,7 +43,10 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             if(value > beta)
+            {
+                //printf("cutoff here\n");
                 break;
+            }
             alpha = fmax(alpha, value);
         }
         //printf("Max_Alpha: %f Max_Beta: %f\n", alpha, beta);
@@ -55,8 +61,11 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
             value = fmin(value, alphabeta(depth - 1, alpha, beta, max_player));
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-            if(value < alpha)
+            if(value > beta)
+            {
+                //printf("cutoff here\n");
                 break;
+            }
             beta = fmin(beta, value);
         }
         //printf("Min_Alpha: %f Min_Beta: %f\n", alpha, beta);
