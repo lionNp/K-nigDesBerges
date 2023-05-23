@@ -22,7 +22,7 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     for(int i = 0; i < attackers; i++)
         danger |= attacked_squares[i];
     
-    for(int i = 0; i < 16; i++){
+    for(int i = 0; i < 15; i++){
         if(king_position & diag_l[i])
             pin_l_diag |= diag_l[i] & king_pinned;
         if(king_position & diag_r[i])
@@ -171,7 +171,7 @@ field filter_pin_moves(field pinned, field piece, field moves, field position){
     field pin_r_diag = 0UL;
     field pin_hori = 0UL;
     field pin_vert = 0UL;
-    for(int i = 0; i < 16; i++){
+    for(int i = 0; i < 15; i++){
         if(position & diag_l[i])
             pin_l_diag |= diag_l[i] & pinned;
         if(position & diag_r[i])
