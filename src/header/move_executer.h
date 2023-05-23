@@ -12,6 +12,4 @@ void make_move(int piece, field moves_from, field moves_to, field captured[]);
 // A captured field array in which a taken piece is saved.
 void unmake_move(int piece, field moves_from, field moves_to, field captured[]);
 
-void castle(field moves_from, field moves_to);
-
 #endif
