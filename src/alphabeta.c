@@ -11,6 +11,7 @@
 float alphabeta(int depth, float alpha, float beta, bool max_player){
     //printf("%d\n", depth);
     if(depth == 0)
+        //return 1;
         return evaluation(max_player);
     
     field moves_from[max_move_count];

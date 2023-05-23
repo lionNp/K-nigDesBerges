@@ -21,51 +21,66 @@ int best_move_for_position(char* fen_string) {
     field match_duration;
 
     
-    //time
-    stopwatch turn_time = start_stopwatch();
-    field t = 0UL;
-    //initilizing moves
-    field moves_from[max_move_count];
-    field moves_to[max_move_count];
-    int piece_idx[max_move_count];
-    //alpha beta initilizing
-    float alpha = losing_move;
-    float beta = winning_move;
-    bool max_player = is_player_white;
-    //get moves and set rating
-    int move_count = generate_moves(moves_from, moves_to, piece_idx);
+    for(int r = 0; r < 4; r++)
+    {    
+        //time
+        stopwatch turn_time = start_stopwatch();
+        field t = 0UL;
+        //initilizing moves
+        field moves_from[max_move_count];
+        field moves_to[max_move_count];
+        int piece_idx[max_move_count];
+        //alpha beta initilizing
+        float alpha = losing_move;
+        float beta = winning_move;
+        bool max_player = is_player_white;
+        //get moves and set rating
+        int move_count = generate_moves(moves_from, moves_to, piece_idx);
 
-    float rating[move_count];
+        float rating[move_count];
+        float final_rating[move_count];
 
-    //shouldnt we increse depth in increments of 2, starting at 1? so as to not get half-false results
-    for(int depth = 0; t < 1000000; depth++){ //t < 1000
-        for(int i = 0; i < move_count; i++){    // <- t < 1 000 000
-            field captured[8] = {0UL};
-            make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-            is_player_white = !is_player_white;
-            rating[i] = alphabeta(depth, alpha, beta, max_player);
-            is_player_white = !is_player_white;
-            unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-            // <- put stopwatch here?
+        int break_after_ms = 1000000;
+        int k = 0;
+
+        //shouldnt we increse depth in increments of 2, starting at 1? so as to not get half-false results
+        for(int depth = 0; ; depth++){ //t < 1000
+            for(int i = 0; i < move_count; i++){    // <- t < 1 000 000
+                if(stop_stopwatch(turn_time) > break_after_ms) break;
+                field captured[8] = {0UL};
+                make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+                is_player_white = !is_player_white;
+                rating[i] = alphabeta(depth, alpha, beta, max_player);
+                is_player_white = !is_player_white;
+                unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+                // <- put stopwatch here?
+            }
+
+
+            //break if subtree took too long
+            t = stop_stopwatch(turn_time);
+            printf("time: %ldμs at depth: %d\n", t, depth);
+            if (t > break_after_ms)
+                break;
+
+            //set final rating when whole depth is seached
+            for(int i=0; i< move_count; i++)
+                final_rating[i] = rating[i];
+
+            printf("Depth: %d", k);
+            k++;
         }
-        t = stop_stopwatch(turn_time);
-        printf("time: %ldμs at depth: %d\n", t, depth);
+
+        int idx = max_rating(final_rating, move_count);
+
+        
+        field captured[8] = {0UL};
+        make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
+
+        print_move(moves_from[idx], moves_to[idx]);
+
+        is_player_white = 1 - is_player_white;
     }
-
-    int idx = max_rating(rating, move_count);
-
-    //best move in idx
-    printf("next best move:\n");
-    char from[3];
-    print_move_board(moves_from[idx]);
-    print_position_as_spoken(moves_from[idx], from);
-    printf("from: %s\n", from);
-    //print_board(moves_from[idx]);
-    char to[3];
-    print_move_board(moves_to[idx]);
-    print_position_as_spoken(moves_to[idx], from);
-    printf("to: %s\n", to);
-    //print_board(moves_to[idx]);
 
     return 0;
 }

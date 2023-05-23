@@ -15,9 +15,6 @@ void print_move_board(field board);
 // print current chessboard
 void print_full_board();
 
-// writes the spoken position, "b3" and the like, into string, given a board with just one position
-void print_position_as_spoken(field board, char* string);
-
 // check if game is finished | i.e. 3 repeated moves, checkmate (in check and no legal moves), stalemate
 bool game_finished(int total_legal_moves);
 
