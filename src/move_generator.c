@@ -36,11 +36,14 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     }
     int bit = log2(king_position);
     if(((bitfields[king] & bitfields[is_player_white]) & danger)){
+        //in check cannot castle anymore
+        castle_left[is_player_white] = false;
+        castle_right[is_player_white] = false;
+        
         field checked_from = in_check(king_position);
         int checkers = get_piece_count(checked_from & bitfields[!is_player_white]);
         if(checkers > 1){
             legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfields[is_player_white]); 
-            legal_moves[x] |= castle_move();
             legal_moves[x] ^= legal_moves[x] & danger;
         }
         else{
@@ -153,7 +156,8 @@ field pseudo_moves(field single_piece_boards, field danger, int current_piece){
             case king:
                 bit_pos = log2(single_piece_boards);
                 legal_moves = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[is_player_white]); 
-                legal_moves |= castle_move();
+                if(!(single_piece_boards & danger))
+                    legal_moves |= castle_move();
                 legal_moves ^= legal_moves & danger;
                 break;
         }

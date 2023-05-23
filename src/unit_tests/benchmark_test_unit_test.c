@@ -43,7 +43,7 @@ void test_move_generator()
 
 
     //repeat from here
-    import_gamestring(bitfields, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w");
+    import_gamestring(bitfields, "2k5/6q1/3P1P2/4N3/8/1K6/8/8 w");
     t = 0UL;
     for(int i = 0; i < 1000; i++){
         move_count = generate_moves(moves_from, moves_to, piece_idx);

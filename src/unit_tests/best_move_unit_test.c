@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include "hashset.h"
 #include "alphabeta.h"
+#include <string.h>
 
 int best_move_for_position(char* fen_string) {
     //initilize board
@@ -55,11 +56,19 @@ int best_move_for_position(char* fen_string) {
             for(int i = 0; i < move_count; i++){    // <- t < 1 000 000
                 //if(stop_stopwatch(turn_time) > break_after_ms) break;
                 field captured[8] = {0UL};
+                bool castle_flags_left[2];
+                bool castle_flags_right[2];
+                memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
+                memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
+
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = !is_player_white;
                 rating[i] = alphabeta(depth, alpha, beta, max_player);
                 is_player_white = !is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+
+                memcpy(castle_left,castle_flags_left,sizeof(castle_left));
+                memcpy(castle_right,castle_flags_right,sizeof(castle_right));
             }
 
             //set final rating when whole depth is seached
@@ -73,7 +82,6 @@ int best_move_for_position(char* fen_string) {
 
         int idx = max_rating(final_rating, move_count);
 
-        
         field captured[8] = {0UL};
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
 
@@ -96,6 +104,6 @@ int best_move_for_position(char* fen_string) {
 
 void main()
 {
-    char* fen = "r3k1r1/2pp1p2/bpn1pqpn/p1b4p/6P1/BP1P1P1N/P1PQP2P/RN2KB1R b KQ - 0 1";
+    char* fen = "r2qr1k1/p4ppp/2Q5/3bN3/8/3BBP2/PP4PP/R4RK1 w - - 1 20";
     best_move_for_position(fen);
 }

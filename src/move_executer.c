@@ -4,22 +4,42 @@
 #include <math.h>
 
 
-void castle(field moves_from, field moves_to){
-    if((moves_to & 0x0200000000000002ull) && (moves_from & 0x0800000000000008ull)){
-        bitfields[rook] ^= ((moves_to << 2) |  (moves_to >> 1));
-        bitfields[is_player_white] ^= ((moves_to << 2) |  (moves_to >> 1));
+void castle_flags(int piece, field moves_from){
+    if(piece == rook){
+        if(moves_from & a_file)
+            castle_left[is_player_white] = false;
+        else
+            castle_right[is_player_white] = false;
     }
-    else if((moves_to & 0x2000000000000020ull) && (moves_from & 0x0800000000000008ull)){
-        bitfields[rook] ^= ((moves_to >> 1) |  (moves_to << 1));
-        bitfields[is_player_white] ^= ((moves_to >> 1) |  (moves_to << 1));
+    if(piece == king){
+        castle_left[is_player_white] = false;
+        castle_right[is_player_white] = false;
     }
-    castle_left[is_player_white] = false;
-    castle_right[is_player_white] = false;
 }
 
 void make_move(int piece, field moves_from, field moves_to, field captured[]){
-    if(piece == king)
-        castle(moves_from, moves_to);
+    if(piece == king){
+        if(log2(moves_from) - log2(moves_to) == 2){
+            bitfields[rook] ^= ((moves_to >> 1) |  (moves_to << 1));
+            bitfields[is_player_white] ^= ((moves_to >> 1) |  (moves_to << 1));
+        }
+        else if(log2(moves_from) - log2(moves_to) == -2){
+            bitfields[rook] ^= ((moves_to << 2) |  (moves_to >> 1));
+            bitfields[is_player_white] ^= ((moves_to << 2) |  (moves_to >> 1));
+        }
+        castle_left[is_player_white] = false;
+        castle_right[is_player_white] = false;
+    }
+    if(piece == rook)
+    {
+        if((moves_from & (h_file & (rank_1 | rank_8)))){
+            castle_right[is_player_white] = false;
+        }
+        else if((moves_from & (a_file & (rank_1 | rank_8)))){
+            castle_left[is_player_white] = false;
+        }   
+    }
+    
     // remove piece from old square
     bitfields[is_player_white] ^= moves_from;
     bitfields[piece] ^= moves_from;
@@ -39,21 +59,19 @@ void make_move(int piece, field moves_from, field moves_to, field captured[]){
         bitfields[is_player_white] ^= moves_to;
         bitfields[piece] ^= moves_to;
     }
-
-    if(piece == rook)
-    {
-        if(moves_from & h_file)
-            castle_right[is_player_white] = false;
-        else if(moves_from & a_file)
-            castle_left[is_player_white] = false;
-    }
 }
 
 void unmake_move(int piece, field moves_from, field moves_to, field captured[]){
     if(piece == king){
-        castle(moves_from, moves_to);
+        if(log2(moves_from) - log2(moves_to) == 2){
+            bitfields[rook] ^= ((moves_to >> 1) |  (moves_to << 1));
+            bitfields[is_player_white] ^= ((moves_to >> 1) |  (moves_to << 1));
+        }
+        else if(log2(moves_from) - log2(moves_to) == -2){
+            bitfields[rook] ^= ((moves_to << 2) |  (moves_to >> 1));
+            bitfields[is_player_white] ^= ((moves_to << 2) |  (moves_to >> 1));
+        }
     }
-
     // move current_piece in piece_board
     // add piece to old square
     bitfields[is_player_white] ^= moves_from;
@@ -71,13 +89,5 @@ void unmake_move(int piece, field moves_from, field moves_to, field captured[]){
     else{
         bitfields[is_player_white] ^= moves_to;
         bitfields[piece] ^= moves_to;
-    }
-
-    if(piece == rook)
-    {
-        if(moves_from & h_file)
-            castle_right[is_player_white] = true;
-        else if(moves_from & a_file)
-            castle_left[is_player_white] = true;
     }
 }

@@ -7,9 +7,11 @@ bool gameover = false;
 bool castle_left[2] = {true, true};
 bool castle_right[2] = {true, true};
 
+
 int num_moves_iterated = 0;
 
 field bitfields[8];
+
 field castle_black_left = 0x8800000000000000ull;
 field castle_black_right = 0x0900000000000000ull;
 field castle_black_right_check = 0x0f00000000000000ull;

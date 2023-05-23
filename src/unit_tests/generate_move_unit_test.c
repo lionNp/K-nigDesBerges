@@ -55,4 +55,10 @@ void main()
     move_count = check_num_moves_fen(fen);
     printf("Assertion of fen: %s\nexpected moves: %d\n%s\n", fen, num, (num == move_count) ? "Succeeded\n" : "Failed\n");
     strcpy(fen, "                                                                                                  ");
+    
+    strcpy(fen, "1n1qkbnr/2pppppp/p7/p2P4/6Q1/8/PPPP1PPP/R1B1K1NR b KQk");
+    num = 16;
+    move_count = check_num_moves_fen(fen);
+    printf("Assertion of fen: %s\nexpected moves: %d\n%s\n", fen, num, (num == move_count) ? "Succeeded\n" : "Failed\n");
+    strcpy(fen, "                                                                                                  ");
     }

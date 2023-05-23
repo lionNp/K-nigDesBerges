@@ -49,11 +49,19 @@ int main() {
         for(int depth = 0; depth < 5; depth++){ //t < 1000
             for(int i = 0; i < move_count; i++){
                 field captured[8] = {0UL};
+                bool castle_flags_left[2];
+                bool castle_flags_right[2];
+                memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
+                memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
+
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = !is_player_white;
                 rating[i] = alphabeta(depth, alpha, beta, max_player);
                 is_player_white = !is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+
+                memcpy(castle_left,castle_flags_left,sizeof(castle_left));
+                memcpy(castle_right,castle_flags_right,sizeof(castle_right));
             }
             //print best move per iteration
             //print node count
@@ -67,6 +75,7 @@ int main() {
         //make move
         field captured[8] = {0UL};
         //print_move(moves_from[idx] ^ moves_to[idx]);
+        castle_flags(piece_idx[idx], moves_from[idx]);
         print_move(moves_from[idx], moves_to[idx]);
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
         hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
