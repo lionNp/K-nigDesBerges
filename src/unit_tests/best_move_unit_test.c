@@ -11,9 +11,9 @@
 #include "hashset.h"
 #include "alphabeta.h"
 
-int main() {
+int best_move_for_position(char* fen_string) {
     //initilize board
-    import_gamestring(bitfields, game_string);
+    import_gamestring(bitfields, fen_string);
 
     int count_total_moves = 0;
     // total match duration
@@ -61,30 +61,33 @@ int main() {
         }
 
         int idx = max_rating(rating, move_count);
-        print_full_board();
-        //make move
-        field captured[8] = {0UL};
-        make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
-        hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
-        print_full_board();
-        //print results
-        //switch sides
-        count_total_moves++;
-        gameover = game_finished(move_count);
-        if(gameover){
-            field match_duration = stop_stopwatch(total_time);
-            printf("Game Over\n");
-            print_full_board();
-            printf("Match took %d moves took %luμs\n", count_total_moves, match_duration);
-            return 0;
-        }
-        is_player_white = 1 - is_player_white;
+
+        //best move in idx
+        printf("next best move:\n");
+        char from[3];
+        print_position_as_spoken(moves_from[idx], from);
+        printf("from: %s\n", from);
+        //print_board(moves_from[idx]);
+        char to[3];
+        print_position_as_spoken(moves_to[idx], from);
+        printf("to: %s\n", to);
+        //print_board(moves_to[idx]);
+
     }
-    if(gameover){
-            field tt = stop_stopwatch(total_time);
-            printf("Game Over\n");
-            print_full_board();
-            printf("Match took %d moves took %luμs\n", count_total_moves, tt);
-        }
+
     return 0;
+}
+
+void main()
+{
+    char* fen = "rnbqk2r/pp2bppp/2p2n2/4N3/2B1P3/8/PPP1QPPP/RNB1K2R w KQkq - 0 1";
+    char* best_move = "e5 -> f7";
+    printf(" For board %s\nthe best possible move is %s.\nOur programm returned:\n", fen, best_move);
+    best_move_for_position(fen);
+
+    fen = "rnbk1r2/pp3p1p/1qp5/3pQ3/8/5N1P/PP2KbP1/R1B2B1R w HAq - 0 1";
+    best_move = "c1 -> g5";
+    printf(" For board %s\nthe best possible move is %s.\nOur programm returned:\n", fen, best_move);
+    best_move_for_position(fen);
+
 }

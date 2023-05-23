@@ -2,7 +2,15 @@
 #include "move_util.h"
 #include "bit_boards_util.h"
 #include "hashset.h"
+#include <math.h>
 
+void print_position_as_spoken(field board, char* string)
+{
+    int bit_num = log2(board);
+    string[0] = bit_num/8 + 'a';
+    string[1] = bit_num%8 + '1';
+    string[2] = '\0';
+}
 
 void get_single_piece_boards(field board, field single_piece_boards[], int piece_count) 
 {

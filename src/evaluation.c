@@ -158,7 +158,7 @@ float evaluation(bool max_player)
     material -= get_piece_count(turn_next_pawns) * 1;
 
 
-    total_rating = 5 * material + 0.1 * position + 2 * control;
+    total_rating = (3 * material) + (0 * position) + (2 * control);
     time = stop_stopwatch(eval_time);
     //printf("eval: %f took: %ldμs\n",total_rating,  time);
     return total_rating;
