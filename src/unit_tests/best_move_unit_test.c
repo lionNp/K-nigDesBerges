@@ -109,7 +109,7 @@ int best_move_for_position(char* fen_string) {
 
 void main()
 {
-    char* fen = "7k/6pp/1P2B3/3b1n2/6P1/3K1P2/3P2N1/4Q3 b - - 0 1";
+    char* fen = "r4rk1/1bqn1ppp/p2bpn2/1p1p4/2pP4/1PNBPN2/PB3PPP/R2Q1RK1 w - - 1 12";
     char* best_move = "dunno";
     printf("For board %s\nthe best possible move is %s.\nOur programm returned:\n", fen, best_move);
     best_move_for_position(fen);    

@@ -256,10 +256,10 @@ int generate_attacked_squares(field attacked_squares[], bool player)
 
                 case knight:
                     bit_pos = log2(single_piece_boards[i]);
-                    attacked_squares[x] = knight_moves[bit_pos] ^ (knight_moves[bit_pos] & bitfields[player]);
+                    attacked_squares[x] = knight_moves[bit_pos];
                     break;
 
-                case queen: ;
+                case queen:
                     field legal_moves_queen_1 = find_legal_diag_attacks(bitfields[!player], bitfields[player] ^ own_king, single_piece_boards[i]);
                     field legal_moves_queen_2 = find_legal_rook_attacks(bitfields[!player], bitfields[player] ^ own_king, single_piece_boards[i]);
                     attacked_squares[x] = legal_moves_queen_1 | legal_moves_queen_2;
@@ -267,7 +267,7 @@ int generate_attacked_squares(field attacked_squares[], bool player)
                     
                 case king:
                     bit_pos = log2(single_piece_boards[i]);
-                    attacked_squares[x] = king_moves[bit_pos] ^ (king_moves[bit_pos] & bitfields[player]); 
+                    attacked_squares[x] = king_moves[bit_pos]; 
                     break;
             }
             x++;
