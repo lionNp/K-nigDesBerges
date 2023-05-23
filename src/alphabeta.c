@@ -25,6 +25,8 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
     int move_count = generate_moves(moves_from, moves_to, piece_idx);
     
     if(move_count == 0){
+        num_moves_iterated++;
+
         if(is_player_white == max_player)
             return losing_move;
         else
@@ -45,7 +47,7 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
             if(value > beta)
             {
                 //printf("cutoff here\n");
-                break;
+                //break;
             }
             alpha = fmax(alpha, value);
         }
@@ -64,7 +66,7 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
             if(value > beta)
             {
                 //printf("cutoff here\n");
-                break;
+                //break;
             }
             beta = fmin(beta, value);
         }

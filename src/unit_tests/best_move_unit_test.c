@@ -14,6 +14,7 @@
 int best_move_for_position(char* fen_string) {
     //initilize board
     import_gamestring(bitfields, fen_string);
+    print_full_board();
 
     int count_total_moves = 0;
     // total match duration
@@ -38,6 +39,11 @@ int best_move_for_position(char* fen_string) {
         bool max_player = is_player_white;
         //get moves and set rating
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
+        if(move_count == 0)
+        {
+            printf("you lost!\n");
+            return 0;
+        }
 
         float rating[move_count];
         float final_rating[move_count];
@@ -48,9 +54,9 @@ int best_move_for_position(char* fen_string) {
         int num_moves_full_depth = 0;
 
         //shouldnt we increse depth in increments of 2, starting at 1? so as to not get half-false results
-        for(int depth = 0; t < break_after_ms; depth++){ //t < 1000
+        for(int depth = 0; depth < 3; depth++){ //t < break_after_ms
             for(int i = 0; i < move_count; i++){    // <- t < 1 000 000
-                if(stop_stopwatch(turn_time) > break_after_ms) break;
+                //if(stop_stopwatch(turn_time) > break_after_ms) break;
                 field captured[8] = {0UL};
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = !is_player_white;
@@ -61,12 +67,10 @@ int best_move_for_position(char* fen_string) {
             }
 
             //break if subtree took too long
-            t = stop_stopwatch(turn_time);
+            //t = stop_stopwatch(turn_time);
             //printf("time: %ldμs at depth: %d\n", t, depth);
-            if (t > break_after_ms)
-            {
-                break;
-            }
+            //if (t > break_after_ms)
+              //  break;
 
             //set final rating when whole depth is seached
             for(int i=0; i< move_count; i++)
@@ -77,6 +81,7 @@ int best_move_for_position(char* fen_string) {
 
             //printf("Depth: %d", k);
             //k++;
+            printf("Moves: %d searched in depth %d\n", num_moves_iterated, depth);
         }
 
         int idx = max_rating(final_rating, move_count);
@@ -88,8 +93,8 @@ int best_move_for_position(char* fen_string) {
         field run_time = stop_stopwatch(turn_time);
         
         printf("After %ldms passed,\n", run_time/1000);
-        printf("After %d moves searched total (including partially searched depths),\n", num_moves_iterated);
-        printf("After %d moves searched not including partially searched depths,\n", num_moves_full_depth);
+        //printf("After %d moves searched total (including partially searched depths),\n", num_moves_iterated);
+        //printf("After %d moves searched not including partially searched depths,\n", num_moves_full_depth);
         printf("This is our best move: ");
         
         print_move(moves_from[idx], moves_to[idx]);
@@ -104,7 +109,15 @@ int best_move_for_position(char* fen_string) {
 
 void main()
 {
-    char* fen = "rnbqk2r/pp2bppp/2p2n2/4N3/2B1P3/8/PPP1QPPP/RNB1K2R w KQkq - 0 1";
+    char* fen = "r3k1r1/2pp1p2/bpn1pqpn/p1b4p/6P1/BP1P1P1N/P1PQP2P/RN2KB1R b KQ - 0 1";
+    char* best_move = "dunno";
+    printf("For board %s\nthe best possible move is %s.\nOur programm returned:\n", fen, best_move);
+    best_move_for_position(fen);    
+
+
+    // #################### others above ###################
+
+    /*char* fen = "rnbqk2r/pp2bppp/2p2n2/4N3/2B1P3/8/PPP1QPPP/RNB1K2R w KQkq - 0 1";
     char* best_move = "e5 -> f7";
     printf("For board %s\nthe best possible move is %s.\nOur programm returned:\n", fen, best_move);
     best_move_for_position(fen);
@@ -128,6 +141,5 @@ void main()
     fen = "3rr1k1/1pp2ppp/p2b4/1b1qP3/1P2p3/P1Q1P3/1B1N1PPP/2R1R1K1 b - - 0 1b";
     best_move = "d6-e5";
     printf("For board %s\nthe best possible move is %s.\nOur programm returned:\n", fen, best_move);
-    best_move_for_position(fen);
-    
+    best_move_for_position(fen);*/
 }

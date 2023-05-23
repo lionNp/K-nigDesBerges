@@ -8,6 +8,7 @@ bool castle_left[2] = {true, true};
 bool castle_right[2] = {true, true};
 
 int num_moves_iterated = 0;
+int num_moves_created = 0;
 
 field bitfields[8];
 field castle_black_left = 0x8800000000000000ull;
