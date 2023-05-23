@@ -10,7 +10,8 @@ void import_gamestring(field boards[], char gamestring[]);
 void print_board(field board);
 
 // print a random move bitboard
-void print_move(field board);
+void print_move_2(field board);
+void print_move(field start, field end);
 
 void white_piece_print(int piece_type);
 void black_piece_print(int piece_type);

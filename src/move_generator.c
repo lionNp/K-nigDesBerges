@@ -109,7 +109,9 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
             }
         }
     }
-    
+
+
+
     int move_count = 0;
     for(int i = 0; i < x; i++){
         int current_mc = get_piece_count(legal_moves[i]);

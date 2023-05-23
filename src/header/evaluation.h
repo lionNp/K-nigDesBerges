@@ -12,5 +12,5 @@ int max_rating(float rating[], int move_count);
 float evaluate_position(bool max_player);
 float evaluate_control(bool max_player);
 float evaluate_material(bool max_player);
-
+float piece_value(field board);
 #endif

@@ -9,21 +9,42 @@ float evaluation(bool max_player)
 {
     float total_rating = 0.0f;
     // evaluate move
-    stopwatch eval_time = start_stopwatch();
-    field time = 0UL;
+    //stopwatch eval_time = start_stopwatch();
+    //field time_pos = 0UL;
+    //field time_con = 0UL;
+    //field time_mat = 0UL;
     float position = evaluate_position(max_player);
+    //time_pos = stop_stopwatch(eval_time);
+    
     float control = evaluate_control(max_player);
+    //time_con = stop_stopwatch(eval_time);
+    
     float material = evaluate_material(max_player);
+    //time_mat = stop_stopwatch(eval_time);
+    //printf("con: %ld\n", time_con);
+    //printf("pos: %ld\n", time_pos);
+    //printf("mat: %ld\n", time_mat);
     //printf("Material: %f\nCrontrol: %f\nPosition: %f\n", material, control, position);
     total_rating = 20 * material + 1 * position + 10 * control;
-    time = stop_stopwatch(eval_time);
     //printf("eval: %f took: %ldμs\n",total_rating,  time);
     return total_rating;
 }
 
 float evaluate_material(bool max_player){
     float material = 0.0f;
+    field max_board = bitfields[max_player];
+    field min_board = bitfields[!max_player];
+    field board;
 
+    for(int i = 0; i < 64; i++){
+        board = 1UL << i;
+        if(board & max_board)
+            material += piece_value(board);
+        else if(board & min_board)
+            material -= piece_value(board);
+    }
+
+/*
     material += get_piece_count(bitfields[max_player] & bitfields[king]) * 100;
     
     material += get_piece_count(bitfields[max_player] & bitfields[queen]) * 9;
@@ -47,8 +68,38 @@ float evaluate_material(bool max_player){
     material -= get_piece_count(bitfields[!max_player] & bitfields[knight]) * 3;
 
     material -= get_piece_count(bitfields[!max_player] & bitfields[pawn]) * 1;
-
+*/
     return material;
+}
+
+float piece_value(field board){
+    float value = 0;
+    for(int i = 7; i > 1; i--){
+        if(board & bitfields[i]){
+            switch(i){
+                case pawn:
+                    value = 1;
+                    break;
+                case knight:
+                    value = 3;
+                    break;
+                case bishop:
+                    value = 3;
+                    break;
+                case rook:
+                    value = 5;
+                    break;
+                case queen:
+                    value = 9;
+                    break;
+                case king:
+                    value = 100;
+                    break;
+            }
+            break;
+        }
+    }
+    return value;
 }
 
 float evaluate_control(bool max_player){
