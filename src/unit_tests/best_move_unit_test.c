@@ -57,10 +57,12 @@ int best_move_for_position(char* fen_string) {
     //best move in idx
     printf("next best move:\n");
     char from[3];
+    print_move_board(moves_from[idx]);
     print_position_as_spoken(moves_from[idx], from);
     printf("from: %s\n", from);
     //print_board(moves_from[idx]);
     char to[3];
+    print_move_board(moves_to[idx]);
     print_position_as_spoken(moves_to[idx], from);
     printf("to: %s\n", to);
     //print_board(moves_to[idx]);

@@ -7,8 +7,8 @@
 void print_position_as_spoken(field board, char* string)
 {
     int bit_num = log2(board);
-    string[0] = bit_num/8 + 'a';
-    string[1] = bit_num%8 + '1';
+    string[0] = 7 - bit_num%8 + 'a';
+    string[1] = bit_num/8 + '1';
     string[2] = '\0';
 }
 
