@@ -16,14 +16,13 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
         return evaluation(max_player);
     }
         
-    
     field moves_from[max_move_count];
     field moves_to[max_move_count];
     int piece_idx[max_move_count];
     float rating[max_move_count];
 
     int move_count = generate_moves(moves_from, moves_to, piece_idx);
-    
+
     if(move_count == 0){
         num_moves_iterated++;
         if(is_player_white == max_player)

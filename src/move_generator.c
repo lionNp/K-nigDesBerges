@@ -16,7 +16,6 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     field legal_moves[16];
     field legal_moves_piece[16];
     field danger = 0UL;
-    int bit_pos = 0;
     int x = 0;
     int attackers = generate_attacked_squares(attacked_squares, is_player_white);
     for(int i = 0; i < attackers; i++)
@@ -45,6 +44,11 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
         if(checkers > 1){
             legal_moves[x] = king_moves[bit] ^ (king_moves[bit] & bitfields[is_player_white]); 
             legal_moves[x] ^= legal_moves[x] & danger;
+            if(legal_moves[x]){
+                piece_array[x] = king;
+                legal_moves_piece[x] = king_position;
+                x++;
+            }
         }
         else{
             for(int current_piece = king; current_piece <= pawn; current_piece++)
@@ -243,7 +247,7 @@ int generate_attacked_squares(field attacked_squares[], bool player)
             switch(current_piece)
             {
                 case pawn:
-                    attacked_squares[x] = find_legal_pawn_attacks(bitfields[!player], bitfields[player] ^ own_king, single_piece_boards[i]);
+                    attacked_squares[x] = find_legal_pawn_attacks(single_piece_boards[i]);
                     break;
 
                 case rook:

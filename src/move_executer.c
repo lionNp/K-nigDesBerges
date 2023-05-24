@@ -72,7 +72,6 @@ void unmake_move(int piece, field moves_from, field moves_to, field captured[]){
             bitfields[is_player_white] ^= ((moves_to << 2) |  (moves_to >> 1));
         }
     }
-    // move current_piece in piece_board
     // add piece to old square
     bitfields[is_player_white] ^= moves_from;
     bitfields[piece] ^= moves_from;

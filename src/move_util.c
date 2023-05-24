@@ -527,10 +527,7 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
     int x = bit_num % 8;
     int y = bit_num / 8;
 
-    //printf("color: %d\n", color);
     if(is_player_white){
-        //might be smarter and faster, might be shit (^ is bitwise xor)
-
         //one forward
         moves |= (((position << 8) & (own_pieces | enemy_pieces)) ^ (position << 8) );
 
@@ -555,9 +552,6 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
         if((position & rank_7) && !(((position >> 16) ^ (position >> 8)) & (own_pieces | enemy_pieces)))
             moves |= (position >> 16);
               
-        /*if(y == 6 && ( ((position >> 8) & (own_pieces | enemy_pieces)) == (field) 0) ){
-            moves = moves | (((position >> 16) & (own_pieces | enemy_pieces)) ^ (position >> 16));
-        }*/
         if(position & h_file)
             moves |= ((position >> 7) & enemy_pieces);
         else if(position & a_file)
@@ -570,7 +564,7 @@ field find_legal_pawn_moves(field own_pieces, field enemy_pieces, field position
     return moves;
 }
 
-field find_legal_pawn_attacks(field own_pieces, field enemy_pieces, field position){
+field find_legal_pawn_attacks(field position){
     field moves = (field) 0;
 
     int bit_num = log2(position);
@@ -578,7 +572,7 @@ field find_legal_pawn_attacks(field own_pieces, field enemy_pieces, field positi
     int x = bit_num % 8;
     int y = bit_num / 8;
 
-    if(!is_player_white){
+    if(position & bitfields[is_player_white]){
         if(position & h_file)
             moves |= ((position << 9));
         else if(position & a_file)
@@ -613,9 +607,9 @@ field find_legal_rook_moves(field own_pieces, field enemy_pieces, field position
 
     //check up
     for(int i = 1; i < 8-y; i++){
-         if(((position << (8*i)) & own_pieces) == (field) 0){
+         if(!((position << (8*i)) & own_pieces)){
             moves |= position << (8*i);
-            if(((position << (8*i)) & enemy_pieces) != (field) 0) break;
+            if(((position << (8*i)) & enemy_pieces)) break;
         }
         else break;
     }
@@ -631,18 +625,18 @@ field find_legal_rook_moves(field own_pieces, field enemy_pieces, field position
 
     //check left
     for(int i = 1; i < 8-x; i++){
-         if(((position << (i)) & own_pieces) == (field) 0){
+         if(!((position << (i)) & own_pieces)){
             moves |= position << (i);
-            if(((position << (i)) & enemy_pieces) != (field) 0) break;
+            if(((position << (i)) & enemy_pieces)) break;
         }
         else break;
     }
 
     //check right
     for(int i=1; i<=x; i++){
-         if(((position >> (i)) & own_pieces) == (field) 0){
+         if(!((position >> (i)) & own_pieces)){
             moves |= position >> (i);
-            if(((position >> (i)) & enemy_pieces) != (field) 0) break;
+            if(((position >> (i)) & enemy_pieces)) break;
         }
         else break;
     }
@@ -651,7 +645,7 @@ field find_legal_rook_moves(field own_pieces, field enemy_pieces, field position
 
 field find_legal_rook_attacks(field own_pieces, field enemy_pieces, field position){
     field moves = (field) 0;
-
+    field board = own_pieces | enemy_pieces;
     int bit_num = log2(position);
 
     int x = bit_num % 8;
@@ -660,25 +654,25 @@ field find_legal_rook_attacks(field own_pieces, field enemy_pieces, field positi
     //check up
     for(int i = 1; i < 8-y; i++){
         moves |= position << (8*i);
-        if(((position << (8*i)) & (own_pieces | enemy_pieces)) ) break;
+        if((position << (8*i)) & board) break;
     }
 
     //check down
     for(int i = 1; i <= y; i++){
         moves |= position >> (8*i);
-        if(((position >> (8*i)) & (own_pieces | enemy_pieces))) break;
+        if((position >> (8*i)) & board) break;
     }
 
     //check left
     for(int i = 1; i < 8-x; i++){
         moves |= position << (i);
-        if(((position << (i)) & (own_pieces | enemy_pieces))) break;
+        if((position << (i)) & board) break;
     }
 
     //check right
     for(int i=1; i<=x; i++){
         moves |= position >> (i);
-        if(((position >> (i)) & (own_pieces | enemy_pieces))) break;
+        if((position >> (i)) & board) break;
     }
     return moves;
 }
@@ -739,7 +733,7 @@ field find_legal_diag_moves(field own_pieces, field enemy_pieces, field position
 
 field find_legal_diag_attacks(field own_pieces, field enemy_pieces, field position){
     field moves = (field) 0;
-
+    field board = own_pieces | enemy_pieces;
     int bit_num = log2(position);
 
     int x = bit_num % 8;
@@ -751,7 +745,7 @@ field find_legal_diag_attacks(field own_pieces, field enemy_pieces, field positi
         max_steps = 7-y;
     for(int i = 1; i <= max_steps; i++){
         moves |= position << (9*i);
-        if(((position << (9*i)) & (own_pieces | enemy_pieces))) break;
+        if((position << (9*i)) & board) break;
     }
 
     //check up right
@@ -759,7 +753,7 @@ field find_legal_diag_attacks(field own_pieces, field enemy_pieces, field positi
     if(7-y < x) max_steps = 7-y;
     for(int i = 1; i <= max_steps; i++){
         moves |= position << (7*i);
-        if(((position << (7*i)) & (own_pieces | enemy_pieces))) break;
+        if((position << (7*i)) & board) break;
     }
 
     //check down left
@@ -767,7 +761,7 @@ field find_legal_diag_attacks(field own_pieces, field enemy_pieces, field positi
     if(y < 7-x) max_steps = y;
     for(int i=1; i<=max_steps; i++){
         moves |= position >> (7*i);
-        if(((position >> (7*i)) & (own_pieces | enemy_pieces))) break;
+        if((position >> (7*i)) & board) break;
     }
 
     //check down right
@@ -775,7 +769,7 @@ field find_legal_diag_attacks(field own_pieces, field enemy_pieces, field positi
     if(y < x) max_steps = y;
     for(int i=1; i<=max_steps; i++){
         moves |= position >> (9*i);
-        if(((position >> (9*i)) & (own_pieces | enemy_pieces))) break;
+        if((position >> (9*i)) & board) break;
     }
     return moves;
 }
