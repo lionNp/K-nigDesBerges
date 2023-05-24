@@ -30,9 +30,9 @@ int best_move_for_position(char* fen_string) {
         stopwatch turn_time = start_stopwatch();
         field t = 0UL;
         //initilizing moves
-        field moves_from[max_move_count];
-        field moves_to[max_move_count];
-        int piece_idx[max_move_count];
+        field moves_from[max_move_count] = {0UL};
+        field moves_to[max_move_count] = {0UL};
+        int piece_idx[max_move_count] = {0UL};
         //alpha beta initilizing
         float alpha = losing_move;
         float beta = winning_move;
@@ -49,7 +49,6 @@ int best_move_for_position(char* fen_string) {
         float final_rating[move_count];
 
         int break_after_ms = 1000000 * 10;
-        int k = 0;
 
         int num_moves_full_depth = 0;
 
@@ -82,13 +81,14 @@ int best_move_for_position(char* fen_string) {
             //printf("Depth: %d", k);
             //k++;
             printf("Moves: %d searched in depth %d\n", num_moves_iterated, depth);
+            num_moves_iterated = 0;
         }
 
         int idx = max_rating(final_rating, move_count);
 
         
         field captured[8] = {0UL};
-        make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
+        //make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
 
         field run_time = stop_stopwatch(turn_time);
         
@@ -101,15 +101,16 @@ int best_move_for_position(char* fen_string) {
 
         //printf("Count total move: %d\n", move_count);
 
-        is_player_white = 1 - is_player_white;
+        // is_player_white = 1 - is_player_white;
     }
 
     return 0;
 }
 
 void main()
-{
-    char* fen = "r4rk1/1bqn1ppp/p2bpn2/1p1p4/2pP4/1PNBPN2/PB3PPP/R2Q1RK1 w - - 1 12";
+{   
+    // 4rrk1/1bqn1ppp/p2b1n2/1p1p4/3P4/2NBPN2/PB3PPP/R2Q1RK1 w - - 1 12 why?!
+    char* fen = "r1b1k1nr/1pp2ppp/p1p5/2b1p3/P3P3/2N2PP1/1PPP3q/R1B1KQ2 w Qkq - 0 11";
     char* best_move = "dunno";
     printf("For board %s\nthe best possible move is %s.\nOur programm returned:\n", fen, best_move);
     best_move_for_position(fen);    

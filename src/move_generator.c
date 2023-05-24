@@ -12,9 +12,9 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     field pin_hori = 0UL;
     field pin_vert = 0UL;
     field attacked_squares[16] = {0UL};
-    int piece_array[16];
-    field legal_moves[16];
-    field legal_moves_piece[16];
+    int piece_array[16] = {0};
+    field legal_moves[16] = {0UL};
+    field legal_moves_piece[16] = {0UL};
     field danger = 0UL;
     int bit_pos = 0;
     int x = 0;

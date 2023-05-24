@@ -17,10 +17,10 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
         return evaluation(max_player);
     }
     
-    field moves_from[max_move_count];
-    field moves_to[max_move_count];
-    int piece_idx[max_move_count];
-    float rating[max_move_count];
+    field moves_from[max_move_count] = {0UL};
+    field moves_to[max_move_count] = {0UL};
+    int piece_idx[max_move_count] = {0UL};
+    float rating[max_move_count] = {0UL};
 
     int move_count = generate_moves(moves_from, moves_to, piece_idx);
     
@@ -38,12 +38,36 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
         //iterate over every moveset for a piece
         value = losing_move;
         for(int i = 0; i < move_count; i++){
+            //check for unusual behaviour in iterating over movesfrom/movesto
+            if(i>=max_move_count)
+            {
+                printf("big problem: i is bigger then the array we iterate over\n");
+            }
+
             field captured[8] = {0UL};
+
+            //check for unusual behaviour in unmake move
+            field fields_cpy[8] = {0UL};
+            for(int s=0; s<8; s++)
+            {
+                fields_cpy[s] = bitfields[s];
+            }
+
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
             value = fmax(value, alphabeta(depth - 1, alpha, beta, max_player));
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+
+            for(int s=0; s<8; s++)
+            {
+                if(fields_cpy[s] != bitfields[s])
+                {
+                    printf("big problem: unmake move didnt roll back properly");
+                }
+            }
+
+
             if(value > beta)
             {
                 //printf("cutoff here\n");
@@ -57,12 +81,33 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
         //iterate over every moveset for a piece
         value = winning_move;
         for(int i = 0; i < move_count; i++){
+            if(i>=max_move_count)
+            {
+                printf("big problem: i is bigger then the array we iterate over\n");
+            }
+
             field captured[8] = {0UL};
+
+            field fields_cpy[8] = {0UL};
+            for(int s=0; s<8; s++)
+            {
+                fields_cpy[s] = bitfields[s];
+            }
+
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
             value = fmin(value, alphabeta(depth - 1, alpha, beta, max_player));
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+
+            for(int s=0; s<8; s++)
+            {
+                if(fields_cpy[s] != bitfields[s])
+                {
+                    printf("big problem: unmake move didnt roll back properly");
+                }
+            }
+
             if(value < alpha)
             {
                 //printf("cutoff here\n");
