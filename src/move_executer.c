@@ -6,9 +6,9 @@
 
 void castle_flags(int piece, field moves_from){
     if(piece == rook){
-        if(moves_from & a_file)
+        if(moves_from & (a_file & (rank_1 | rank_8)))
             castle_left[is_player_white] = false;
-        else
+        else if(moves_from & (h_file & (rank_1 | rank_8)))
             castle_right[is_player_white] = false;
     }
     if(piece == king){

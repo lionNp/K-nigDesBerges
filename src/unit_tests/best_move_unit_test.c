@@ -104,6 +104,6 @@ int best_move_for_position(char* fen_string) {
 
 void main()
 {
-    char* fen = "k7/8/3p4/4q3/3P4/8/4Q3/K7 w - -";
+    char* fen = "8/2p2R2/1p2p1Np/1P5k/3nr3/8/P7/2K5 w - -";
     best_move_for_position(fen);
 }

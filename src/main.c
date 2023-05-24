@@ -46,7 +46,7 @@ int main() {
             break;
         }
 
-        for(int depth = 0; depth < 5; depth++){ //t < 1000
+        for(int depth = 0; depth < 4; depth++){ //t < 1000
             for(int i = 0; i < move_count; i++){
                 field captured[8] = {0UL};
                 bool castle_flags_left[2];

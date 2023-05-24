@@ -25,13 +25,14 @@ float evaluation(bool max_player)
     //printf("pos: %ld\n", time_pos);
     //printf("mat: %ld\n", time_mat);
     //printf("Material: %f\nCrontrol: %f\nPosition: %f\n", material, control, position);
-    total_rating = 20 * material + 1 * position + 10 * control;
+    total_rating = 25 * material + 1.2 * position + 2 * control;
     //printf("eval: %f took: %ldμs\n",total_rating,  time);
     return total_rating;
 }
 
 float evaluate_material(bool max_player){
     float material = 0.0f;
+    /*
     field max_board = bitfields[max_player];
     field min_board = bitfields[!max_player];
     field board;
@@ -43,8 +44,8 @@ float evaluate_material(bool max_player){
         else if(board & min_board)
             material -= piece_value(board);
     }
+*/
 
-/*
     material += get_piece_count(bitfields[max_player] & bitfields[king]) * 100;
     
     material += get_piece_count(bitfields[max_player] & bitfields[queen]) * 9;
@@ -68,7 +69,7 @@ float evaluate_material(bool max_player){
     material -= get_piece_count(bitfields[!max_player] & bitfields[knight]) * 3;
 
     material -= get_piece_count(bitfields[!max_player] & bitfields[pawn]) * 1;
-*/
+
     return material;
 }
 
