@@ -572,7 +572,7 @@ field find_legal_pawn_attacks(field position){
     int x = bit_num % 8;
     int y = bit_num / 8;
 
-    if(position & bitfields[is_player_white]){
+    if(position & bitfields[white]){
         if(position & h_file)
             moves |= ((position << 9));
         else if(position & a_file)

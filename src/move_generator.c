@@ -17,10 +17,12 @@ int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
     field legal_moves_piece[16];
     field danger = 0UL;
     int x = 0;
+    if(king_position & koth)
+        return 0;
     int attackers = generate_attacked_squares(attacked_squares, is_player_white);
     for(int i = 0; i < attackers; i++)
         danger |= attacked_squares[i];
-    
+
     for(int i = 0; i < 15; i++){
         if(king_position & diag_l[i])
             pin_l_diag |= diag_l[i] & king_pinned;

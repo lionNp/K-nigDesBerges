@@ -20,8 +20,8 @@ int main() {
     stopwatch total_time = start_stopwatch();
     field match_duration;
 
-    //while(!gameover)
-    for(int r = 0; r < 5; r++)
+    while(!gameover)
+    //for(int r = 0; r < 5; r++)
     {
         //time
         stopwatch turn_time = start_stopwatch();
@@ -38,16 +38,19 @@ int main() {
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
 
         float rating[move_count];
-
+        float final_rating[move_count];
         if(move_count == 0){
             printf("No more moves\n");
             printf("%s won!\n", !is_player_white ? "white" : "black");
             gameover = true;
             break;
         }
-
-        for(int depth = 0; depth < 4; depth++){ //t < 1000
+        int break_after = 400000;
+        int depth = 0;
+        num_moves_iterated = 0;
+        for(; t < break_after; depth++){
             for(int i = 0; i < move_count; i++){
+                if(stop_stopwatch(turn_time) > break_after) break;
                 field captured[8] = {0UL};
                 bool castle_flags_left[2];
                 bool castle_flags_right[2];
@@ -63,15 +66,16 @@ int main() {
                 memcpy(castle_left,castle_flags_left,sizeof(castle_left));
                 memcpy(castle_right,castle_flags_right,sizeof(castle_right));
             }
-            //print best move per iteration
-            //print node count
+            for(int i = 0; i < move_count; i++)
+                final_rating[i] = rating[i];
             t = stop_stopwatch(turn_time);
-            //if(t > 0.6*cutoff) break;
-            printf("time: %ldμs at depth: %d\n", t, depth);
+            //printf("After %ldus passed,\n", t);
+            //printf("Moves: %d searched in depth %d\n", num_moves_iterated, depth);
         }
-
-        int idx = max_rating(rating, move_count);
-        //print_full_board();
+        float round_time = ((float) t / 1000000);
+        printf("time: %fs at depth: %d\n", round_time, depth);
+        int idx = max_rating(final_rating, move_count);
+        print_full_board();
         //make move
         field captured[8] = {0UL};
         //print_move(moves_from[idx] ^ moves_to[idx]);
@@ -79,7 +83,6 @@ int main() {
         print_move(moves_from[idx], moves_to[idx]);
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
         hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
-        //print_full_board();
         //print results
         //switch sides
         count_total_moves++;

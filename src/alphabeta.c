@@ -72,7 +72,7 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
             value = fmin(value, alphabeta(depth - 1, alpha, beta, max_player));
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-            
+
             memcpy(castle_left,castle_flags_left,sizeof(castle_left));
             memcpy(castle_right,castle_flags_right,sizeof(castle_right));
 

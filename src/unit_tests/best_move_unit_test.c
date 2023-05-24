@@ -40,6 +40,8 @@ int best_move_for_position(char* fen_string) {
         bool max_player = is_player_white;
         //get moves and set rating
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
+        for(int i = 0; i < move_count; i++)
+            print_move(moves_from[i], moves_to[i]);
         if(move_count == 0)
         {
             printf("you lost!\n");
@@ -50,9 +52,9 @@ int best_move_for_position(char* fen_string) {
         float final_rating[move_count];
         int break_after_ms = 1000000 * 10;
         int num_moves_full_depth = 0;
-
+        int depth = 0;
         //shouldnt we increse depth in increments of 2, starting at 1? so as to not get half-false results
-        for(int depth = 0; depth < 3; depth++){ //t < break_after_ms
+        for(; depth < 4; depth++){ //t < break_after_ms
             for(int i = 0; i < move_count; i++){    // <- t < 1 000 000
                 //if(stop_stopwatch(turn_time) > break_after_ms) break;
                 field captured[8] = {0UL};
@@ -77,22 +79,22 @@ int best_move_for_position(char* fen_string) {
 
             //set number of moves seached
             num_moves_full_depth = num_moves_iterated;
+            field run_time = stop_stopwatch(turn_time);
+            printf("After %ldus passed,\n", run_time);
             printf("Moves: %d searched in depth %d\n", num_moves_iterated, depth);
+            int idx = max_rating(final_rating, move_count);
+            printf("This is our best move: ");
+            print_move(moves_from[idx], moves_to[idx]);
         }
 
-        int idx = max_rating(final_rating, move_count);
-
-        field captured[8] = {0UL};
-        make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
-
-        field run_time = stop_stopwatch(turn_time);
         
-        printf("After %ldms passed,\n", run_time/1000);
+
+        //field captured[8] = {0UL};
+        //make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
+
         //printf("After %d moves searched total (including partially searched depths),\n", num_moves_iterated);
         //printf("After %d moves searched not including partially searched depths,\n", num_moves_full_depth);
-        printf("This is our best move: ");
         
-        print_move(moves_from[idx], moves_to[idx]);
 
         //printf("Count total move: %d\n", move_count);
 
@@ -104,6 +106,6 @@ int best_move_for_position(char* fen_string) {
 
 void main()
 {
-    char* fen = "r1bq4/pp1p1k1p/2p2p1p/2b5/3Nr1Q1/2N1P3/PPPK1PPP/3R1B1R w - -";
+    char* fen = "rn1Qkbnr/pp4pp/8/1p2pb2/8/5N2/PPP2PPP/RNB2K1R b KQkq";
     best_move_for_position(fen);
 }

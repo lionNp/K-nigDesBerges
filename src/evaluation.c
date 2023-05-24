@@ -25,7 +25,7 @@ float evaluation(bool max_player)
     //printf("pos: %ld\n", time_pos);
     //printf("mat: %ld\n", time_mat);
     //printf("Material: %f\nCrontrol: %f\nPosition: %f\n", material, control, position);
-    total_rating = 25 * material + 1.2 * position + 2 * control;
+    total_rating = 25 * material + 1 * position + 1 * control;
     //printf("eval: %f took: %ldμs\n",total_rating,  time);
     return total_rating;
 }
