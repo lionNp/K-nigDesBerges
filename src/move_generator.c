@@ -202,30 +202,36 @@ field filter_pin_moves(field pinned, field piece, field moves, field position){
 
 field castle_move(){
     //castle check
+    field king_position = bitfields[king] & bitfields[is_player_white];
+    field rooks = bitfields[rook] & bitfields[is_player_white];
     field move = 0UL;
-    field rooks = 0UL;
+    field check = 0UL;
     if(is_player_white){
         if(castle_left[is_player_white]){
-            rooks = bitfields[is_player_white] & castle_white_left_check;
-            if(rooks == castle_white_left)
-                move |= 0x0000000000000020ull;
+            check = bitfields[is_player_white] & castle_white_left_check;
+            if(check == castle_white_left)
+                if((check & (king_position | rooks)) == check)
+                    move |= 0x0000000000000020ull;
         }
         if(castle_right[is_player_white]){
-            rooks = bitfields[is_player_white] & castle_white_right_check;
-            if(rooks == castle_white_right)
-                move |= 0x0000000000000002ull;
+            check = bitfields[is_player_white] & castle_white_right_check;
+            if(check == castle_white_right)
+                if((check & (king_position | rooks)) == check)
+                    move |= 0x0000000000000002ull;
         }
     }
     else{
         if(castle_left[is_player_white]){
-            rooks = bitfields[is_player_white] & castle_black_left_check;
-            if(rooks == castle_black_left)
-                move |= 0x2000000000000000ull;
+            check = bitfields[is_player_white] & castle_black_left_check;
+            if(check == castle_black_left)
+                if((check & (king_position | rooks)) == check)
+                    move |= 0x2000000000000000ull;
         }
         if(castle_right[is_player_white]){
-            rooks = bitfields[is_player_white] & castle_black_right_check;
-            if(rooks == castle_black_right)
-                move |= 0x0200000000000000ull;
+            check = bitfields[is_player_white] & castle_black_right_check;
+            if(check == castle_black_right)
+                if((check & (king_position | rooks)) == check)
+                    move |= 0x0200000000000000ull;
         }
     }
     return move;

@@ -37,7 +37,7 @@ void make_move(int piece, field moves_from, field moves_to, field captured[]){
         }
         else if((moves_from & (a_file & (rank_1 | rank_8)))){
             castle_left[is_player_white] = false;
-        }   
+        }
     }
     
     // remove piece from old square
@@ -76,10 +76,6 @@ void unmake_move(int piece, field moves_from, field moves_to, field captured[]){
     bitfields[is_player_white] ^= moves_from;
     bitfields[piece] ^= moves_from;
 
-    // reinstate piece moved onto
-    for(int i = 0; i < 8; i++)
-        bitfields[i] ^= captured[i];       
-
     // remove piece from moved to square and check for promotion
     if((piece == pawn) && (moves_to & (rank_1 | rank_8))){
         bitfields[queen] ^= moves_to;
@@ -89,4 +85,8 @@ void unmake_move(int piece, field moves_from, field moves_to, field captured[]){
         bitfields[is_player_white] ^= moves_to;
         bitfields[piece] ^= moves_to;
     }
+
+    // reinstate piece moved onto
+    for(int i = 0; i < 8; i++)
+        bitfields[i] ^= captured[i]; 
 }
