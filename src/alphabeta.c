@@ -51,8 +51,8 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
             memcpy(castle_left,castle_flags_left,sizeof(castle_left));
             memcpy(castle_right,castle_flags_right,sizeof(castle_right));
 
-            //if(value > beta)
-            //    break;
+            if(value > beta)
+                break;
             alpha = fmax(alpha, value);
         }
         //printf("Max_Alpha: %f Max_Beta: %f\n", alpha, beta);
@@ -76,8 +76,8 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
             memcpy(castle_left,castle_flags_left,sizeof(castle_left));
             memcpy(castle_right,castle_flags_right,sizeof(castle_right));
 
-            //if(value < alpha)
-            //    break;
+            if(value < alpha)
+                break;
             beta = fmin(beta, value);
         }
         //printf("Min_Alpha: %f Min_Beta: %f\n", alpha, beta);

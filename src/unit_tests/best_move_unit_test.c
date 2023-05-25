@@ -54,23 +54,14 @@ int best_move_for_position(char* fen_string) {
         int num_moves_full_depth = 0;
         int depth = 0;
         //shouldnt we increse depth in increments of 2, starting at 1? so as to not get half-false results
-        for(; depth < 4; depth++){ //t < break_after_ms
-            for(int i = 0; i < move_count; i++){    // <- t < 1 000 000
-                //if(stop_stopwatch(turn_time) > break_after_ms) break;
+        for(; depth < 5; depth++){
+            for(int i = 0; i < move_count; i++){
                 field captured[8] = {0UL};
-                bool castle_flags_left[2];
-                bool castle_flags_right[2];
-                memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
-                memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
-
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = !is_player_white;
                 rating[i] = alphabeta(depth, alpha, beta, max_player);
                 is_player_white = !is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-
-                memcpy(castle_left,castle_flags_left,sizeof(castle_left));
-                memcpy(castle_right,castle_flags_right,sizeof(castle_right));
             }
 
             //set final rating when whole depth is seached
@@ -106,6 +97,8 @@ int best_move_for_position(char* fen_string) {
 
 void main()
 {
-    char* fen = "rn1Qkbnr/pp4pp/8/1p2pb2/8/5N2/PPP2PPP/RNB2K1R b KQkq";
-    best_move_for_position(fen);
+    char* fen_1 = "r2qk2r/p1ppn1pp/bpnb1p2/4p3/4P3/2NPBN2/PPP1BPPP/R2Q1RK1 w Qkq";
+    char* fen_2 = "rnbqk2r/pp2bppp/2p2n2/4N3/2B1P3/8/PPP1QPPP/RNB1K2R w KQkq";
+    char* fen_3 = "r3r1k1/p4ppp/2Q1b3/4N3/5q2/4RP2/PPB3PP/R5K1 w - -";
+    best_move_for_position(fen_3);
 }
