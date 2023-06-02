@@ -8,14 +8,21 @@
 #include "alphabeta.h"
 #include "stopwatch_utils.h"
 #include <string.h>
+#include "hash_boards.h"
 
 float alphabeta(int depth, float alpha, float beta, bool max_player){
     //printf("%d\n", depth);
     if(depth == 0){
         num_moves_iterated++;
-        return evaluation(max_player);
+        field hashtable_value = hash_boards();
+        //printf("%u\n", hashtable_value);
+        if(hash_table[hashtable_value] == 0.0f){
+            num_moves_trans++;
+            hash_table[hashtable_value] = evaluation(max_player);
+        }
+        return hash_table[hashtable_value];
     }
-        
+
     field moves_from[max_move_count];
     field moves_to[max_move_count];
     int piece_idx[max_move_count];

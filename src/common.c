@@ -9,6 +9,10 @@ bool castle_right[2] = {true, true};
 
 
 int num_moves_iterated = 0;
+int num_moves_trans = 0;
+
+float hash_table[hash_prime] = { 0.0f };// = {[0 ... hash_prime-1] = oob};
+int hash_coeff[8] = {15, 14, 13, 12, 11, 10, 9, 8};
 
 field bitfields[8];
 

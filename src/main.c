@@ -45,9 +45,10 @@ int main() {
             gameover = true;
             break;
         }
-        int break_after = 400000;
+        int break_after = 2000000;
         int depth = 0;
         num_moves_iterated = 0;
+        num_moves_trans = 0;
         for(; t < break_after; depth++){
             for(int i = 0; i < move_count; i++){
                 if(stop_stopwatch(turn_time) > break_after) break;
@@ -74,6 +75,7 @@ int main() {
         }
         float round_time = ((float) t / 1000000);
         printf("time: %fs at depth: %d\n", round_time, depth);
+        printf("Total moves: %d --- Evaluated Moves: %d%%\n", num_moves_iterated, 100 * num_moves_trans / num_moves_iterated);
         int idx = max_rating(final_rating, move_count);
         print_full_board();
         //make move
@@ -82,7 +84,11 @@ int main() {
         castle_flags(piece_idx[idx], moves_from[idx]);
         print_move(moves_from[idx], moves_to[idx]);
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
-        hashset_add(bitfields[is_player_white] ^ bitfields[!is_player_white]);
+        hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
+        // save move in struct
+        // struct includes current hashtable
+
+        
         //print results
         //switch sides
         count_total_moves++;

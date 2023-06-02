@@ -13,6 +13,13 @@
 #define game_string_2 "k7/8/3p4/4q3/3P4/8/4Q3/K7 w - -"
 
 typedef uint64_t field; 
+
+#define hash_prime 12000017
+#define oob 10000.0f
+
+extern int hash_coeff[8];
+extern float hash_table[hash_prime];
+
 // each file set to 1 separately
 extern field files[8];
 
@@ -84,6 +91,7 @@ extern field castle_white_right_check;
 extern field castle_white_left_check;
 
 extern int num_moves_iterated;
+extern int num_moves_trans;
 
 // winning move rating
 #define winning_move 9999.0f
