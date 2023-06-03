@@ -76,7 +76,11 @@ int main() {
         float round_time = ((float) t / 1000000);
         printf("time: %fs at depth: %d\n", round_time, depth);
         printf("Total moves: %d --- Evaluated Moves: %d%%\n", num_moves_iterated, 100 * num_moves_trans / num_moves_iterated);
-        int idx = max_rating(final_rating, move_count);
+        int idx = 0;
+        if(is_player_white)
+            idx = max_rating(final_rating, move_count);
+        else
+            idx = min_rating(final_rating, move_count);
         print_full_board();
         //make move
         field captured[8] = {0UL};

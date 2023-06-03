@@ -18,7 +18,7 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
         field hashtable_value = hash_boards(); // different hash tables per player ?
         if(hash_table[hashtable_value] == 0.0f){
             num_moves_trans++;
-            hash_table[hashtable_value] = evaluation(max_player);
+            hash_table[hashtable_value] = evaluation();
         }
         return hash_table[hashtable_value];
         /*
@@ -41,7 +41,7 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
     }
 
     float value;
-    if(is_player_white == max_player){
+    if(is_player_white){
         //iterate over every moveset for a piece
         value = losing_move;
         for(int i = 0; i < move_count; i++){

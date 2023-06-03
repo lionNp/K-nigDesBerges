@@ -5,12 +5,12 @@
 // evaluate a move and return a float rating based of conditions
 // takes a field (move_from) with a bit set from where the move originates 
 // and a field (move_to) to where the piece is moved. The piece is specified by its enumerated int value
-float evaluation(bool max_player);
+float evaluation();
 int random_max_rating(float rating[], int move_count);
 int max_rating(float rating[], int move_count);
-
-float evaluate_position(bool max_player);
-float evaluate_control(bool max_player);
-float evaluate_material(bool max_player);
+int min_rating(float rating[], int move_count);
+float evaluate_position();
+float evaluate_control();
+float evaluate_material();
 float piece_value(field board);
 #endif

@@ -5,21 +5,20 @@
 #include <stdlib.h>
 #include "move_generator.h"
 
-float evaluation(bool max_player)
-{
+float evaluation(){
     float total_rating = 0.0f;
     // evaluate move
     //stopwatch eval_time = start_stopwatch();
     //field time_pos = 0UL;
     //field time_con = 0UL;
     //field time_mat = 0UL;
-    float position = evaluate_position(max_player);
+    float position = evaluate_position();
     //time_pos = stop_stopwatch(eval_time);
     
-    float control = evaluate_control(max_player);
+    float control = evaluate_control();
     //time_con = stop_stopwatch(eval_time);
     
-    float material = evaluate_material(max_player);
+    float material = evaluate_material();
     //time_mat = stop_stopwatch(eval_time);
     //printf("con: %ld\n", time_con);
     //printf("pos: %ld\n", time_pos);
@@ -30,7 +29,7 @@ float evaluation(bool max_player)
     return total_rating;
 }
 
-float evaluate_material(bool max_player){
+float evaluate_material(){
     float material = 0.0f;
     /*
     field max_board = bitfields[max_player];
@@ -46,29 +45,29 @@ float evaluate_material(bool max_player){
     }
 */
 
-    material += get_piece_count(bitfields[max_player] & bitfields[king]) * 100;
+    material += get_piece_count(bitfields[white] & bitfields[king]) * 100;
     
-    material += get_piece_count(bitfields[max_player] & bitfields[queen]) * 9;
+    material += get_piece_count(bitfields[white] & bitfields[queen]) * 9;
 
-    material += get_piece_count(bitfields[max_player] & bitfields[rook]) * 5;
+    material += get_piece_count(bitfields[white] & bitfields[rook]) * 5;
 
-    material += get_piece_count(bitfields[max_player] & bitfields[bishop]) * 3;
+    material += get_piece_count(bitfields[white] & bitfields[bishop]) * 3;
 
-    material += get_piece_count(bitfields[max_player] & bitfields[knight]) * 3;
+    material += get_piece_count(bitfields[white] & bitfields[knight]) * 3;
 
-    material += get_piece_count(bitfields[max_player] & bitfields[pawn]) * 1;
+    material += get_piece_count(bitfields[white] & bitfields[pawn]) * 1;
 
-    material -= get_piece_count(bitfields[!max_player] & bitfields[king]) * 100;
+    material -= get_piece_count(bitfields[black] & bitfields[king]) * 100;
 
-    material -= get_piece_count(bitfields[!max_player] & bitfields[queen]) * 9;
+    material -= get_piece_count(bitfields[black] & bitfields[queen]) * 9;
 
-    material -= get_piece_count(bitfields[!max_player] & bitfields[rook]) * 5;
+    material -= get_piece_count(bitfields[black] & bitfields[rook]) * 5;
 
-    material -= get_piece_count(bitfields[!max_player] & bitfields[bishop]) * 3;
+    material -= get_piece_count(bitfields[black] & bitfields[bishop]) * 3;
 
-    material -= get_piece_count(bitfields[!max_player] & bitfields[knight]) * 3;
+    material -= get_piece_count(bitfields[black] & bitfields[knight]) * 3;
 
-    material -= get_piece_count(bitfields[!max_player] & bitfields[pawn]) * 1;
+    material -= get_piece_count(bitfields[black] & bitfields[pawn]) * 1;
 
     return material;
 }
@@ -103,26 +102,26 @@ float piece_value(field board){
     return value;
 }
 
-float evaluate_control(bool max_player){
-    field max_danger_squares[16] = {0UL};
-    field min_danger_squares[16] = {0UL};
-    generate_attacked_squares(max_danger_squares, max_player);
-    generate_attacked_squares(min_danger_squares, !max_player);
+float evaluate_control(){
+    field white_ds[16] = {0UL};
+    field black_ds[16] = {0UL};
+    generate_attacked_squares(white_ds, white);
+    generate_attacked_squares(black_ds, black);
     for(int i = 0; i < 16; i++){
-        max_danger_squares[0] |= max_danger_squares[i];
-        min_danger_squares[0] |= min_danger_squares[i];
+        white_ds[0] |= white_ds[i];
+        black_ds[0] |= black_ds[i];
     }
-    field max_danger = max_danger_squares[0] & (max_danger_squares[0] ^ min_danger_squares[0]);
-    field min_danger = min_danger_squares[0] & (max_danger_squares[0] ^ min_danger_squares[0]);
-    int max_control = get_piece_count(max_danger);
-    int min_control = get_piece_count(min_danger);
-    return (float) (max_control - min_control);
+    field w_danger = white_ds[0] & (white_ds[0] ^ black_ds[0]);
+    field b_danger = black_ds[0] & (white_ds[0] ^ black_ds[0]);
+    int w_control = get_piece_count(w_danger);
+    int b_control = get_piece_count(b_danger);
+    return (float) (w_control - b_control);
 }
 
-float evaluate_position(bool max_player){
+float evaluate_position(){
     float position = 0.0f;
-    field max_board = bitfields[max_player];
-    field min_board = bitfields[!max_player];
+    field max_board = bitfields[white];
+    field min_board = bitfields[black];
     for(int i = 2; i < 8; i++){
         field max_pieces = max_board & bitfields[i];
         int max_piece_count = get_piece_count(max_pieces);
@@ -133,17 +132,13 @@ float evaluate_position(bool max_player){
             switch(i)
             {
                 case pawn: 
-                    position += max_player
-                        ? white_pawn_values[bit]
-                        : black_pawn_values[bit];
+                    position += white_pawn_values[bit];
                     break;
 
                 case king:
                     if(max_pieces & koth)
                         return winning_move;       
-                    position += max_player
-                        ? white_king_values[bit]
-                        : black_king_values[bit];
+                    position += white_king_values[bit];
                     break;
 
                 case queen: 
@@ -172,17 +167,13 @@ float evaluate_position(bool max_player){
             switch(i)
             {
                 case pawn: 
-                    position -= !max_player
-                        ? white_pawn_values[bit]
-                        : black_pawn_values[bit];
+                    position -= black_pawn_values[bit];
                     break;
 
                 case king:
                     if(min_pieces & koth)
                         return losing_move;       
-                    position -= !max_player
-                        ? white_king_values[bit]
-                        : black_king_values[bit];
+                    position -= black_king_values[bit];
                     break;
 
                 case queen: 
@@ -238,4 +229,13 @@ int max_rating(float rating[], int move_count){
             max_rating_index = c; 
     } 
     return max_rating_index;
+}
+
+int min_rating(float rating[], int move_count){
+    int min_rating_index = 0;
+    for(int c = 0; c < move_count; c++){
+        if(rating[c] < rating[min_rating_index])
+            min_rating_index = c; 
+    } 
+    return min_rating_index;
 }
