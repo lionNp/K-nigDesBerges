@@ -14,13 +14,15 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
     //printf("%d\n", depth);
     if(depth == 0){
         num_moves_iterated++;
-        field hashtable_value = hash_boards();
-        //printf("%u\n", hashtable_value);
+        
+        field hashtable_value = hash_boards(); // different hash tables per player ?
         if(hash_table[hashtable_value] == 0.0f){
             num_moves_trans++;
             hash_table[hashtable_value] = evaluation(max_player);
         }
         return hash_table[hashtable_value];
+        /*
+        return evaluation(max_player);*/
     }
 
     field moves_from[max_move_count];

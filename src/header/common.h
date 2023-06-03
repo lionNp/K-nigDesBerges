@@ -14,7 +14,7 @@
 
 typedef uint64_t field; 
 
-#define hash_prime 12000017
+#define hash_prime 99999989
 #define oob 10000.0f
 
 extern int hash_coeff[8];

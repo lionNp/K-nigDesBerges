@@ -7,12 +7,11 @@ bool gameover = false;
 bool castle_left[2] = {true, true};
 bool castle_right[2] = {true, true};
 
-
 int num_moves_iterated = 0;
 int num_moves_trans = 0;
 
 float hash_table[hash_prime] = { 0.0f };// = {[0 ... hash_prime-1] = oob};
-int hash_coeff[8] = {15, 14, 13, 12, 11, 10, 9, 8};
+int hash_coeff[8] = {77, 43, 11, 2, 69, 4, 20, 33};
 
 field bitfields[8];
 
