@@ -14,15 +14,12 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
     //printf("%d\n", depth);
     if(depth == 0){
         num_moves_iterated++;
-        
-        field hashtable_value = hash_boards(); // different hash tables per player ?
+        field hashtable_value = hash_boards();
         if(hash_table[hashtable_value] == 0.0f){
             num_moves_trans++;
             hash_table[hashtable_value] = evaluation();
         }
         return hash_table[hashtable_value];
-        /*
-        return evaluation(max_player);*/
     }
 
     field moves_from[max_move_count];
@@ -53,7 +50,7 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
 
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            value = fmax(value, alphabeta(depth - 1, alpha, beta, max_player));
+            value = fmax(value, (1 + (depth % 2) * 0.2) * alphabeta(depth - 1, alpha, beta, max_player));
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -78,7 +75,7 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
 
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            value = fmin(value, alphabeta(depth - 1, alpha, beta, max_player));
+            value = fmin(value, (1 + (depth % 2) * 0.2) * alphabeta(depth - 1, alpha, beta, max_player));
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 

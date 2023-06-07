@@ -24,7 +24,7 @@ float evaluation(){
     //printf("pos: %ld\n", time_pos);
     //printf("mat: %ld\n", time_mat);
     //printf("Material: %f\nCrontrol: %f\nPosition: %f\n", material, control, position);
-    total_rating = 25 * material + 1 * position + 1 * control;
+    total_rating = 20 * material + position + 2 * control;
     //printf("eval: %f took: %ldμs\n",total_rating,  time);
     return total_rating;
 }
@@ -115,7 +115,9 @@ float evaluate_control(){
     field b_danger = black_ds[0] & (white_ds[0] ^ black_ds[0]);
     int w_control = get_piece_count(w_danger);
     int b_control = get_piece_count(b_danger);
-    return (float) (w_control - b_control);
+    int w_c_control = get_piece_count(w_danger & koth);
+    int b_c_control = get_piece_count(b_danger & koth);
+    return (float) (w_control - b_control + 3 * (w_c_control - b_c_control));
 }
 
 float evaluate_position(){
