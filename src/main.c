@@ -19,9 +19,9 @@ int main() {
     // total match duration
     stopwatch total_time = start_stopwatch();
     field match_duration;
-
+    int total_pieces = 32;
     while(!gameover)
-    //for(int r = 0; r < 5; r++)
+    //for(int r = 0; r < 3; r++)
     {
         //time
         stopwatch turn_time = start_stopwatch();
@@ -39,40 +39,66 @@ int main() {
 
         float rating[move_count];
         float final_rating[move_count];
+        
         if(move_count == 0){
-            printf("No more moves\n");
+            printf("check mate!\n");
             printf("%s won!\n", !is_player_white ? "white" : "black");
-            gameover = true;
-            break;
+            field tt = stop_stopwatch(total_time);
+            print_full_board();
+            printf("Match took %d moves took %luμs\n", count_total_moves, tt);
+            return 0;
         }
         int break_after = 2000000;
         int depth = 0;
         num_moves_iterated = 0;
         num_moves_trans = 0;
-        for(; t < break_after; depth++){
+
+        /* reset hashtable if piece taken
+        */
+        /*
+        int new_piece_count = get_piece_count(bitfields[white] | bitfields[black]);
+        if(total_pieces != new_piece_count){
+            total_pieces = new_piece_count;
+            hash_table = {0UL};
+        }
+        */
+
+       float pv_score = 0.0f;
+       float score;
+
+        for(; t < break_after; depth++){  
             for(int i = 0; i < move_count; i++){
+
                 if(stop_stopwatch(turn_time) > break_after) break;
+
                 field captured[8] = {0UL};
                 bool castle_flags_left[2];
                 bool castle_flags_right[2];
+
                 memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
                 memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
 
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = !is_player_white;
+                
                 rating[i] = alphabeta(depth, alpha, beta, max_player);
+
                 is_player_white = !is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
                 memcpy(castle_left,castle_flags_left,sizeof(castle_left));
                 memcpy(castle_right,castle_flags_right,sizeof(castle_right));
             }
+
             for(int i = 0; i < move_count; i++)
                 final_rating[i] = rating[i];
+
+            //sort the moves depending on rating
+            //sort_moves(final_rating, moves_from, moves_to, piece_idx, move_count);
+
             t = stop_stopwatch(turn_time);
-            //printf("After %ldus passed,\n", t);
-            //printf("Moves: %d searched in depth %d\n", num_moves_iterated, depth);
         }
+
         float round_time = ((float) t / 1000000);
         printf("time: %fs at depth: %d\n", round_time, depth);
         printf("Total moves: %d --- Evaluated Moves: %d%%\n", num_moves_iterated, 100 * num_moves_trans / num_moves_iterated);
@@ -81,13 +107,13 @@ int main() {
             idx = max_rating(final_rating, move_count);
         else
             idx = min_rating(final_rating, move_count);
-        print_full_board();
+        
         //make move
         field captured[8] = {0UL};
-        //print_move(moves_from[idx] ^ moves_to[idx]);
         castle_flags(piece_idx[idx], moves_from[idx]);
         print_move(moves_from[idx], moves_to[idx]);
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
+        print_full_board();
         hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
         // save move in struct
         // struct includes current hashtable
@@ -106,12 +132,6 @@ int main() {
         }
         is_player_white = 1 - is_player_white;
     }
-    if(gameover){
-            field tt = stop_stopwatch(total_time);
-            printf("Game Over\n");
-            print_full_board();
-            printf("Match took %d moves took %luμs\n", count_total_moves, tt);
-        }
     return 0;
 }
 

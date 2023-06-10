@@ -3,8 +3,7 @@
 #include "move_util.h"
 #include <math.h>
 
-int generate_moves(field moves_from[], field moves_to[], int piece_idx[])
-{
+int generate_moves(field moves_from[], field moves_to[], int piece_idx[]){
     field king_position = bitfields[is_player_white] & bitfields[king];
     field king_pinned = pinned_piece_check(king_position);
     field pin_l_diag = 0UL;
@@ -170,7 +169,6 @@ field pseudo_moves(field single_piece_boards, field danger, int current_piece){
     return legal_moves;
 }
 
-
 // pinned example: field king_pinned = pinned_piece_check(king_position);
 field filter_pin_moves(field pinned, field piece, field moves, field position){
     field pin_l_diag = 0UL;
@@ -239,8 +237,7 @@ field castle_move(){
     return move;
 }
 
-int generate_attacked_squares(field attacked_squares[], bool player)
-{
+int generate_attacked_squares(field attacked_squares[], bool player){
     int bit_pos = 0;
     int x = 0;
     for(int current_piece = king; current_piece <= pawn; current_piece++)
@@ -287,4 +284,54 @@ int generate_attacked_squares(field attacked_squares[], bool player)
     }
     return x;
 }
-    
+
+void sort_moves(float rating[], field moves_from[], field moves_to[], int piece_idx[], int move_count){
+    if(is_player_white){
+        for(int i = 0; i < move_count - 1; i++){
+            for(int j = 0; j < move_count - i - 1; j++)
+                if(rating[j] < rating[j+1]){
+                    //print_move_2(moves_from[j] ^ moves_to[j]);
+                    float temp = rating[j+1];
+                    rating[j+1] = rating[j];
+                    rating[j] = temp;
+
+                    field temp_from = moves_from[j+1];
+                    moves_from[j+1] = moves_from[j];
+                    moves_from[j] = temp_from;
+
+                    field temp_to = moves_to[j+1];
+                    moves_to[j+1] = moves_to[j];
+                    moves_to[j] = temp_to;
+
+                    int temp_piece = piece_idx[j+1];
+                    piece_idx[j+1] = piece_idx[j];
+                    piece_idx[j] = temp_piece;
+                    //print_move_2(moves_from[j] ^ moves_to[j]);
+                }
+        }
+    }
+    else{
+        for(int i = 0; i < move_count - 1; i++){
+            for(int j = 0; j < move_count - i - 1; j++)
+                if(rating[j] > rating[j+1]){
+                    //print_move_2(moves_from[j] ^ moves_to[j]);
+                    float temp = rating[j+1];
+                    rating[j+1] = rating[j];
+                    rating[j] = temp;
+
+                    field temp_from = moves_from[j+1];
+                    moves_from[j+1] = moves_from[j];
+                    moves_from[j] = temp_from;
+
+                    field temp_to = moves_to[j+1];
+                    moves_to[j+1] = moves_to[j];
+                    moves_to[j] = temp_to;
+
+                    int temp_piece = piece_idx[j+1];
+                    piece_idx[j+1] = piece_idx[j];
+                    piece_idx[j] = temp_piece;
+                    //print_move_2(moves_from[j] ^ moves_to[j]);
+                }
+        }
+    }
+} 

@@ -12,5 +12,5 @@ int generate_attacked_squares(field attacked_squares[], bool player);
 field pseudo_moves(field single_piece_boards, field danger, int current_piece);
 field castle_move();
 field filter_pin_moves(field pinned, field piece, field moves, field position);
-
+void sort_moves(float rating[], field moves_from[], field moves_to[], int piece_idx[], int move_count);
 #endif
