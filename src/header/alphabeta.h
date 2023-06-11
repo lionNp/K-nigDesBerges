@@ -4,5 +4,5 @@
 #include "stopwatch_utils.h"
 
 float alphabeta(int depth, float alpha, float beta, bool max_player);
-
+float pvs(int depth, float alpha, float beta, bool max_player);
 #endif

@@ -81,8 +81,8 @@ int main() {
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = !is_player_white;
                 
-                rating[i] = alphabeta(depth, alpha, beta, max_player);
-
+                rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth, alpha, beta, max_player);
+                //rating[i] = (1 + (depth % 2) * tempo_bonus) * pvs(depth, alpha, beta, max_player);
                 is_player_white = !is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -94,8 +94,8 @@ int main() {
                 final_rating[i] = rating[i];
 
             //sort the moves depending on rating
-            //sort_moves(final_rating, moves_from, moves_to, piece_idx, move_count);
-
+            sort_moves(final_rating, moves_from, moves_to, piece_idx, move_count);
+            //filter_moves_quietsearch();
             t = stop_stopwatch(turn_time);
         }
 

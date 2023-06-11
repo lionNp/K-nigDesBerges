@@ -45,21 +45,22 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
             field captured[8] = {0UL};
             bool castle_flags_left[2];
             bool castle_flags_right[2];
+
             memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
             memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
 
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            score = (1 + (depth % 2) * 0.2) * alphabeta(depth - 1, alpha, beta, max_player);
+            score = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth - 1, alpha, beta, max_player);
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
             memcpy(castle_left,castle_flags_left,sizeof(castle_left));
             memcpy(castle_right,castle_flags_right,sizeof(castle_right));
 
-            alpha = fmax(alpha, score);
-            if(alpha >= beta)
+            if(alpha > beta)
                 break;
+            alpha = fmax(alpha, score);
         }
         //printf("Max_Alpha: %f Max_Beta: %f\n", alpha, beta);
         return alpha;
@@ -69,20 +70,22 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
             field captured[8] = {0UL};
             bool castle_flags_left[2];
             bool castle_flags_right[2];
+
             memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
             memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
+
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            score = (1 + (depth % 2) * 0.2) * alphabeta(depth - 1, alpha, beta, max_player);
+            score = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth - 1, alpha, beta, max_player);
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
             memcpy(castle_left,castle_flags_left,sizeof(castle_left));
             memcpy(castle_right,castle_flags_right,sizeof(castle_right));
 
-            beta = fmin(beta, score);
-            if(beta <= alpha)
+            if(beta < alpha)
                 break;
+            beta = fmin(beta, score);
         }
         //printf("Min_Alpha: %f Min_Beta: %f\n", alpha, beta);
         return beta;
@@ -118,6 +121,7 @@ float pvs(int depth, float alpha, float beta, bool max_player){
     }
 
     float score = 0.0f;
+    //iterate over every moveset for a piece
     if(is_player_white){
         //iterate over every moveset for a piece
         for(int i = 0; i < move_count; i++){
@@ -129,7 +133,13 @@ float pvs(int depth, float alpha, float beta, bool max_player){
 
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            score = (1 + (depth % 2) * 0.2) * alphabeta(depth - 1, alpha, beta, max_player);
+            if(i == 0)
+                score = alphabeta(depth - 1, alpha, beta, max_player);
+            else{
+                score = alphabeta(depth - 1, beta - 1, beta, max_player);
+                if(score > alpha && score < beta)
+                    score = alphabeta(depth - 1, alpha, -score, max_player);
+            }
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -152,7 +162,13 @@ float pvs(int depth, float alpha, float beta, bool max_player){
             memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            score = (1 + (depth % 2) * 0.2) * alphabeta(depth - 1, alpha, beta, max_player);
+            if(i == 0)
+                score = alphabeta(depth - 1, alpha, beta, max_player);
+            else{
+                score = alphabeta(depth - 1, alpha, alpha - 1, max_player);
+                if(score > alpha && score < beta)
+                    score = alphabeta(depth - 1, -score, beta, max_player);
+            }
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
