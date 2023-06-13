@@ -21,7 +21,7 @@ int main() {
     field match_duration;
     int total_pieces = 32;
     while(!gameover)
-    //for(int r = 0; r < 3; r++)
+    //for(int r = 0; r < 1; r++)
     {
         //time
         stopwatch turn_time = start_stopwatch();
@@ -66,7 +66,7 @@ int main() {
        float pv_score = 0.0f;
        float score;
 
-        for(; t < break_after; depth++){  
+        for(; t < break_after; depth++){ 
             for(int i = 0; i < move_count; i++){
 
                 if(stop_stopwatch(turn_time) > break_after) break;
@@ -81,8 +81,8 @@ int main() {
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = !is_player_white;
                 
-                rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth, alpha, beta, max_player);
-                //rating[i] = (1 + (depth % 2) * tempo_bonus) * pvs(depth, alpha, beta, max_player);
+                rating[i] = alphabeta(depth, alpha, beta, max_player);
+                //rating[i] = pvs(depth, alpha, beta, max_player);
                 is_player_white = !is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 

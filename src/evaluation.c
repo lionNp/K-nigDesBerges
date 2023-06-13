@@ -19,14 +19,69 @@ float evaluation(){
     //time_con = stop_stopwatch(eval_time);
     
     float material = evaluate_material();
+
+    float pawns = evaluate_pawns();
+    //if(pawns != 0){
+    //    printf("%f\n", pawns);
+    //    print_full_board();
+    //}
+        
     //time_mat = stop_stopwatch(eval_time);
     //printf("con: %ld\n", time_con);
     //printf("pos: %ld\n", time_pos);
     //printf("mat: %ld\n", time_mat);
     //printf("Material: %f\nCrontrol: %f\nPosition: %f\n", material, control, position);
-    total_rating = 25 * material + position + 10 * control;
+    total_rating = 20 * material + position + 5 * control + pawns;
     //printf("eval: %f took: %ldμs\n",total_rating,  time);
     return total_rating;
+}
+
+float evaluate_pawns(){
+    float passed_p = 0.0f;
+    float stacked_p = 0.0f;
+    int pp_value = 5;
+    int sp_value = 2;
+    field black_pawns = bitfields[pawn] & bitfields[black];
+    field white_pawns = bitfields[pawn] & bitfields[white];
+    for(int k = 0; k < 8; k++){
+        field black_pawns_file = black_pawns & files[k];
+        field white_pawns_file = white_pawns & files[k];
+        field pawns_in_file = bitfields[pawn] & files[k];
+
+        int black_pawns_in_file = get_piece_count(black_pawns_file);
+        int white_pawns_in_file = get_piece_count(white_pawns_file);
+
+        if(white_pawns_in_file > 1)
+            stacked_p -= sp_value * (white_pawns_in_file - 1);
+        if(black_pawns_in_file > 1)
+            stacked_p += sp_value * (black_pawns_in_file - 1);
+        
+        if(k == 0){
+            field pp_white = pawns_in_file | (black_pawns & files[1]);
+            field pp_black = pawns_in_file | (white_pawns & files[1]);
+            if(!((pp_white ^ white_pawns_file) & white_pawns_file))
+                passed_p += pp_value;
+            if(!((pp_black ^ black_pawns_file) & black_pawns_file))
+                passed_p -= pp_value;
+        }
+        else if(k == 7){
+            field pp_white = pawns_in_file | (black_pawns & files[6]);
+            field pp_black = pawns_in_file | (white_pawns & files[6]);
+            if(!((pp_white ^ white_pawns_file) & white_pawns_file))
+                passed_p += pp_value;
+            if(!((pp_black ^ black_pawns_file) & black_pawns_file))
+                passed_p -= pp_value;
+        }
+        else{
+            field pp_white = pawns_in_file | (black_pawns & files[k-1] & files[k+1]);
+            field pp_black = pawns_in_file | (white_pawns & files[k-1] & files[k+1]);
+            if(!((pp_white ^ white_pawns_file) & white_pawns_file))
+                passed_p += pp_value;
+            if(!((pp_black ^ black_pawns_file) & black_pawns_file))
+                passed_p -= pp_value;
+        }
+    }
+    return passed_p + stacked_p;
 }
 
 float evaluate_material(){
