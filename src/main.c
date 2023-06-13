@@ -116,9 +116,16 @@ int main() {
 
         // ###################### added reset hash on captured
         //hash_table[hash_prime] = { 0.0f };// = {[0 ... hash_prime-1] = oob};
-        memset(hash_table, 0, hash_prime * sizeof(float_t));
-        printf("with a total of %d hash collisions\n", num_hash_collisions);
-        num_hash_collisions = 0;
+        for (int i =0; i<8; i++)
+        {
+            if(captured[i] != 0UL)
+            {
+                memset(hash_table, 0, hash_prime * sizeof(float_t));
+                printf("with a total of %d hash collisions\n", num_hash_collisions);
+                num_hash_collisions = 0;
+                break;
+            }
+        }
         // ######################
 
         print_full_board();
