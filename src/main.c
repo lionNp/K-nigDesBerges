@@ -113,6 +113,14 @@ int main() {
         castle_flags(piece_idx[idx], moves_from[idx]);
         print_move(moves_from[idx], moves_to[idx]);
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
+
+        // ###################### added reset hash on captured
+        //hash_table[hash_prime] = { 0.0f };// = {[0 ... hash_prime-1] = oob};
+        memset(hash_table, 0, hash_prime * sizeof(float_t));
+        printf("with a total of %d hash collisions\n", num_hash_collisions);
+        num_hash_collisions = 0;
+        // ######################
+
         print_full_board();
         hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
         // save move in struct

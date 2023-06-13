@@ -19,6 +19,7 @@ typedef uint64_t field;
 
 #define tempo_bonus 0.05
 
+extern int num_hash_collisions;
 extern int hash_coeff[8];
 extern float hash_table[hash_prime];
 

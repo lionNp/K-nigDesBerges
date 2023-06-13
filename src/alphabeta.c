@@ -14,7 +14,38 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
     //printf("%d\n", depth);
     if(depth == 0){
         num_moves_iterated++;
+
         field hashtable_value = hash_boards();
+
+        if (hash_table[hashtable_value] != evaluation() && hash_table[hashtable_value] != 0.0f)
+        {
+            //printf("Hash collision has occurred: value is: %f at index: %ld\n", hash_table[hashtable_value], hashtable_value);
+            num_hash_collisions++;
+
+            //double collision check (to be removed later)
+            if(hash_table[hashtable_value] == -1234.4321f)
+                printf("double collision occurred at %ld\n", hashtable_value);
+
+            num_moves_trans++;
+            float abs_eval = evaluation();
+            float abs_table_value = hash_table[hashtable_value];
+
+            if(abs_eval < 0) abs_eval *= -1.0f;
+            if(abs_table_value < 0) abs_table_value *= -1.0f;
+
+
+            //conservative: on collision use smaller value (aka value with deg closer to 0)
+            num_moves_trans++;
+            hash_table[hashtable_value] = abs_table_value;
+            if(abs_eval < abs_table_value)
+                hash_table[hashtable_value] = abs_eval;
+
+            //double collision flag; remove later
+            hash_table[hashtable_value] = -1234.4321f;
+
+            return hash_table[hashtable_value];
+        }
+
         if(hash_table[hashtable_value] == 0.0f){
             num_moves_trans++;
             hash_table[hashtable_value] = evaluation();
