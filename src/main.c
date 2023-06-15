@@ -122,6 +122,10 @@ int main() {
         float round_time = ((float) t / 1000000);
         printf("time: %fs at depth: %d\n", round_time, depth);
         printf("Total moves: %d --- Evaluated Moves: %d%%\n", num_moves_iterated, 100 * num_moves_trans / num_moves_iterated);
+        
+        printf("with a total of %d hash collisions\n", num_hash_collisions);
+        num_hash_collisions = 0;
+
         int idx = 0;
         if(is_player_white)
             idx = max_rating(final_rating, move_count);
@@ -141,8 +145,6 @@ int main() {
             if(captured[i] != 0UL)
             {
                 memset(hash_table, 0, hash_prime * sizeof(float_t));
-                printf("with a total of %d hash collisions\n", num_hash_collisions);
-                num_hash_collisions = 0;
                 break;
             }
         }
