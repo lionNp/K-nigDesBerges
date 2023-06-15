@@ -17,7 +17,7 @@ typedef uint64_t field;
 #define hash_prime 120000007
 #define oob 10000.0f
 
-#define tempo_bonus 0.05
+#define tempo_bonus 0.1
 
 extern int hash_coeff[8];
 extern float hash_table[hash_prime];
