@@ -423,3 +423,13 @@ void print_move(field start, field end){
     print_pos(end);
     printf("\n");
 }
+
+int get_piece_id(field pos){
+   field pieces[] = {boards[king], boards[queen], boards[rook], 
+   boards[bishop], boards[knight], boards[pawn]};
+
+    for(int i = 0; i < 5; i++){
+        if((pos & pieces[i]) > 0)
+            return i+2;
+    }
+}
