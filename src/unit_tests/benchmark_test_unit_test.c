@@ -122,7 +122,51 @@ void test_evaluation()
     printf("Evalutation of the board took an avg of %lu μs\n \n",t);
 }
 
+void test_set_bits(){
+    int test;
+    stopwatch time = start_stopwatch();
+    for(int k = 0; k < 10000; k++){
+        field board = 0x0802001818001040;
+        test = 0;
+        for(int i = 0; i < 64; i++) {
+            if(board % 2 == 1)
+                test++;
+            board = board>>1;
+        }
+    }
+    field t = stop_stopwatch(time);
+    printf("Old: %d in %ldμs\n", test, t);
+
+    field final;
+    time = start_stopwatch();
+    for(int k = 0; k < 10000; k++){
+        field i = 0x0802001818001040;
+        i = i - ((i >> 1) & 0x5555555555555555); // 0101
+        i = (i & 0x3333333333333333) + ((i >> 2) & 0x3333333333333333); //0011
+        i = (i + (i >> 4)) & 0x0F0F0F0F0F0F0F0F; //1111
+        final = (i * 0x0101010101010101) >> 56; //00000000
+    }
+    t = stop_stopwatch(time);
+    printf("New: %ld in %ldμs\n", final, t);
+
+
+
+
+    time = start_stopwatch();
+    int n = 0;
+    for(int k = 0; k < 10000; k++){
+        field o = 0x0802001818001040;
+        n = 0;
+        for(int i = 0; i < 64; i++) {
+            n += (o<<i) >> 63; 
+        }
+    }
+    t = stop_stopwatch(time);
+    printf("%d in %ldμs\n", n, t);
+    
+}
+
 int main(){
-    test_move_generator();
+    test_set_bits();
     return 0;
 }

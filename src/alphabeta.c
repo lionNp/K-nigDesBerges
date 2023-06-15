@@ -85,7 +85,7 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
 
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            score = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth - 1, alpha, beta, max_player);
+            score = alphabeta(depth - 1, alpha, beta, max_player);
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -110,7 +110,7 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
 
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            score = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth - 1, alpha, beta, max_player);
+            score = alphabeta(depth - 1, alpha, beta, max_player);
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -170,7 +170,7 @@ float pvs(int depth, float alpha, float beta, bool max_player){
             if(i == 0)
                 score = alphabeta(depth - 1, alpha, beta, max_player);
             else{
-                score = alphabeta(depth - 1, beta - 1, beta, max_player);
+                score = alphabeta(depth - 1, -alpha - 1, beta, max_player);
                 if(score > alpha && score < beta)
                     score = alphabeta(depth - 1, alpha, -score, max_player);
             }
@@ -199,7 +199,7 @@ float pvs(int depth, float alpha, float beta, bool max_player){
             if(i == 0)
                 score = alphabeta(depth - 1, alpha, beta, max_player);
             else{
-                score = alphabeta(depth - 1, alpha, alpha - 1, max_player);
+                score = alphabeta(depth - 1, -beta, -beta - 1, max_player);
                 if(score > alpha && score < beta)
                     score = alphabeta(depth - 1, -score, beta, max_player);
             }

@@ -12,5 +12,6 @@ int min_rating(float rating[], int move_count);
 float evaluate_position();
 float evaluate_control();
 float evaluate_material();
+float evaluate_pawns();
 float piece_value(field board);
 #endif

@@ -25,6 +25,11 @@ void get_single_piece_boards(field board, field single_piece_boards[], int piece
 
 //magic
 int get_piece_count(field board) {
+    board = board - ((board >> 1) & 0x5555555555555555);
+    board = (board & 0x3333333333333333) + ((board >> 2) & 0x3333333333333333);
+    board = (board + (board >> 4)) & 0x0F0F0F0F0F0F0F0F;
+    return (board * 0x0101010101010101) >> 56;
+    /*
     int n = 0;
     board = board - ((board >> 1) & 0x5555555555555555);
     board = (board & 0x3333333333333333) + ((board >> 2) & 0x3333333333333333);
@@ -50,6 +55,7 @@ int get_piece_count2(field board) {
         board = board>>1;
     }
     return n;
+    */
 }
 
 bool game_finished(int total_legal_moves){
