@@ -2,6 +2,11 @@
 #include "bit_boards_util.h"
 #include "stopwatch_utils.h"
 
+field default_expected_move_num = 58;
+field default_time_per_move = 2000000;
+field total_remaining_time = 80000000;
+field total_moves = 0;
+
 bool is_player_white = true;
 bool gameover = false;
 bool castle_left[2] = {true, true};
@@ -10,8 +15,15 @@ bool castle_right[2] = {true, true};
 int num_moves_iterated = 0;
 int num_moves_trans = 0;
 
+int num_hash_collisions = 0;
 float hash_table[hash_prime] = { 0.0f };// = {[0 ... hash_prime-1] = oob};
+
 int hash_coeff[8] = {77, 43, 11, 2, 69, 4, 20, 33};
+
+//hash collisions x1.2
+int hash_coeff3[8] = {9, 43, 11, 2, 13, 5, 20, 33};
+//hash collisions x10
+int hash_coeff2[8] = {77, 43, 11, 103, 191, 179, 151, 113};
 
 field bitfields[8];
 

@@ -3,6 +3,9 @@
 
 #include "common.h"
 
+//calculate time budget based on the number of moves possible
+field calc_time_budget(int move_count);
+
 // check if king is checked
 field in_check(field position);
 

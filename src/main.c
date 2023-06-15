@@ -15,6 +15,9 @@ int main() {
     //initilize board
     import_gamestring(bitfields, game_string);
 
+    //set chess clock;
+    total_remaining_time = default_expected_move_num * default_time_per_move;
+
     int count_total_moves = 0;
     // total match duration
     stopwatch total_time = start_stopwatch();
@@ -48,7 +51,9 @@ int main() {
             printf("Match took %d moves took %luμs\n", count_total_moves, tt);
             return 0;
         }
-        int break_after = 2000000;
+
+        int break_after = default_time_per_move;
+        
         int depth = 0;
         num_moves_iterated = 0;
         num_moves_trans = 0;
@@ -63,13 +68,22 @@ int main() {
         }
         */
 
-       float pv_score = 0.0f;
-       float score;
+        float pv_score = 0.0f;
+        float score;
+
+        
+        //set time for each iteration dynamically
+        break_after = calc_time_budget(move_count);
 
         for(; t < break_after; depth++){ 
             for(int i = 0; i < move_count; i++){
 
-                if(stop_stopwatch(turn_time) > break_after) break;
+                //"almost done: if iteration is 70% done with depth, let it finish"
+                if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count < 0.7f) )
+                    break;
+
+                if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count >= 0.7f))
+                    printf("depth almost done, letting finish\n");
 
                 field captured[8] = {0UL};
                 bool castle_flags_left[2];
@@ -101,6 +115,10 @@ int main() {
             t = stop_stopwatch(turn_time);
         }
 
+        //dekrement chess clock and increment total moves done
+        total_remaining_time -= t;
+        total_moves++;
+
         float round_time = ((float) t / 1000000);
         printf("time: %fs at depth: %d\n", round_time, depth);
         printf("Total moves: %d --- Evaluated Moves: %d%%\n", num_moves_iterated, 100 * num_moves_trans / num_moves_iterated);
@@ -115,6 +133,21 @@ int main() {
         castle_flags(piece_idx[idx], moves_from[idx]);
         print_move(moves_from[idx], moves_to[idx]);
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
+
+        // ###################### added reset hash on captured
+        //hash_table[hash_prime] = { 0.0f };// = {[0 ... hash_prime-1] = oob};
+        for (int i =0; i<8; i++)
+        {
+            if(captured[i] != 0UL)
+            {
+                memset(hash_table, 0, hash_prime * sizeof(float_t));
+                printf("with a total of %d hash collisions\n", num_hash_collisions);
+                num_hash_collisions = 0;
+                break;
+            }
+        }
+        // ######################
+
         print_full_board();
         hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
         // save move in struct

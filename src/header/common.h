@@ -14,11 +14,17 @@
 
 typedef uint64_t field; 
 
-#define hash_prime 120000007
+#define hash_prime 480000007
 #define oob 10000.0f
 
 #define tempo_bonus 0.1
 
+extern field total_remaining_time;
+extern field default_time_per_move;
+extern field default_expected_move_num;
+extern field total_moves;
+
+extern int num_hash_collisions;
 extern int hash_coeff[8];
 extern float hash_table[hash_prime];
 
