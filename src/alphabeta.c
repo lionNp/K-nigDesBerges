@@ -258,12 +258,11 @@ float qs(float alpha, float beta, bool max_player){
     //printf("%d\n", depth);
     
     field enemy = bitfields[white];
+    field promotion = rank_1;
     field moves_from[max_move_count];
     field moves_to[max_move_count];
     int piece_idx[max_move_count];
     float rating[max_move_count];
-
-    int move_count = generate_moves(moves_from, moves_to, piece_idx);
     
     //recursion anchor
     float stand_pat = evaluate_position;
@@ -282,28 +281,32 @@ float qs(float alpha, float beta, bool max_player){
             return winning_move;
     }
 
-    if(is_player_white)
+    if(is_player_white){
         enemy = bitfields[black];
-    //filter non capture moves --1
-    //TODO: include queen promotions, checks
+        promotion = rank_8;
+    }
+    
+    //filter non capture moves
+    //TODO: include checks
+    int move_count = generate_moves(moves_from, moves_to, piece_idx);
     int removed = 0;
     for(int i = 0; i < move_count; i++){
-        if((enemy & moves_to[i]) == 0){
+        if((enemy & moves_to[i]) == 0                           //capture
+        || !(get_piece_id(moves_from[i] == 7)                   //queen promotion
+        && (moves_to[i] & promotion > 0))
+        //|| get_piece_id(moves_to) < get_piece_id(moves_from)    //only winning captures
+        ){
             piece_idx[i] = -100;
             removed++;
         }
     }
-
-    //
-    if(reduced/move_count*100 < 10)
-        return alphabeta(depth, alpha, beta, max_player);
 
     //sorting
     bsMVV_LVA(moves_from, moves_to, piece_idx, move_count);
 
     float value;
     float score = 0.0f;
-    //iterate over capture for a piece
+    //iterate over filtered moves
     for(int i = 0; i < move_count - removed && piece_idx != -100; i++){
         field captured[8] = {0UL};
         bool castle_flags_left[2];
@@ -347,17 +350,11 @@ void bsMVV_LVA(field[] moves_from, field[] moves_to, int[] piece_idx, int moveco
     while(change > 0){
         for(int i = 0; i < movecount-1; i++){
             change = 0;
-            int from = get_piece_id(moves_from[i]);
             int to = get_piece_id(moves_to[i]);
             int toNext = get_piece_id(moves_to[i+1]);
-            
-            //optional: only winning captures
-            if(to <= from){
-                piece_idx[i] = -100;
-            }
             //check most valuable target
-            if(to > toNext                                              //better target smaller id
-            || (piece_idx[i] == -100 && (piece_idx[i+1] != -100))){     //both filtered
+            if(to > toNext                                          //better target smaller id
+            || (piece_idx[i] == -100 && (piece_idx[i+1] != -100))){ //both filtered
                 temp = moves_to[i+1];
                 moves_to[i+1] = moves_to[i];
                 moves_to[i] = temp;
@@ -371,7 +368,7 @@ void bsMVV_LVA(field[] moves_from, field[] moves_to, int[] piece_idx, int moveco
             }
             //check equal target - least valuable attacker
             else if(to == toNext 
-                && from > get_piece_id(moves_from[i+1])){
+                && get_piece_id(moves_from[i]) > get_piece_id(moves_from[i+1])){
                     temp = moves_from[i+1];
                     moves_from[i+1] = moves_from[i];
                     moves_from[i] = temp;
