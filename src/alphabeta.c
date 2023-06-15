@@ -217,3 +217,166 @@ float pvs(int depth, float alpha, float beta, bool max_player){
         return beta;
     }
 }
+
+float qsCheck(int depth, float alpha, float beta, bool max_player){
+    
+    if(depth == 0){
+        num_moves_iterated++;
+        field hashtable_value = hash_boards();
+        if(hash_table[hashtable_value] == 0.0f){
+            num_moves_trans++;
+            hash_table[hashtable_value] = evaluation();
+        }
+        return hash_table[hashtable_value];
+    }
+    
+    field enemy = bitfields[white];
+    field moves_from[max_move_count];
+    field moves_to[max_move_count];
+    int piece_idx[max_move_count];
+    int move_count = generate_moves(moves_from, moves_to, piece_idx);
+    
+    if(is_player_white)
+        enemy = bitfields[black];
+    //filter non capture moves --1
+    //TODO: include queen promotions, checks
+    int removed = 0;
+    for(int i = 0; i < move_count; i++){
+        if((enemy & moves_to[i]) == 0){
+            piece_idx[i] = -100;
+            removed++;
+        }
+    }
+
+    //
+    if(removed*100/move_count < 10)
+        return alphabeta(depth, alpha, beta, max_player);
+    return qs(alpha, beta, max_player);
+}
+
+float qs(float alpha, float beta, bool max_player){
+    //printf("%d\n", depth);
+    
+    field enemy = bitfields[white];
+    field moves_from[max_move_count];
+    field moves_to[max_move_count];
+    int piece_idx[max_move_count];
+    float rating[max_move_count];
+
+    int move_count = generate_moves(moves_from, moves_to, piece_idx);
+    
+    //recursion anchor
+    float stand_pat = evaluate_position;
+    float oriMat = evaluate_material;
+
+    if(stand_pat >= beta)
+        return beta;
+    if(stand_pat > alpha)
+        alpha = stand_pat;
+
+    if(move_count == 0){
+        num_moves_iterated++;
+        if(is_player_white == max_player)
+            return losing_move;
+        else
+            return winning_move;
+    }
+
+    if(is_player_white)
+        enemy = bitfields[black];
+    //filter non capture moves --1
+    //TODO: include queen promotions, checks
+    int removed = 0;
+    for(int i = 0; i < move_count; i++){
+        if((enemy & moves_to[i]) == 0){
+            piece_idx[i] = -100;
+            removed++;
+        }
+    }
+
+    //
+    if(reduced/move_count*100 < 10)
+        return alphabeta(depth, alpha, beta, max_player);
+
+    //sorting
+    bsMVV_LVA(moves_from, moves_to, piece_idx, move_count);
+
+    float value;
+    float score = 0.0f;
+    //iterate over capture for a piece
+    for(int i = 0; i < move_count - removed && piece_idx != -100; i++){
+        field captured[8] = {0UL};
+        bool castle_flags_left[2];
+        bool castle_flags_right[2];
+
+        memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
+        memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
+
+        make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+        is_player_white = 1 - is_player_white;
+        
+        score = qs(alpha, beta, max_player);
+        is_player_white = 1 - is_player_white;
+        unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+
+        memcpy(castle_left,castle_flags_left,sizeof(castle_left));
+        memcpy(castle_right,castle_flags_right,sizeof(castle_right));
+
+        if(is_player_white){
+            if(alpha > beta)
+                break;
+            alpha = fmax(alpha, score);
+        }
+        else if(beta < alpha){
+                break;
+            beta = fmin(beta, score);
+        }
+    }
+    //printf("Min_Alpha: %f Min_Beta: %f\n", alpha, beta);
+    if(is_player_white)
+        return alpha;
+    return beta;
+}
+
+
+void bsMVV_LVA(field[] moves_from, field[] moves_to, int[] piece_idx, int movecount){
+    field temp;
+    int tempIdx = 0;
+    int change = 0;
+
+    while(change > 0){
+        for(int i = 0; i < movecount-1; i++){
+            change = 0;
+            int from = get_piece_id(moves_from[i]);
+            int to = get_piece_id(moves_to[i]);
+            int toNext = get_piece_id(moves_to[i+1]);
+            
+            //optional: only winning captures
+            if(to <= from){
+                piece_idx[i] = -100;
+            }
+            //check most valuable target
+            if(to > toNext                                              //better target smaller id
+            || (piece_idx[i] == -100 && (piece_idx[i+1] != -100))){     //both filtered
+                temp = moves_to[i+1];
+                moves_to[i+1] = moves_to[i];
+                moves_to[i] = temp;
+                temp = moves_from[i+1];
+                moves_from[i+1] = moves_from[i];
+                moves_from[i] = temp;
+                tempIdx = piece_idx[i];
+                piece_idx[i+1] = piece_idx[i];
+                piece_idx[i] = tempIdx;
+                change++;
+            }
+            //check equal target - least valuable attacker
+            else if(to == toNext 
+                && from > get_piece_id(moves_from[i+1])){
+                    temp = moves_from[i+1];
+                    moves_from[i+1] = moves_from[i];
+                    moves_from[i] = temp;
+                    change++;
+            }
+        }
+    }
+}
