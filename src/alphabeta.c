@@ -136,7 +136,7 @@ float pvs(int depth, float alpha, float beta, bool max_player){
             if(i == 0)
                 score = alphabeta(depth - 1, alpha, beta, max_player);
             else{
-                score = alphabeta(depth - 1, beta - 1, beta, max_player);
+                score = alphabeta(depth - 1, -alpha - 1, beta, max_player);
                 if(score > alpha && score < beta)
                     score = alphabeta(depth - 1, alpha, -score, max_player);
             }
@@ -165,7 +165,7 @@ float pvs(int depth, float alpha, float beta, bool max_player){
             if(i == 0)
                 score = alphabeta(depth - 1, alpha, beta, max_player);
             else{
-                score = alphabeta(depth - 1, alpha, alpha - 1, max_player);
+                score = alphabeta(depth - 1, -beta, -beta - 1, max_player);
                 if(score > alpha && score < beta)
                     score = alphabeta(depth - 1, -score, beta, max_player);
             }

@@ -80,9 +80,8 @@ int main() {
 
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = !is_player_white;
-                
-                rating[i] = alphabeta(depth, alpha, beta, max_player);
-                //rating[i] = pvs(depth, alpha, beta, max_player);
+                //rating[i] = alphabeta(depth, alpha, beta, max_player);
+                rating[i] = pvs(depth, alpha, beta, max_player);
                 is_player_white = !is_player_white;
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 

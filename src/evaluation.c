@@ -31,7 +31,7 @@ float evaluation(){
     //printf("pos: %ld\n", time_pos);
     //printf("mat: %ld\n", time_mat);
     //printf("Material: %f\nCrontrol: %f\nPosition: %f\n", material, control, position);
-    total_rating = 20 * material + position + 5 * control + pawns;
+    total_rating = 50 * material + position + 3 * control + 2 * pawns;
     //printf("eval: %f took: %ldμs\n",total_rating,  time);
     return total_rating;
 }
