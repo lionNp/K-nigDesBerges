@@ -3,6 +3,28 @@
 #include "common.h"
 #include <math.h>
 
+field calc_time_budget(int move_count){
+
+    printf("move count: %d\n", move_count);
+
+    double sec_in_us = 1000000;
+
+    double absolute_time =(( 2.437762 + (0.2002329 - 2.437762)/(1 + pow((move_count/31.05609), 5.557229))) * sec_in_us);
+    double expected_needed_time = (double) (default_time_per_move * (default_expected_move_num - total_moves));
+
+    field relative_time =  (field) ((absolute_time/(expected_needed_time)) * total_remaining_time);
+    
+    printf("time budget calculated: %ld\n", (field) absolute_time);
+    printf("time budget relative to remaining clock: %ld\n", relative_time);
+    printf("remaining clock: %ld\n", total_remaining_time);
+
+    //minimum time = 0.2s
+    if (relative_time < (field) 0.2 * sec_in_us)
+        return (field) 0.2 * sec_in_us;
+
+    return relative_time;
+}
+
 // Generate move_masks
 //
 //

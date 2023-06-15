@@ -19,6 +19,11 @@ typedef uint64_t field;
 
 #define tempo_bonus 0.05
 
+extern field total_remaining_time;
+extern field default_time_per_move;
+extern field default_expected_move_num;
+extern field total_moves;
+
 extern int num_hash_collisions;
 extern int hash_coeff[8];
 extern float hash_table[hash_prime];

@@ -2,6 +2,11 @@
 #include "bit_boards_util.h"
 #include "stopwatch_utils.h"
 
+field default_expected_move_num = 58;
+field default_time_per_move = 2000000;
+field total_remaining_time = 80000000;
+field total_moves = 0;
+
 bool is_player_white = true;
 bool gameover = false;
 bool castle_left[2] = {true, true};
