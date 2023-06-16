@@ -92,7 +92,9 @@ int main() {
                 memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
                 memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
 
-                make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+                if(depth != 4)
+                    make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+
                 is_player_white = !is_player_white;
                 //rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth, alpha, beta, max_player);
                 if(depth < 3)
@@ -100,7 +102,9 @@ int main() {
                 else
                     rating[i] = (1 + (depth % 2) * tempo_bonus) * pvs(depth, alpha, beta, max_player);
                 is_player_white = !is_player_white;
-                unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+
+                if(depth != 4)
+                    unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
                 memcpy(castle_left,castle_flags_left,sizeof(castle_left));
                 memcpy(castle_right,castle_flags_right,sizeof(castle_right));
