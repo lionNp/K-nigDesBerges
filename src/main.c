@@ -39,7 +39,9 @@ int main() {
         bool max_player = is_player_white;
         //get moves and set rating
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
-
+        
+        bool castle_flags_left[2];
+        bool castle_flags_right[2];
 
         //Nullzugsuche für die erste Iterationsebene
         bool null_zug_suche = true;
@@ -60,6 +62,8 @@ int main() {
             {
                 
                 field captured[8] = {0UL};
+                memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
+                memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
                 field extra_moves_from[max_move_count];
@@ -73,6 +77,8 @@ int main() {
                 int extra_move_count = generate_moves(extra_moves_from, extra_moves_to, extra_piece_idx);
                 for(int extra_i; extra_i < extra_move_count; extra_i++)
                 {
+                    memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
+                    memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
                     make_move(extra_piece_idx[i], extra_moves_from[i], extra_moves_to[i], extra_captured);
 
                     float extra_evaluation = evaluation();
@@ -95,11 +101,15 @@ int main() {
                     }
 
                     unmake_move(extra_piece_idx[i], extra_moves_from[i], extra_moves_to[i], extra_captured);
+                    memcpy(castle_left,castle_flags_left,sizeof(castle_left));
+                    memcpy(castle_right,castle_flags_right,sizeof(castle_right));
                 }
                 //at this point evaluations is an array containing the abs of the evaluation of the best move 
                 //possible when doing a double move
 
                 unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+                memcpy(castle_left,castle_flags_left,sizeof(castle_left));
+                memcpy(castle_right,castle_flags_right,sizeof(castle_right));
             }
 
             //flag lame moves
@@ -195,8 +205,6 @@ int main() {
                 //    printf("depth almost done, letting finish\n");
 
                 field captured[8] = {0UL};
-                bool castle_flags_left[2];
-                bool castle_flags_right[2];
 
                 memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
                 memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
