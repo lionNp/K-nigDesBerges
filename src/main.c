@@ -37,6 +37,115 @@ int main() {
         //get moves and set rating
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
 
+
+        //Nullzugsuche für die erste Iterationsebene
+        bool null_zug_suche = true;
+        if(null_zug_suche)
+        {
+            float baseline_evaluation = evaluation();
+
+            //if black invert
+            if(!is_player_white)
+            {
+                baseline_evaluation *= -1.0f;
+            }
+
+            float evaluations[move_count];
+
+            //first iteration
+            for(int i=0; i<move_count; i++)
+            {
+                
+                field captured[8] = {0UL};
+                make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+
+                field extra_moves_from[max_move_count];
+                field extra_moves_to[max_move_count];
+                int extra_piece_idx[max_move_count];
+                
+                field extra_captured[8] = {0UL};
+
+                //player doesnt get changed
+
+                int extra_move_count = generate_moves(extra_moves_from, extra_moves_to, extra_piece_idx);
+                for(int extra_i; extra_i < extra_move_count; extra_i++)
+                {
+                    make_move(extra_piece_idx[i], extra_moves_from[i], extra_moves_to[i], extra_captured);
+
+                    float extra_evaluation = evaluation();
+
+                    if(is_player_white)
+                    {
+                        if(evaluations[i] < extra_evaluation)
+                        {
+                            evaluations[i] = extra_evaluation;
+                        }
+                    }
+
+                    //black evaluation will be negated
+                    else
+                    {
+                        if(evaluations[i] < extra_evaluation * -1.0f)
+                        {
+                            evaluations[i] = extra_evaluation * -1.0f;
+                        }
+                    }
+
+                    unmake_move(extra_piece_idx[i], extra_moves_from[i], extra_moves_to[i], extra_captured);
+                }
+                //at this point evaluations is an array containing the abs of the evaluation of the best move 
+                //possible when doing a double move
+
+                unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+            }
+
+            //flag lame moves
+            int lame_moves_count = 0;
+            for(int i=0; i<move_count; i++)
+            {
+                if(baseline_evaluation / evaluations[i] < 0.2f)
+                {
+                    //printf("langweiliger zug gefunden\n");
+                    moves_from[i] = 0UL;
+                    moves_to[i] = 0UL;
+
+                    lame_moves_count++;
+                }
+            }
+
+            //remove lame moves by shifting everything to the start and changing move_count
+            printf("removed %d/%d moves due to them being not volatil enough\n", lame_moves_count, move_count);
+            move_count -= lame_moves_count;
+            int real_i = 0;
+            for(int i=0; i<move_count + lame_moves_count; i++)
+            {
+                //if move didnt get flagged, everything is fine
+                if(moves_from[real_i] != 0UL && moves_to[real_i] != 0UL)
+                {
+                    real_i++;
+                    continue;
+                }
+
+                //if it did get flagged, 
+                for(int f=i; f<move_count + lame_moves_count; f++)
+                {
+                    //copy next move to real_i field
+                    if(moves_from[f] != 0UL)
+                    {
+                        moves_from[real_i] = moves_from[f];
+                        moves_to[real_i] = moves_to[f];
+                        piece_idx[real_i] = piece_idx[f];
+
+                        moves_from[f] = 0UL;
+                        moves_to[f] = 0UL;
+                        piece_idx[f] = 0;
+                        break;
+                    }
+                }
+
+            }
+        }
+
         float rating[move_count];
         float final_rating[move_count];
         
