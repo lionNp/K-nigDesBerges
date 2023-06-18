@@ -89,7 +89,7 @@ void import_gamestring(field bitfields[], char gamestring[])
 
     int str_len = strlen(gamestring);
 
-    printf("Gamestring: %s\n", gamestring);
+    //printf("Gamestring: %s\n", gamestring);
 
     int i = 0;
     int iterate = 0;

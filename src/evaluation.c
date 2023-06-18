@@ -7,32 +7,24 @@
 
 float evaluation(){
     float total_rating = 0.0f;
-    // evaluate move
-    //stopwatch eval_time = start_stopwatch();
-    //field time_pos = 0UL;
-    //field time_con = 0UL;
-    //field time_mat = 0UL;
+
+    if(!(bitfields[king] & bitfields[white]))
+        return losing_move;
+    if(!(bitfields[king] & bitfields[black]))
+        return winning_move;
+
     float position = evaluate_position();
-    //time_pos = stop_stopwatch(eval_time);
     
     float control = evaluate_control();
-    //time_con = stop_stopwatch(eval_time);
     
     float material = evaluate_material();
 
     float pawns = evaluate_pawns();
-    //if(pawns != 0){
-    //    printf("%f\n", pawns);
-    //    print_full_board();
-    //}
-        
-    //time_mat = stop_stopwatch(eval_time);
-    //printf("con: %ld\n", time_con);
-    //printf("pos: %ld\n", time_pos);
-    //printf("mat: %ld\n", time_mat);
-    //printf("Material: %f\nCrontrol: %f\nPosition: %f\n", material, control, position);
-    total_rating = 20 * material + position + 2 * control + pawns;
-    //printf("eval: %f took: %ldμs\n",total_rating,  time);
+
+    float king_safety = evaluate_king_safety();
+
+    total_rating = 20 * material + position + 2 * control + pawns + king_safety;
+
     return total_rating;
 }
 
@@ -84,6 +76,32 @@ float evaluate_pawns(){
     //if(passed_p + stacked_p)
     //    printf("%f\n", passed_p + stacked_p);
     return passed_p + stacked_p;
+}
+
+float evaluate_king_safety(){
+    field black_king = bitfields[king] & bitfields[black];
+    field white_king = bitfields[king] & bitfields[white];
+    field black_pawns = bitfields[pawn] & bitfields[black];
+    field white_pawns = bitfields[pawn] & bitfields[white];
+    int black_king_pos = log2(black_king);
+    int white_king_pos = log2(white_king);
+    if(black_king_pos > 63 || black_king_pos < 0)
+        printf("%d\n", black_king_pos);
+    field black_king_moves = king_moves[black_king_pos];
+    field white_king_moves = king_moves[white_king_pos];
+    field black_king_pawns = black_king_moves & black_pawns;
+    field white_king_pawns = white_king_moves & white_pawns;
+    black_king_moves &= black_king_moves ^ bitfields[black];
+    white_king_moves &= white_king_moves ^ bitfields[white];
+    int black_pawn_count = get_piece_count(black_king_pawns);
+    int white_pawn_count = get_piece_count(white_king_pawns);
+    int black_king_safety = black_pawn_count + get_piece_count(black_king_moves);
+    int white_king_safety = white_pawn_count + get_piece_count(white_king_moves);
+    if(black_pawn_count > 3)
+        black_king_safety -= 2;
+    if(white_pawn_count > 3)
+        white_king_safety -= 2;
+    return (float) (white_king_safety - black_king_safety);
 }
 
 float evaluate_material(){

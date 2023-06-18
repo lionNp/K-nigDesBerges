@@ -82,8 +82,8 @@ int main() {
                 if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count < 0.7f) )
                     break;
 
-                if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count >= 0.7f))
-                    printf("depth almost done, letting finish\n");
+                //if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count >= 0.7f))
+                //    printf("depth almost done, letting finish\n");
 
                 field captured[8] = {0UL};
                 bool castle_flags_left[2];
@@ -120,10 +120,10 @@ int main() {
         total_moves++;
 
         float round_time = ((float) t / 1000000);
-        printf("time: %fs at depth: %d\n", round_time, depth);
-        printf("Total moves: %d --- Evaluated Moves: %d%%\n", num_moves_iterated, 100 * num_moves_trans / num_moves_iterated);
+        printf("Time: %fs       --- depth: %d\n", round_time, depth);
+        printf("Total Moves: %d --- Evaluated Moves: %d\n", num_moves_iterated, num_moves_trans);
         
-        printf("with a total of %d hash collisions\n", num_hash_collisions);
+        //printf("Hash collisions: %d\n", num_hash_collisions);
         num_hash_collisions = 0;
 
         int idx = 0;

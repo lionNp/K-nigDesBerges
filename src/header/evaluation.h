@@ -13,5 +13,6 @@ float evaluate_position();
 float evaluate_control();
 float evaluate_material();
 float evaluate_pawns();
+float evaluate_king_safety();
 float piece_value(field board);
 #endif

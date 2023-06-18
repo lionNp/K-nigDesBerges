@@ -10,9 +10,6 @@
 
 void test_move_generator()
 {
-    
-
-
     int piece_idx[max_move_count];
     field moves_from[max_move_count];
     field moves_to[max_move_count];

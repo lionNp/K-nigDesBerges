@@ -21,7 +21,7 @@ if [ $# == 0 ] || [ "$1" == "main" ]; then
   compile_exec
 fi
 
-if ! [ -f "./src/test/$1.c" ]; then
+if ! [ -f "./src/unit_tests/$1.c" ]; then
   echo "Error: src/test/ does not contain a file named: '$1'.c"
   exit 1
 fi
@@ -31,7 +31,7 @@ for file in ./src/*.c; do
     files+=("$file")
   fi
 done
-files+=("./src/test/$1.c")
+files+=("./src/unit_tests/$1.c")
 
 output="build/$1_debug"
 
