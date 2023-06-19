@@ -40,4 +40,7 @@ void get_single_piece_boards(field bitfields, field single_pieces_color[], int s
 // print a position
 void print_pos(field position);
 
+//get piece id of one position
+int get_piece_id(field pos);
+
 #endif
