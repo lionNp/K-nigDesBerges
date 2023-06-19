@@ -15,8 +15,7 @@
 
 typedef uint64_t field; 
 
-#define hash_prime 120000007
-#define oob 10000.0f
+#define hash_prime 240000007
 
 #define tempo_bonus 0.1
 
