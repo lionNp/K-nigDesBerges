@@ -35,6 +35,14 @@ float evaluation(){
                     pawns_modify * pawns + 
                     king_safety_modify * king_safety;
 
+    /*
+    printf("material_modify: %f\n", material_modify);
+    printf("position_modify: %f\n", position_modify);
+    printf("contol_modify: %f\n", contol_modify);
+    printf("pawns_modify: %f\n", pawns_modify);
+    printf("king_safety_modify: %f\n\n", king_safety_modify);
+    */
+
     return total_rating;
 }
 
