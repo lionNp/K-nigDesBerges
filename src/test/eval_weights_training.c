@@ -10,6 +10,15 @@
 #include <stdlib.h>
 #include "hashset.h"
 #include "alphabeta.h"
+#include <time.h>
+
+void print_all_learing_weights();
+void use_learing_weights();
+void clear_bitfields();
+void step_back_learing_weights();
+void set_learning_weight(float* weight_to_adjust);
+void get_fitting();
+void set_all_learing_weights();
 
 //globals for training
 float eval;
@@ -41,16 +50,11 @@ float king_safety_modify = 1;
 
 void main()
 {
-    printf("before: %f\n", learning_material_modify);
-    set_learning_weight(*learning_material_modify);
-    printf("after: %f\n", learning_material_modify);
-    return;
-
     //config for random number laster, rand() returns random integer
-    srand(time(Null));
+    srand(time(NULL));
 
-    char[] fen1 = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq";
-    float stockfish_eval1 = 1.0f
+    char fen1[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq";
+    float stockfish_eval1 = 1.0f;
 
     //set inital baseline
     clear_bitfields();
@@ -61,6 +65,10 @@ void main()
 
     //hereafter in (float) tmp_fitting the new temp fitting is calculated
     get_fitting();
+    printf("inital fitting: %f\n", tmp_fitting);
+    printf("with inital weights:\n");
+    print_all_learing_weights();
+
     fitting = tmp_fitting;
 
     //while not converged
@@ -73,20 +81,28 @@ void main()
             clear_bitfields();
             import_gamestring(bitfields, game_string);
 
+            //randomise tmp learing weights
+            set_all_learing_weights();
+            print_all_learing_weights();
+
             //get own and extern evaluation
             eval = evaluation();
             stock_eval = stockfish_eval1;
 
             //returns fitting into tmp_fitting
             get_fitting();
+            printf("new fitting: %f\n", tmp_fitting);
+
 
             if(fitting < tmp_fitting)
             {
+                printf("    --fitting used\n");
                 use_learing_weights();
                 fitting = tmp_fitting;
             }
             else
             {
+                printf("    --fitting not used\n");
                 step_back_learing_weights();
             }
 
@@ -97,6 +113,24 @@ void main()
         break;
     }
 
+}
+
+void set_all_learing_weights()
+{
+    set_learning_weight(&learning_material_modify);
+    set_learning_weight(&learning_position_modify);
+    set_learning_weight(&learning_contol_modify);
+    set_learning_weight(&learning_pawns_modify);
+    set_learning_weight(&learning_king_safety_modify);
+}
+
+void print_all_learing_weights()
+{
+    printf("learning_material_modify: %f\n", learning_material_modify);
+    printf("learning_position_modify: %f\n", learning_position_modify);
+    printf("learning_contol_modify: %f\n", learning_contol_modify);
+    printf("learning_pawns_modify: %f\n", learning_pawns_modify);
+    printf("learning_king_safety_modify: %f\n\n", learning_king_safety_modify);
 }
 
 void use_learing_weights()
@@ -123,7 +157,10 @@ void set_learning_weight(float* weight_to_adjust)
 
     float random_factor = (float) (rand() % range + 1) * learning_rate;
 
-    *weight_to_adjust = *weight_to_adjust * random_factor;
+    if(rand()%2 == 0)
+        *weight_to_adjust = *weight_to_adjust + random_factor;
+    else
+        *weight_to_adjust = *weight_to_adjust - random_factor;
 }
 
 void clear_bitfields()
