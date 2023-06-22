@@ -2,6 +2,12 @@
 #define EVALUATION_H
 #include "common.h"
 
+extern float material_modify;
+extern float position_modify;
+extern float contol_modify;
+extern float pawns_modify;
+extern float king_safety_modify;
+
 // evaluate a move and return a float rating based of conditions
 // takes a field (move_from) with a bit set from where the move originates 
 // and a field (move_to) to where the piece is moved. The piece is specified by its enumerated int value
