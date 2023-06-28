@@ -19,6 +19,8 @@ void step_back_learing_weights();
 void set_learning_weight(float* weight_to_adjust);
 void get_fitting();
 void set_all_learing_weights();
+void select_leaning_weights();
+void select_last_best_weights();
 
 //globals for training
 float eval;
@@ -31,6 +33,12 @@ long total_fittings_tested = 0;
 
 //minimum fitting that all sets need to be achieve similtaniously before termination
 float all_fitting_precision = 0.98f;
+
+float learning_material_modify = 20;
+float learning_position_modify = 1;
+float learning_contol_modify = 2;
+float learning_pawns_modify = 1;
+float learning_king_safety_modify = 1;
 
 float bef_learning_material_modify = 20;
 float bef_learning_position_modify = 1;
@@ -47,153 +55,200 @@ float pawns_modify = 1;
 float king_safety_modify = 1;
 */
 
-
-#define i_max 3
+#define training_runs 20
+#define iteration_depth 1
+#define learing_player 0
 
 void main()
 {
     //config for random number laster, rand() returns random integer
     srand(time(NULL));
 
-    char strings[i_max][100] =   {
-                            "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq",
-                            "rnbqk2r/pp2bppp/2p2n2/4N3/2B1P3/8/PPP1QPPP/RNB1K2R w KQkq",
-                            "8/1k6/1r3rp1/8/4R2P/2K5/3R4/8"
-                        };
-    float stockfish_eval[i_max] = {-6.0f, 50.0f, 8.0f};
-    //initial fittings (our weights: -5.000000, 63.000000, 6.000000)
-
-    import_gamestring(bitfields, strings[0]);
-    float ev1 = evaluation();
-    import_gamestring(bitfields, strings[1]);
-    float ev2 = evaluation();
-    import_gamestring(bitfields, strings[2]);
-    float ev3 = evaluation();
-    printf("fittings: %f, %f, %f\n", ev1, ev2, ev3);
-
-    //set inital baseline
-    float initial_sum_fittings = 0.0f;
-    for(int i=0; i<i_max; i++)
+    int learn_ct = 0;
+    //while 
+    for(int z=0; z<training_runs; z++)
     {
-        clear_bitfields();
-        import_gamestring(bitfields, strings[i]);
+        //set new learing weights
+        set_all_learing_weights();
 
-        eval = evaluation();
-        stock_eval = stockfish_eval[i];
+        //play game
+        import_gamestring(bitfields, game_string);
+        memset(hash_table, 0, hash_prime * sizeof(float_t));
 
-        get_fitting();
-        initial_sum_fittings += tmp_fitting;
-    }
+        int count_total_moves = 0;
+        int total_pieces = 32;
 
-    fitting = initial_sum_fittings / i_max;
-
-    //hereafter in (float) tmp_fitting the new temp fitting is calculated
-    printf("inital fitting: %f\n", fitting);
-    printf("with inital weights:\n");
-    print_all_learing_weights();
-
-    
-    //while not converged
-    while(true)
-    {
-        //reset fitting
-        float sum_fittings = 0.0f;
-
-        //for fen-eval-pair
-        for(int i=0; i<i_max; i++)
+        gameover = false;
+        while(!gameover)
         {
-            if(total_fittings_tested % 1000000 == 0)
+            //use respective weights
+            if(is_player_white == learing_player)
             {
-                printf("%.1fM total fittings tested\n", (float) total_fittings_tested / 1000000);
+                select_leaning_weights();
+            }
+            else
+            {
+                select_last_best_weights();
             }
 
-            //randomise tmp learing weights
-            set_all_learing_weights();
-            //print_all_learing_weights();
+            //printf(".");
+            field t = 0UL;
 
-            //get board
-            clear_bitfields();
-            import_gamestring(bitfields, strings[i]);
+            field moves_from[max_move_count];
+            field moves_to[max_move_count];
+            int piece_idx[max_move_count];
 
-            //get own and extern evaluation
-            eval = evaluation();
-            stock_eval = stockfish_eval[i];
+            float alpha = losing_move;
+            float beta = winning_move;
+            bool max_player = is_player_white;
 
-            //returns fitting into tmp_fitting
-            get_fitting();
+            int move_count = generate_moves(moves_from, moves_to, piece_idx);
+            
+            bool castle_flags_left[2];
+            bool castle_flags_right[2];
 
-            sum_fittings += tmp_fitting;
+            float rating[move_count];
+            float final_rating[move_count];
+            
+            if(move_count == 0){
+                //nothing special for now
+                printf("no moves \n");
+                break;
+            }
+
+            int break_after = default_time_per_move;
+            
+            int depth = 0;
+            num_moves_iterated = 0;
+            num_moves_trans = 0;
+
+            float pv_score = 0.0f;
+            float score;
+
+            for(; depth <= iteration_depth; depth++){ 
+                for(int i = 0; i < move_count; i++){
+
+                    field captured[8] = {0UL};
+
+                    memcpy(castle_flags_left,castle_left,sizeof(castle_flags_left));
+                    memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
+
+                    make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+                    is_player_white = !is_player_white;
+
+                    if(depth < 3)
+                        rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth, alpha, beta, max_player);
+                    else
+                        rating[i] = (1 + (depth % 2) * tempo_bonus) * pvs(depth, alpha, beta, max_player);
+
+                    is_player_white = !is_player_white;
+                    unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+
+                    memcpy(castle_left,castle_flags_left,sizeof(castle_left));
+                    memcpy(castle_right,castle_flags_right,sizeof(castle_right));
+                }
+
+                for(int i = 0; i < move_count; i++)
+                    final_rating[i] = rating[i];
+
+                //sort the moves depending on rating
+                sort_moves(final_rating, moves_from, moves_to, piece_idx, move_count);
+            }
+
+            int idx = 0;
+            if(is_player_white)
+                idx = max_rating(final_rating, move_count);
+            else
+                idx = min_rating(final_rating, move_count);
+            
+            //make move
+            field captured[8] = {0UL};
+            castle_flags(piece_idx[idx], moves_from[idx]);
+            make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
+
+            for (int i =0; i<8; i++)
+            {
+                if(captured[i] != 0UL)
+                {
+                    memset(hash_table, 0, hash_prime * sizeof(float_t));
+                    break;
+                }
+            }
+            // ######################
+
+            hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
+            // save move in struct
+            // struct includes current hashtable
+
+            count_total_moves++;
+            gameover = game_finished(move_count);
+            if(gameover){
+                printf("game %d finished\n", z);
+                // learn from match if learnee won
+                if(is_player_white == learing_player)
+                {   
+                    printf("i learned ");
+                    use_learing_weights();
+                    printf("new weights:\n");
+                    print_all_learing_weights();
+
+                    learn_ct++;
+                }
+            }
+
+            is_player_white = 1 - is_player_white;
         }
-        tmp_fitting = sum_fittings / i_max;
+    }   
 
-
-        if(fitting < tmp_fitting)
-        {
-            use_learing_weights();
-            fitting = tmp_fitting;
-
-            printf("new fitting %f after %ld fittings tested\n", fitting, total_fittings_tested);
-        }
-        else
-        {
-            step_back_learing_weights();
-        }
-
-        if(tmp_fitting > all_fitting_precision)
-        {
-            fitting = tmp_fitting;
-            break;
-        }
-
-
-        //terminate after 5m fittings tested
-        if(total_fittings_tested > 5000000)
-        {
-            printf("\nover 5M fittings tested -> termination\n");
-            break;
-        }
-    }
-
-    import_gamestring(bitfields, strings[0]);
-    ev1 = evaluation();
-    import_gamestring(bitfields, strings[1]);
-    ev2 = evaluation();
-    import_gamestring(bitfields, strings[2]);
-    ev3 = evaluation();
-    printf("\nfinal fittings: %f, %f, %f\n\n", ev1, ev2, ev3);
-
-    printf("final weights:\n");
+    printf("run completed.\nfinal weights after %d times learned:\n", learn_ct);
     print_all_learing_weights();
 
+    return;  
+}
+
+void select_leaning_weights()
+{
+    material_modify = learning_material_modify;
+    position_modify = learning_position_modify;
+    contol_modify = learning_contol_modify;
+    pawns_modify = learning_pawns_modify;
+    king_safety_modify = learning_king_safety_modify;
+}
+
+void select_last_best_weights()
+{
+    material_modify = bef_learning_material_modify;
+    position_modify = bef_learning_position_modify;
+    contol_modify = bef_learning_contol_modify;
+    pawns_modify = bef_learning_pawns_modify;
+    king_safety_modify = bef_learning_king_safety_modify;
 }
 
 void set_all_learing_weights()
 {
-    set_learning_weight(&material_modify);
-    set_learning_weight(&position_modify);
-    set_learning_weight(&contol_modify);
-    set_learning_weight(&pawns_modify);
-    set_learning_weight(&king_safety_modify);
-
-    total_fittings_tested++;
+    set_learning_weight(&learning_material_modify);
+    set_learning_weight(&learning_position_modify);
+    set_learning_weight(&learning_contol_modify);
+    set_learning_weight(&learning_pawns_modify);
+    set_learning_weight(&learning_king_safety_modify);
 }
 
 void print_all_learing_weights()
 {
-    printf("material_modify: %f\n", material_modify);
-    printf("position_modify: %f\n", position_modify);
-    printf("contol_modify: %f\n", contol_modify);
-    printf("pawns_modify: %f\n", pawns_modify);
-    printf("king_safety_modify: %f\n\n", king_safety_modify);
+    printf("material_modify: %f\n",  learning_material_modify);
+    printf("position_modify: %f\n", learning_position_modify);
+    printf("contol_modify: %f\n", learning_contol_modify);
+    printf("pawns_modify: %f\n", learning_pawns_modify);
+    printf("king_safety_modify: %f\n\n", learning_king_safety_modify);
 }
 
 void use_learing_weights()
 {
-    bef_learning_material_modify = material_modify;
-    bef_learning_position_modify = position_modify;
-    bef_learning_contol_modify = contol_modify;
-    bef_learning_pawns_modify = pawns_modify;
-    bef_learning_king_safety_modify = king_safety_modify;
+    bef_learning_material_modify = learning_material_modify;
+    bef_learning_position_modify = learning_position_modify;
+    bef_learning_contol_modify = learning_contol_modify;
+    bef_learning_pawns_modify = learning_pawns_modify;
+    bef_learning_king_safety_modify = learning_king_safety_modify;
 }
 
 void step_back_learing_weights()
