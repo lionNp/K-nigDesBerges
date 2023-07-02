@@ -122,6 +122,7 @@ void test_evaluation()
 void test_set_bits(){
     int test;
     stopwatch time = start_stopwatch();
+    printf("For-Loop:\n");
     for(int k = 0; k < 10000; k++){
         field board = 0x0802001818001040;
         test = 0;
@@ -133,7 +134,7 @@ void test_set_bits(){
     }
     field t = stop_stopwatch(time);
     printf("Old: %d in %ldμs\n", test, t);
-
+    printf("Bitshift:\n");
     field final;
     time = start_stopwatch();
     for(int k = 0; k < 10000; k++){
@@ -145,25 +146,10 @@ void test_set_bits(){
     }
     t = stop_stopwatch(time);
     printf("New: %ld in %ldμs\n", final, t);
-
-
-
-
-    time = start_stopwatch();
-    int n = 0;
-    for(int k = 0; k < 10000; k++){
-        field o = 0x0802001818001040;
-        n = 0;
-        for(int i = 0; i < 64; i++) {
-            n += (o<<i) >> 63; 
-        }
-    }
-    t = stop_stopwatch(time);
-    printf("%d in %ldμs\n", n, t);
-    
 }
 
 int main(){
+    printf("Get_Piece_Count\n");
     test_set_bits();
     return 0;
 }

@@ -369,14 +369,14 @@ float alphabeta_nmp(int depth, float alpha, float beta, bool max_player){
     if(depth > 2){
         if(is_player_white){
             is_player_white = 1 - is_player_white;
-            float score = alphabeta_nmp(depth - 2, beta - 1, beta, max_player);
+            float score = alphabeta_nmp(depth - 2, beta , beta + 1, max_player);
             is_player_white = 1 - is_player_white;
             if(score >= beta)
                 return beta;
         }
         else{
             is_player_white = 1 - is_player_white;
-            float score = alphabeta_nmp(depth - 2, alpha - 1, alpha, max_player);
+            float score = alphabeta_nmp(depth - 2, alpha, alpha + 1, max_player);
             is_player_white = 1 - is_player_white;
             if(score <= alpha)
                 return alpha;
@@ -411,7 +411,7 @@ float alphabeta_nmp(int depth, float alpha, float beta, bool max_player){
 
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            score = alphabeta_without_tt(depth - 1, alpha, beta, max_player);
+            score = alphabeta_nmp(depth - 1, alpha, beta, max_player);
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -435,7 +435,7 @@ float alphabeta_nmp(int depth, float alpha, float beta, bool max_player){
 
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            score = alphabeta_without_tt(depth - 1, alpha, beta, max_player);
+            score = alphabeta_nmp(depth - 1, alpha, beta, max_player);
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -491,7 +491,7 @@ float abqs(int depth, float alpha, float beta, bool max_player){
 
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            score = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth - 1, alpha, beta, max_player);
+            score = (1 + (depth % 2) * tempo_bonus) * alphabeta_without_tt(depth - 1, alpha, beta, max_player);
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -516,7 +516,7 @@ float abqs(int depth, float alpha, float beta, bool max_player){
 
             make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
             is_player_white = 1 - is_player_white;
-            score = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth - 1, alpha, beta, max_player);
+            score = (1 + (depth % 2) * tempo_bonus) * alphabeta_without_tt(depth - 1, alpha, beta, max_player);
             is_player_white = 1 - is_player_white;
             unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -551,7 +551,7 @@ float qs(int depth, float alpha, float beta, bool max_player){
         enemy = bitfields[black];
         promotion = rank_8;
     }
-    if(depth < 5){
+    if(depth < 3){
         //filter non capture moves
         //TODO: include checks
         int move_count = generate_moves(moves_from, moves_to, piece_idx);
@@ -566,11 +566,13 @@ float qs(int depth, float alpha, float beta, bool max_player){
                 removed++;
                 piece_idx[i] = -100;
             }
+            /*
             //losing capture -> filtered
             else if(get_piece_id(moves_to[i]) > get_piece_id(moves_from[i])){
                 piece_idx[i] = -100;
                 removed++;
             }
+            */
         }
 
         //sorting
@@ -615,7 +617,6 @@ float qs(int depth, float alpha, float beta, bool max_player){
     return beta;
 }
 
-
 void bsMVV_LVA(field moves_from[], field moves_to[], int piece_idx[], int movecount){
     field temp;
     int tempIdx = 0;
@@ -651,4 +652,3 @@ void bsMVV_LVA(field moves_from[], field moves_to[], int piece_idx[], int moveco
         }
     }
 }
-
