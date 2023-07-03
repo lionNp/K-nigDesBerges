@@ -17,6 +17,8 @@ typedef uint64_t field;
 
 #define hash_prime 240000007
 
+#define xplore_factor 0.87
+
 #define tempo_bonus 0.1
 
 extern field total_remaining_time;
