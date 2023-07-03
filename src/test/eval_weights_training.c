@@ -55,8 +55,8 @@ float pawns_modify = 1;
 float king_safety_modify = 1;
 */
 
-#define training_runs 5
-#define iteration_depth 3
+#define training_runs 100
+#define iteration_depth 2
 #define learning_player 1
 
 void main()
