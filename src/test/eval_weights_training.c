@@ -12,14 +12,14 @@
 #include "alphabeta.h"
 #include <time.h>
 
-void print_all_learing_weights();
-void use_learing_weights();
+void print_all_learning_weights();
+void use_learning_weights();
 void clear_bitfields();
-void step_back_learing_weights();
+void step_back_learning_weights();
 void set_learning_weight(float* weight_to_adjust);
 void get_fitting();
-void set_all_learing_weights();
-void select_leaning_weights();
+void set_all_learning_weights();
+void select_learning_weights();
 void select_last_best_weights();
 
 //globals for training
@@ -55,9 +55,9 @@ float pawns_modify = 1;
 float king_safety_modify = 1;
 */
 
-#define training_runs 20
-#define iteration_depth 1
-#define learing_player 0
+#define training_runs 5
+#define iteration_depth 3
+#define learning_player 1
 
 void main()
 {
@@ -66,25 +66,24 @@ void main()
 
     int learn_ct = 0;
     //while 
-    for(int z=0; z<training_runs; z++)
+    for(int z=0; z < training_runs; z++)
     {
-        //set new learing weights
-        set_all_learing_weights();
+        //set new learning weights
+        set_all_learning_weights();
 
         //play game
         import_gamestring(bitfields, game_string);
-        memset(hash_table, 0, hash_prime * sizeof(float_t));
 
         int count_total_moves = 0;
         int total_pieces = 32;
-
+        int move_count = 0;
         gameover = false;
         while(!gameover)
         {
             //use respective weights
-            if(is_player_white == learing_player)
+            if(is_player_white == learning_player)
             {
-                select_leaning_weights();
+                select_learning_weights();
             }
             else
             {
@@ -102,7 +101,7 @@ void main()
             float beta = winning_move;
             bool max_player = is_player_white;
 
-            int move_count = generate_moves(moves_from, moves_to, piece_idx);
+            move_count = generate_moves(moves_from, moves_to, piece_idx);
             
             bool castle_flags_left[2];
             bool castle_flags_right[2];
@@ -135,12 +134,9 @@ void main()
 
                     make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                     is_player_white = !is_player_white;
-
-                    if(depth < 3)
-                        rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth, alpha, beta, max_player);
-                    else
-                        rating[i] = (1 + (depth % 2) * tempo_bonus) * pvs(depth, alpha, beta, max_player);
-
+                    
+                    rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta_without_tt(depth, alpha, beta, max_player);
+                    
                     is_player_white = !is_player_white;
                     unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -165,34 +161,32 @@ void main()
             field captured[8] = {0UL};
             castle_flags(piece_idx[idx], moves_from[idx]);
             make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
-
-            for (int i =0; i<8; i++)
-            {
-                if(captured[i] != 0UL)
-                {
-                    memset(hash_table, 0, hash_prime * sizeof(float_t));
-                    break;
-                }
-            }
-            // ######################
-
-            hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
             // save move in struct
             // struct includes current hashtable
-
+            //print_full_board();
             count_total_moves++;
             gameover = game_finished(move_count);
             if(gameover){
                 printf("game %d finished\n", z);
                 // learn from match if learnee won
-                if(is_player_white == learing_player)
-                {   
+                if(is_player_white == learning_player && move_count > 0)
+                {
                     printf("i learned ");
-                    use_learing_weights();
+                    use_learning_weights();
                     printf("new weights:\n");
-                    print_all_learing_weights();
+                    print_all_learning_weights();
 
                     learn_ct++;
+                }
+                if(!move_count)
+                {   
+                    is_player_white = !is_player_white;
+                    printf("i learned ");
+                    use_learning_weights();
+                    printf("new weights:\n");
+                    print_all_learning_weights();
+                    learn_ct++;
+                    is_player_white = !is_player_white;
                 }
             }
 
@@ -201,12 +195,12 @@ void main()
     }   
 
     printf("run completed.\nfinal weights after %d times learned:\n", learn_ct);
-    print_all_learing_weights();
+    print_all_learning_weights();
 
     return;  
 }
 
-void select_leaning_weights()
+void select_learning_weights()
 {
     material_modify = learning_material_modify;
     position_modify = learning_position_modify;
@@ -224,7 +218,7 @@ void select_last_best_weights()
     king_safety_modify = bef_learning_king_safety_modify;
 }
 
-void set_all_learing_weights()
+void set_all_learning_weights()
 {
     set_learning_weight(&learning_material_modify);
     set_learning_weight(&learning_position_modify);
@@ -233,7 +227,7 @@ void set_all_learing_weights()
     set_learning_weight(&learning_king_safety_modify);
 }
 
-void print_all_learing_weights()
+void print_all_learning_weights()
 {
     printf("material_modify: %f\n",  learning_material_modify);
     printf("position_modify: %f\n", learning_position_modify);
@@ -242,7 +236,7 @@ void print_all_learing_weights()
     printf("king_safety_modify: %f\n\n", learning_king_safety_modify);
 }
 
-void use_learing_weights()
+void use_learning_weights()
 {
     bef_learning_material_modify = learning_material_modify;
     bef_learning_position_modify = learning_position_modify;
@@ -251,7 +245,7 @@ void use_learing_weights()
     bef_learning_king_safety_modify = learning_king_safety_modify;
 }
 
-void step_back_learing_weights()
+void step_back_learning_weights()
 {
     material_modify = bef_learning_material_modify;
     position_modify = bef_learning_position_modify;

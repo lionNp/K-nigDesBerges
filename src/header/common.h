@@ -7,8 +7,8 @@
 #include <stdint.h>
 #include "stopwatch_utils.h"
 
-#define game_string_5 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq"
-#define game_string "rnbqk2r/pp2bppp/2p2n2/4N3/2B1P3/8/PPP1QPPP/RNB1K2R w KQkq"
+#define game_string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq"
+#define game_string_5 "rnbqk2r/pp2bppp/2p2n2/4N3/2B1P3/8/PPP1QPPP/RNB1K2R w KQkq"
 #define game_string_4 "rnbqk2r/pp2bppp/2p2n2/4N3/2B1P3/8/PPP1QPPP/RNB1K2R w KQkq"
 #define game_string_3 "r2qk2r/p1ppn1pp/bpnb1p2/4p3/4P3/2NPBN2/PPP1BPPP/R2Q1RK1 w Qkq" // Stellung 1
 #define game_string_1 "8/1k6/1r3rp1/8/4R2P/2K5/3R4/8 w - -" // Stellung 2
