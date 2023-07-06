@@ -424,13 +424,38 @@ void print_move(field start, field end){
     printf("\n");
 }
 
-int get_piece_id(field pos){
-   field pieces[] = {bitfields[king], bitfields[queen], bitfields[rook], 
-   bitfields[bishop], bitfields[knight], bitfields[pawn]};
+int get_piece_id(field pos)
+{
+//    field pieces[] = {bitfields[king], bitfields[queen], bitfields[rook], 
+//    bitfields[bishop], bitfields[knight], bitfields[pawn]};
 
-    for(int i = 0; i < 6; i++){
-        if((pos & pieces[i]) > 0)
-            return i+2;
+//     for(int i = 0; i < 6; i++){
+//         if((pos & pieces[i]) > 0)
+//             return i+2;
+//     }
+
+    for (int i = 2; i < 8; i++)
+    {
+        if(pos & bitfields[i] != 0)
+            return i;
     }
+    
     return 100;
+}
+
+bool pos_to_coords(field pos, int* x, int* y)
+{
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            if(ranks[i] & files[j] == pos)
+            {
+                *x = j;
+                *y = i;
+                return true;
+            }
+        }
+    }
+    return false;
 }
