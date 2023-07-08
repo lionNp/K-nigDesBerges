@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include "hashset.h"
 #include "alphabeta.h"
+#include "mcts.h"
+#include <stdlib.h>
 
 int main() {
     //initilize board
@@ -23,6 +25,16 @@ int main() {
     stopwatch total_time = start_stopwatch();
     field match_duration;
     int total_pieces = 32;
+
+    int mcts_depth = 10;
+    node *root = (node *) malloc(sizeof(node));
+    for(int i = 0; i < 8; i++)
+        root->board_state[i] = bitfields[i];
+    root->n = 1;
+    root->terminal = false;
+    mcts(root, mcts_depth);
+
+
     while(!gameover)
     //for(int r = 0; r < 1; r++)
     {
