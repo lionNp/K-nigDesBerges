@@ -25,14 +25,12 @@ int main() {
     stopwatch total_time = start_stopwatch();
     field match_duration;
     int total_pieces = 32;
-    printf("start mcts\n");
 
-    int mcts_depth = 0;
+    printf("start mcts\n");
+    int mcts_depth = 1;
     node *root = (node *) malloc(sizeof(node));
     for(int i = 0; i < 8; i++)
         root->board_state[i] = bitfields[i];
-    root->n = 1;
-    root->terminal = false;
     root->rating = mcts(root, mcts_depth);
     printf("end mcts\n");
 

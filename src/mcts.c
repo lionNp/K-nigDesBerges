@@ -62,56 +62,44 @@ float mcts(node *parent, int depth){
 
     for(int i = 0; i < 8; i++)
         parent->board_state[i] = bitfields[i];
-    parent->n = 1;
-    parent->terminal = false;
-
     if(game_finished(move_count)){
-        parent->terminal = true;
         return evaluation();
     }
 
-    parent->children = (node *) malloc(sizeof(node) * move_count);
-
     for(int i = 0; i < move_count; i++){
         memcpy(castle_flags_left, castle_left, sizeof(castle_flags_left));
         memcpy(castle_flags_right, castle_right, sizeof(castle_flags_right));
         make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-        
+        node * temp = (node *) malloc(sizeof(node));
         for(int i = 0; i < 8; i++)
-            parent->children[i].board_state[i] = bitfields[i];
-        parent->children[i].n = 1;
-        parent->children[i].terminal = false;
-        parent->children[i].parent = parent;
-        parent->children[i].rating = rollout();
-        
+            temp->board_state[i] = bitfields[i];
+        temp->parent = parent;
+        temp->from = moves_from[i];
+        temp->to = moves_to[i];
+        temp->idx = piece_idx[i];
+        is_player_white = !is_player_white;
+        temp->rating = mcts(temp, depth - 1);
+        is_player_white = !is_player_white;
+        if(!i)
+            parent->next = temp;
+        else if(is_player_white)
+            if(parent->next->rating < temp->rating){
+                parent->next = temp;
+                parent->pv = i;
+            }
+        else
+            if(parent->next->rating > temp->rating){
+                parent->next = temp;
+                parent->pv = i;
+            }
         unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
         memcpy(castle_left, castle_flags_left, sizeof(castle_left));
         memcpy(castle_right, castle_flags_right, sizeof(castle_right));
-    }
-
-    for(int i = 0; i < move_count; i++){
-        memcpy(castle_flags_left, castle_left, sizeof(castle_flags_left));
-        memcpy(castle_flags_right, castle_right, sizeof(castle_flags_right));
-        make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-        parent->children[i].rating = mcts(&parent->children[i], depth - 1);
-        unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
-        memcpy(castle_left, castle_flags_left, sizeof(castle_left));
-        memcpy(castle_right, castle_flags_right, sizeof(castle_right));
-    }
-
-    if(is_player_white){
-        for(int i = 0; i < move_count; i++){
-            if(parent->children[i].rating > parent->rating)
-                parent->rating = parent->children[i].rating;
-                parent->pv = i;
+        for(int k = 0; k < i; k++){
+            if(k != parent->pv)
+                free(temp);
         }
     }
-    else{
-        for(int i = 0; i < move_count; i++){
-            if(parent->children[i].rating < parent->rating)
-                parent->rating = parent->children[i].rating;
-                parent->pv = i;
-        }
-    }
+    
     return parent->rating;
 }

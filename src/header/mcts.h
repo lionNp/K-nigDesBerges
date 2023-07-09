@@ -4,11 +4,12 @@
 
 typedef struct mcts_node {
     field board_state[8];
-    struct mcts_node * children;
     int pv;
-    struct mcts_node * parent;             // count visited parent
-    int n;                     // count visited node
-    bool terminal;          // node game over
+    field from;
+    field to;
+    int idx;
+    struct mcts_node * parent; 
+    struct mcts_node * next;
     float rating;
 } node;
 
