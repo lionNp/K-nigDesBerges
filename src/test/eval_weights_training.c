@@ -77,6 +77,7 @@ void main()
         int count_total_moves = 0;
         int total_pieces = 32;
         int move_count = 0;
+        hashset_clear();
         gameover = false;
         while(!gameover)
         {
@@ -135,7 +136,7 @@ void main()
                     make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                     is_player_white = !is_player_white;
                     
-                    rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta_without_tt(depth, alpha, beta, max_player);
+                    rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth, alpha, beta, max_player);
                     
                     is_player_white = !is_player_white;
                     unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
@@ -148,7 +149,8 @@ void main()
                     final_rating[i] = rating[i];
 
                 //sort the moves depending on rating
-                sort_moves(final_rating, moves_from, moves_to, piece_idx, move_count);
+                if(move_count > 1)
+                    sort_moves(final_rating, moves_from, moves_to, piece_idx, move_count);
             }
 
             int idx = 0;
@@ -161,12 +163,18 @@ void main()
             field captured[8] = {0UL};
             castle_flags(piece_idx[idx], moves_from[idx]);
             make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
+            //printf("%d Turn\n", is_player_white);
+            //print_full_board();
+            hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
+            //sleep(1);
             // save move in struct
             // struct includes current hashtable
             //print_full_board();
             count_total_moves++;
             gameover = game_finished(move_count);
-            if(gameover){
+            
+
+            if(game_finished(move_count)){
                 printf("game %d finished\n", z);
                 // learn from match if learnee won
                 if(is_player_white == learning_player && move_count > 0)
@@ -188,9 +196,9 @@ void main()
                     learn_ct++;
                     is_player_white = !is_player_white;
                 }
+                break;
             }
-
-            is_player_white = 1 - is_player_white;
+            is_player_white = !is_player_white;
         }
     }   
 
