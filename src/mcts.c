@@ -60,11 +60,12 @@ float mcts(node *parent, int depth){
      
     int move_count = generate_moves(moves_from, moves_to, piece_idx);
 
-    for(int i = 0; i < 8; i++)
-        parent->board_state[i] = bitfields[i];
     if(game_finished(move_count)){
         return evaluation();
     }
+
+    for(int i = 0; i < 8; i++)
+        parent->board_state[i] = bitfields[i];
 
     for(int i = 0; i < move_count; i++){
         memcpy(castle_flags_left, castle_left, sizeof(castle_flags_left));

@@ -25,7 +25,7 @@ int main() {
     stopwatch total_time = start_stopwatch();
     field match_duration;
     int total_pieces = 32;
-
+    /*
     printf("start mcts\n");
     int mcts_depth = 1;
     node *root = (node *) malloc(sizeof(node));
@@ -33,7 +33,7 @@ int main() {
         root->board_state[i] = bitfields[i];
     root->rating = mcts(root, mcts_depth);
     printf("end mcts\n");
-
+    */
     while(!gameover)
     //for(int r = 0; r < 1; r++)
     {
@@ -76,14 +76,15 @@ int main() {
         float score;
 
         //set time for each iteration dynamically
-        break_after = calc_time_budget(move_count);
-
+        //break_after = calc_time_budget(move_count);
+        break_after = 120000000;
+        //break_after = 1200000;
         for(; t < break_after; depth++){ 
             for(int i = 0; i < move_count; i++){
 
                 //"almost done: if iteration is 70% done with depth, let it finish"
-                if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count < 0.7f) )
-                    break;
+                //if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count < 0.7f) )
+                //    break;
 
                 //if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count >= 0.7f))
                 //    printf("depth almost done, letting finish\n");
@@ -95,7 +96,7 @@ int main() {
 
                 make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
                 is_player_white = !is_player_white;
-                rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta_without_tt(depth, alpha, beta, max_player);
+                rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth, alpha, beta, max_player);
                 /*
                 if(depth < 3)
                     rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth, alpha, beta, max_player);
@@ -114,7 +115,7 @@ int main() {
 
             //sort the moves depending on rating
             sort_moves(final_rating, moves_from, moves_to, piece_idx, move_count);
-
+            /*
             if(depth > 2){
                 int null_move_pruning = 1;
                 printf("move count Pre: %d\n", move_count);
@@ -137,6 +138,7 @@ int main() {
                 move_count = null_move_pruning;
                 printf("move count Post: %d\n", move_count);
             }
+            */
             //filter_moves_quietsearch();
             t = stop_stopwatch(turn_time);
         }
