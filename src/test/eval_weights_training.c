@@ -34,9 +34,9 @@ long total_fittings_tested = 0;
 //minimum fitting that all sets need to be achieve similtaniously before termination
 float all_fitting_precision = 0.98f;
 
-float learning_material_modify = 50;
+float learning_material_modify = 20;
 float learning_position_modify = 1;
-float learning_contol_modify = 3;
+float learning_contol_modify = 2;
 float learning_pawns_modify = 1;
 float learning_king_safety_modify = 1;
 
