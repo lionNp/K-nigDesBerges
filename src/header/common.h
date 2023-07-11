@@ -21,6 +21,7 @@ typedef uint64_t field;
 
 #define tempo_bonus 0.1
 
+extern int winner;
 extern field total_remaining_time;
 extern field default_time_per_move;
 extern field default_expected_move_num;

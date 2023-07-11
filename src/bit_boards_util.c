@@ -61,6 +61,7 @@ int get_piece_count2(field board) {
 bool game_finished(int total_legal_moves){
     if((bitfields[is_player_white] & bitfields[king]) & koth){
         printf("%s won!\n", is_player_white ? "white" : "black");
+        winner = is_player_white;
         return true;
     }
 
@@ -72,6 +73,7 @@ bool game_finished(int total_legal_moves){
     if(total_legal_moves == 0){
         if(in_check(bitfields[is_player_white] & bitfields[king])){
             printf("%s won!\n", !is_player_white ? "white" : "black");
+            winner = !is_player_white;
             return true;
         }   
         printf("Match ended in a forced draw!\n"); // -> REMI

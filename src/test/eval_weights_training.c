@@ -27,7 +27,7 @@ float eval;
 float stock_eval;
 float fitting = 0.0f;
 float tmp_fitting;
-float learning_rate = 0.0003f;
+float learning_rate = 0.01f;
 
 long total_fittings_tested = 0;
 
@@ -174,7 +174,7 @@ void main()
             gameover = game_finished(move_count);
             
 
-            if(game_finished(move_count)){
+            if(gameover){
                 printf("game %d finished\n", z);
                 // learn from match if learnee won
                 if(is_player_white == learning_player && move_count > 0)
@@ -183,7 +183,6 @@ void main()
                     use_learning_weights();
                     printf("new weights:\n");
                     print_all_learning_weights();
-
                     learn_ct++;
                 }
                 if(!move_count)
