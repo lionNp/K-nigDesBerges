@@ -29,7 +29,7 @@ int piece_at_coords(int y, int x)
 {
     for (int b = 2; b < 8; b++)
     {
-        if(bitfields[b] & masks[y][x] != 0)
+        if((bitfields[b] & masks[y][x]) != 0)
             return b;
     }
 

@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include "stopwatch_utils.h"
 
+//can we have names like start_fen ??
 #define game_string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq"
 #define game_string_5 "rnbqk2r/pp2bppp/2p2n2/4N3/2B1P3/8/PPP1QPPP/RNB1K2R w KQkq"
 #define game_string_4 "rnbqk2r/pp2bppp/2p2n2/4N3/2B1P3/8/PPP1QPPP/RNB1K2R w KQkq"
