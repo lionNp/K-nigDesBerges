@@ -60,21 +60,21 @@ int get_piece_count2(field board) {
 
 bool game_finished(int total_legal_moves){
     if((bitfields[is_player_white] & bitfields[king]) & koth){
-        printf("%s won!\n", is_player_white ? "white" : "black");
+        //printf("%s won!\n", is_player_white ? "white" : "black");
         return true;
     }
 
     if(hashset_duplicates() == 3){
-        printf("Match ended in a draw by repetition!\n"); // -> REMI
+        //printf("Match ended in a draw by repetition!\n"); // -> REMI
         return true;
     }
 
     if(total_legal_moves == 0){
         if(in_check(bitfields[is_player_white] & bitfields[king])){
-            printf("%s won!\n", !is_player_white ? "white" : "black");
+            //printf("%s won!\n", !is_player_white ? "white" : "black");
             return true;
         }   
-        printf("Match ended in a forced draw!\n"); // -> REMI
+        //printf("Match ended in a forced draw!\n"); // -> REMI
         return true;
     }
     return false;
