@@ -56,7 +56,7 @@ float king_safety_modify = 1;
 */
 
 #define training_runs 100
-#define iteration_depth 2
+#define iteration_depth 1
 #define learning_player 1
 
 void main()
