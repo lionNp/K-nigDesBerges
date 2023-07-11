@@ -2,7 +2,7 @@
 #include "move_util.h"
 #include "bit_boards_util.h"
 #include "hashset.h"
-
+#include <math.h>
 
 void get_single_piece_boards(field board, field single_piece_boards[], int piece_count) 
 {
@@ -445,17 +445,8 @@ int get_piece_id(field pos)
 
 bool pos_to_coords(field pos, int* x, int* y)
 {
-    for(int i = 0; i < 8; i++)
-    {
-        for(int j = 0; j < 8; j++)
-        {
-            if(ranks[i] & files[j] == pos)
-            {
-                *x = j;
-                *y = i;
-                return true;
-            }
-        }
-    }
+    int p = log2(pos);
+    *x = p % 8;
+    *y = p / 8;
     return false;
 }
