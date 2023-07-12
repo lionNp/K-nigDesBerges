@@ -9,17 +9,21 @@
 #include "stopwatch_utils.h"
 #include <string.h>
 #include "hash_boards.h"
+#include "zobrist_hash.h"
 
 float alphabeta(int depth, float alpha, float beta, bool max_player){
     if(depth == 0){
         num_moves_iterated++;
-        field hashtable_value = hash_boards();
-        float eval = hash_table[hashtable_value];
+        //field hashtable_value = hash_boards();
+        //float eval = hash_table[hashtable_value];
+        field hash_value = calculate_hash_value();
+        float eval = get_score(hash_value);
         if(eval == 0.0f){
             num_moves_trans++;
             eval = evaluation();
         }
-        hash_table[hashtable_value] = eval;
+        put_score(hash_value, eval);
+        //hash_table[hashtable_value] = eval;
         return eval;
     }
     field moves_from[max_move_count];
