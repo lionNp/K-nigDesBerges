@@ -25,15 +25,15 @@ int main() {
     stopwatch total_time = start_stopwatch();
     field match_duration;
     int total_pieces = 32;
-    /*
+
     printf("start mcts\n");
-    int mcts_depth = 1;
+    int mcts_depth = 0;
     node *root = (node *) malloc(sizeof(node));
-    for(int i = 0; i < 8; i++)
-        root->board_state[i] = bitfields[i];
     root->rating = mcts(root, mcts_depth);
     printf("end mcts\n");
-    */
+    
+    //printf("%f\n", root->rating);
+
     while(!gameover)
     //for(int r = 0; r < 1; r++)
     {
@@ -76,15 +76,15 @@ int main() {
         float score;
 
         //set time for each iteration dynamically
-        //break_after = calc_time_budget(move_count);
-        break_after = 120000000;
+        break_after = calc_time_budget(move_count);
+        //break_after = 120000000;
         //break_after = 1200000;
         for(; t < break_after; depth++){ 
             for(int i = 0; i < move_count; i++){
 
                 //"almost done: if iteration is 70% done with depth, let it finish"
-                //if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count < 0.7f) )
-                //    break;
+                if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count < 0.7f) )
+                    break;
 
                 //if(stop_stopwatch(turn_time) > break_after && ((float) i / (float) move_count >= 0.7f))
                 //    printf("depth almost done, letting finish\n");
