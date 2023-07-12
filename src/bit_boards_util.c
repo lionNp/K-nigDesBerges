@@ -2,7 +2,7 @@
 #include "move_util.h"
 #include "bit_boards_util.h"
 #include "hashset.h"
-
+#include "math.h"
 
 void get_single_piece_boards(field board, field single_piece_boards[], int piece_count) 
 {
@@ -433,4 +433,12 @@ int get_piece_id(field pos){
             return i+2;
     }
     return 100;
+}
+
+bool pos_to_coords(field pos, int* x, int* y)
+{
+    int p = log2(pos);
+    *x = p % 8;
+    *y = p / 8;
+    return false;
 }
