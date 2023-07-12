@@ -43,6 +43,6 @@ void print_pos(field position);
 //get piece id of one position
 int get_piece_id(field pos);
 
-void pos_to_coords(field pos, int* x, int* y);
+bool pos_to_coords(field pos, int* x, int* y);
 
 #endif
