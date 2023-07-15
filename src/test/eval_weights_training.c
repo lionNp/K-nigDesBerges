@@ -29,10 +29,6 @@ float stock_eval;
 float fitting = 0.0f;
 float tmp_fitting;
 
-float learning_rate = 0.001f;
-
-
-
 long total_fittings_tested = 0;
 
 //minimum fitting that all sets need to be achieve similtaniously before termination
@@ -59,7 +55,9 @@ float pawns_modify = 1;
 float king_safety_modify = 1;
 */
 
-#define training_runs 20
+
+float learning_rate = 0.002f;
+#define training_runs 30
 #define iteration_depth 1
 #define learning_player 1
 
@@ -72,19 +70,31 @@ void main()
     //while 
     for(int z=0; z < training_runs; z++)
     {
+        
+        //reset variables
+        hashset_clear();
+        gameover = false;
+        winner = 2;
         is_player_white = true;
+
+        castle_left[0] = true; castle_left[1] = true;
+        castle_right[0] = true; castle_right[1] = true;
+        num_moves_iterated = 0;
+        num_moves_trans = 0;
+        num_hash_collisions = 0;
+        for(int hp=0; hp<hash_prime; hp++){hash_table[hp] = 0.0f;}
+        for(int bp=0; bp<8; bp++){bitfields[bp] = 0UL;}
 
         //set new learning weights
         set_all_learning_weights();
 
         //play game
-        import_gamestring(bitfields, game_string);
+        import_gamestring(bitfields, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq");
 
         int count_total_moves = 0;
         int total_pieces = 32;
         int move_count = 0;
-        hashset_clear();
-        gameover = false;
+
         while(!gameover)
         {
             //use respective weights
@@ -149,7 +159,7 @@ void main()
                         //printf("### avoiding repitition draw\n");
                         if(present->duplicates + 1 >= 5)
                         {
-                            printf("setting bad weighs\n");
+                            //printf("setting bad weighs\n");
                             rating[i] = 10000;
                             if(is_player_white)
                             {
@@ -209,7 +219,8 @@ void main()
                 printf("game %d finished\n", z);
                 print_full_board();
                 // learn from match if learnee won
-                if(is_player_white == learning_player && move_count > 0 && hashset_duplicates() < 3)
+                //if(winner == learning_player && move_count > 0 && hashset_duplicates() < 3)
+                if(winner == learning_player && move_count > 0)
                 {
                     printf("i learned ");
                     use_learning_weights();
