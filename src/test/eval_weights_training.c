@@ -28,7 +28,10 @@ float eval;
 float stock_eval;
 float fitting = 0.0f;
 float tmp_fitting;
+
 float learning_rate = 0.001f;
+
+
 
 long total_fittings_tested = 0;
 
@@ -160,11 +163,10 @@ void main()
                         }
                     }
 
-
                     is_player_white = !is_player_white;
                     
                     rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth, alpha, beta, max_player);
-
+                    
                     is_player_white = !is_player_white;
                     unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -193,15 +195,6 @@ void main()
             //printf("%d Turn\n", is_player_white);
             //print_full_board();
 
-            for(int xi=0; xi<8; xi++)
-            {
-                if (captured[xi] != 0UL)
-                {
-                    hashset_clear();
-                }
-            }
-
-            
             hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
 
             //sleep(1);
@@ -222,8 +215,10 @@ void main()
                     use_learning_weights();
                     printf("new weights:\n");
                     print_all_learning_weights();
+
                     printf("from:\n");
                     print_full_board();
+
                     learn_ct++;
                 }
                 if(!move_count)
