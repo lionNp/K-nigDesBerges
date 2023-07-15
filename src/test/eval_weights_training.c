@@ -12,6 +12,7 @@
 #include "alphabeta.h"
 #include <time.h>
 
+void print_bef_all_learning_weights();
 void print_all_learning_weights();
 void use_learning_weights();
 void clear_bitfields();
@@ -27,7 +28,7 @@ float eval;
 float stock_eval;
 float fitting = 0.0f;
 float tmp_fitting;
-float learning_rate = 0.0003f;
+float learning_rate = 0.001f;
 
 long total_fittings_tested = 0;
 
@@ -55,7 +56,7 @@ float pawns_modify = 1;
 float king_safety_modify = 1;
 */
 
-#define training_runs 100
+#define training_runs 20
 #define iteration_depth 1
 #define learning_player 1
 
@@ -68,6 +69,8 @@ void main()
     //while 
     for(int z=0; z < training_runs; z++)
     {
+        is_player_white = true;
+
         //set new learning weights
         set_all_learning_weights();
 
@@ -77,6 +80,7 @@ void main()
         int count_total_moves = 0;
         int total_pieces = 32;
         int move_count = 0;
+        hashset_clear();
         gameover = false;
         while(!gameover)
         {
@@ -133,10 +137,34 @@ void main()
                     memcpy(castle_flags_right,castle_right,sizeof(castle_flags_right));
 
                     make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+
+
+                      // avoid draw by repitition
+                    hashset* present = hashset_contains(bitfields[is_player_white] | bitfields[!is_player_white]);
+                    if(present != NULL)
+                    {
+                        //printf("### avoiding repitition draw\n");
+                        if(present->duplicates + 1 >= 5)
+                        {
+                            printf("setting bad weighs\n");
+                            rating[i] = 10000;
+                            if(is_player_white)
+                            {
+                                rating[i] = -10000;
+                            }
+
+                            unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
+                            memcpy(castle_left,castle_flags_left,sizeof(castle_left));
+                            memcpy(castle_right,castle_flags_right,sizeof(castle_right));
+                            continue;
+                        }
+                    }
+
+
                     is_player_white = !is_player_white;
                     
-                    rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta_without_tt(depth, alpha, beta, max_player);
-                    
+                    rating[i] = (1 + (depth % 2) * tempo_bonus) * alphabeta(depth, alpha, beta, max_player);
+
                     is_player_white = !is_player_white;
                     unmake_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
@@ -148,7 +176,8 @@ void main()
                     final_rating[i] = rating[i];
 
                 //sort the moves depending on rating
-                sort_moves(final_rating, moves_from, moves_to, piece_idx, move_count);
+                if(move_count > 1)
+                    sort_moves(final_rating, moves_from, moves_to, piece_idx, move_count);
             }
 
             int idx = 0;
@@ -161,21 +190,40 @@ void main()
             field captured[8] = {0UL};
             castle_flags(piece_idx[idx], moves_from[idx]);
             make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
+            //printf("%d Turn\n", is_player_white);
+            //print_full_board();
+
+            for(int xi=0; xi<8; xi++)
+            {
+                if (captured[xi] != 0UL)
+                {
+                    hashset_clear();
+                }
+            }
+
+            
+            hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
+
+            //sleep(1);
             // save move in struct
             // struct includes current hashtable
             //print_full_board();
             count_total_moves++;
             gameover = game_finished(move_count);
+            
+
             if(gameover){
                 printf("game %d finished\n", z);
+                print_full_board();
                 // learn from match if learnee won
-                if(is_player_white == learning_player && move_count > 0)
+                if(is_player_white == learning_player && move_count > 0 && hashset_duplicates() < 3)
                 {
                     printf("i learned ");
                     use_learning_weights();
                     printf("new weights:\n");
                     print_all_learning_weights();
-
+                    printf("from:\n");
+                    print_full_board();
                     learn_ct++;
                 }
                 if(!move_count)
@@ -188,14 +236,14 @@ void main()
                     learn_ct++;
                     is_player_white = !is_player_white;
                 }
+                break;
             }
-
-            is_player_white = 1 - is_player_white;
+            is_player_white = !is_player_white;
         }
     }   
 
     printf("run completed.\nfinal weights after %d times learned:\n", learn_ct);
-    print_all_learning_weights();
+    print_bef_all_learning_weights();
 
     return;  
 }
@@ -236,6 +284,15 @@ void print_all_learning_weights()
     printf("king_safety_modify: %f\n\n", learning_king_safety_modify);
 }
 
+void print_bef_all_learning_weights()
+{
+    printf("material_modify: %f\n",  bef_learning_material_modify);
+    printf("position_modify: %f\n", bef_learning_position_modify);
+    printf("contol_modify: %f\n", bef_learning_contol_modify);
+    printf("pawns_modify: %f\n", bef_learning_pawns_modify);
+    printf("king_safety_modify: %f\n\n", bef_learning_king_safety_modify);
+}
+
 void use_learning_weights()
 {
     bef_learning_material_modify = learning_material_modify;
@@ -261,10 +318,13 @@ void set_learning_weight(float* weight_to_adjust)
     float random_factor = (float) (rand() % range + 1) * learning_rate;
 
     if(rand()%2 == 0)
-        *weight_to_adjust = *weight_to_adjust + random_factor;
+        *weight_to_adjust = *weight_to_adjust + *weight_to_adjust*random_factor;
     else
-        *weight_to_adjust = *weight_to_adjust - random_factor;
-}
+        if (*weight_to_adjust - random_factor > 0)
+            *weight_to_adjust = *weight_to_adjust - *weight_to_adjust*random_factor;
+        else
+            *weight_to_adjust = *weight_to_adjust + *weight_to_adjust*random_factor;
+}   
 
 void clear_bitfields()
 {
@@ -301,5 +361,5 @@ void get_fitting()
     else{
         tmp_fitting = 0.0f;
     }
-
+    hashset_clear();
 }

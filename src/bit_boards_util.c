@@ -64,7 +64,7 @@ bool game_finished(int total_legal_moves){
         return true;
     }
 
-    if(hashset_duplicates() == 3){
+    if(hashset_duplicates() >= 100){
         printf("Match ended in a draw by repetition!\n"); // -> REMI
         return true;
     }

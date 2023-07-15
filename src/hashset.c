@@ -1,38 +1,49 @@
 #include "hashset.h"
 
 hashset* root = NULL;
-int duplicate_counter = 1;
+int max_duplicates = 1;
 
 void hashset_add(field board)
 {
-    bool contains = hashset_contains(board);
-    if(contains)
+    hashset* present = hashset_contains(board);
+    if(present != NULL)
     {
-        duplicate_counter++;
+        present->duplicates++;
+        if(present->duplicates > max_duplicates)
+            max_duplicates = present->duplicates;
         return;
     }
 
     hashset* entry = malloc(sizeof(hashset));
     entry->value = board;
+    entry->duplicates = 1;
 
     HASH_ADD(hh, root, value, sizeof(field), entry);
 }
 
-bool hashset_contains(field board)
+hashset* hashset_contains(field board)
 {
     hashset* entry;
     HASH_FIND(hh, root, &board, sizeof(field), entry);
 
-    return entry != NULL;
+    return entry;
 }
 
 void hashset_clear()
 {
+    struct s_hashset *current_user, *tmp;
+
+    HASH_ITER(hh, root, current_user, tmp) {
+        HASH_DEL(root, current_user);  /* delete; users advances to next */
+        free(current_user);             /* optional- if you want to free  */
+    }
+
     HASH_CLEAR(hh, root);
-    duplicate_counter = 1;
+
+    max_duplicates = 1;
 }
 
 int hashset_duplicates()
 {
-    return duplicate_counter;
+    return max_duplicates;
 }
