@@ -1,0 +1,51 @@
+
+### nach 1000 episoden mit lr 0.0005
+
+final weights after 399 times learned:
+material_modify: 91.547089
+position_modify: 0.268100
+contol_modify: 0.647789
+pawns_modify: 1.097105
+king_safety_modify: 2.734473
+
+final weights after 63 times learned:
+material_modify: 15.595823
+position_modify: 0.518584
+contol_modify: 4.043265
+pawns_modify: 0.536444
+king_safety_modify: 2.275719
+
+
+### nach 100 episoden lr 0.0005:
+
+final weights after 44 times learned:
+material_modify: 16.191532
+position_modify: 0.756082
+contol_modify: 1.736729
+pawns_modify: 0.938141
+king_safety_modify: 1.269966
+
+
+i learned new weights:
+material_modify: 33.128490
+position_modify: 1.749867
+contol_modify: 1.074164
+pawns_modify: 0.754023
+king_safety_modify: 1.121617
+
+
+### nach 100 episoden lr 0.002:
+
+final weights after 22 times learned:
+material_modify: 11.464553
+position_modify: 0.732378
+contol_modify: 0.257649
+pawns_modify: 0.324688
+king_safety_modify: 3.351111
+
+final weights after 21 times learned:
+material_modify: 8.507955
+position_modify: 0.313378
+contol_modify: 1.631795
+pawns_modify: 1.001484
+king_safety_modify: 0.276613

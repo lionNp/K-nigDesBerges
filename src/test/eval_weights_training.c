@@ -55,11 +55,22 @@ float pawns_modify = 1;
 float king_safety_modify = 1;
 */
 
+//best run todate: ep 100
+/*
+final weights after 22 times learned:
+material_modify: 11.464553
+position_modify: 0.732378
+contol_modify: 0.257649
+pawns_modify: 0.324688
+king_safety_modify: 3.351111
+*/
 
-float learning_rate = 0.002f;
-#define training_runs 30
+
+float learning_rate = 0.0005f;
+#define training_runs 10000
 #define iteration_depth 1
 #define learning_player 1
+#define convergence_drystreak 100
 
 void main()
 {
@@ -67,6 +78,7 @@ void main()
     srand(time(NULL));
 
     int learn_ct = 0;
+    int convergence_ct = 0;
     //while 
     for(int z=0; z < training_runs; z++)
     {
@@ -85,6 +97,8 @@ void main()
         for(int hp=0; hp<hash_prime; hp++){hash_table[hp] = 0.0f;}
         for(int bp=0; bp<8; bp++){bitfields[bp] = 0UL;}
 
+
+
         //set new learning weights
         set_all_learning_weights();
 
@@ -97,6 +111,7 @@ void main()
 
         while(!gameover)
         {
+
             //use respective weights
             if(is_player_white == learning_player)
             {
@@ -106,6 +121,8 @@ void main()
             {
                 select_last_best_weights();
             }
+
+
 
             //printf(".");
             field t = 0UL;
@@ -117,6 +134,8 @@ void main()
             float alpha = losing_move;
             float beta = winning_move;
             bool max_player = is_player_white;
+
+
 
             move_count = generate_moves(moves_from, moves_to, piece_idx);
             
@@ -141,6 +160,8 @@ void main()
             float pv_score = 0.0f;
             float score;
 
+
+
             for(; depth <= iteration_depth; depth++){ 
                 for(int i = 0; i < move_count; i++){
 
@@ -157,7 +178,7 @@ void main()
                     if(present != NULL)
                     {
                         //printf("### avoiding repitition draw\n");
-                        if(present->duplicates + 1 >= 5)
+                        if(present->duplicates + 1 >= 2)
                         {
                             //printf("setting bad weighs\n");
                             rating[i] = 10000;
@@ -192,6 +213,7 @@ void main()
                     sort_moves(final_rating, moves_from, moves_to, piece_idx, move_count);
             }
 
+
             int idx = 0;
             if(is_player_white)
                 idx = max_rating(final_rating, move_count);
@@ -202,10 +224,24 @@ void main()
             field captured[8] = {0UL};
             castle_flags(piece_idx[idx], moves_from[idx]);
             make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
+
+            //clear hash as to not use it up too much
+            /*
+            for(int xc=0; xc<8; xc++)
+            {
+                if(captured[xc] != 0UL)
+                {
+                    hashset_clear();
+                }
+            }
+            */
+
+
             //printf("%d Turn\n", is_player_white);
             //print_full_board();
 
             hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
+
 
             //sleep(1);
             // save move in struct
@@ -220,7 +256,7 @@ void main()
                 print_full_board();
                 // learn from match if learnee won
                 //if(winner == learning_player && move_count > 0 && hashset_duplicates() < 3)
-                if(winner == learning_player && move_count > 0)
+                if(winner == learning_player)
                 {
                     printf("i learned ");
                     use_learning_weights();
@@ -231,19 +267,22 @@ void main()
                     print_full_board();
 
                     learn_ct++;
+                    convergence_ct = 0;
                 }
-                if(!move_count)
-                {   
-                    is_player_white = !is_player_white;
-                    printf("i learned ");
-                    use_learning_weights();
-                    printf("new weights:\n");
-                    print_all_learning_weights();
-                    learn_ct++;
-                    is_player_white = !is_player_white;
+                else
+                {
+                    convergence_ct ++;
+                    if(convergence_ct > convergence_drystreak)
+                    {
+                        printf("converged after %d episodes and %d times of no improvement\n", z, convergence_drystreak);
+                        break;
+                    }
                 }
+
+
                 break;
             }
+
             is_player_white = !is_player_white;
         }
     }   

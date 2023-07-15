@@ -31,12 +31,15 @@ hashset* hashset_contains(field board)
 
 void hashset_clear()
 {
-    struct s_hashset *current_user, *tmp;
+    
+    /*
+        struct s_hashset *current_user, *tmp;
 
     HASH_ITER(hh, root, current_user, tmp) {
-        HASH_DEL(root, current_user);  /* delete; users advances to next */
-        free(current_user);             /* optional- if you want to free  */
+        HASH_DEL(root, current_user); 
+        free(current_user);            
     }
+    */
 
     HASH_CLEAR(hh, root);
 
