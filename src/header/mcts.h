@@ -8,7 +8,8 @@ typedef struct mcts_node {
     field to;
     int idx;
     float rating;
-    struct mcts_node * parent; 
+    struct mcts_node * parent;
+    struct mcts_node * children;
     struct mcts_node * next;
 } node;
 
