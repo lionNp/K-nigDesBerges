@@ -17,7 +17,7 @@ void init_zobrist()
     {
         for(int x = 0; x < 8; x++)
         {
-            for(int p = 0; p < 13; p++)
+            for(int p = 0; p < 12; p++)
                 zobrist_table[y][x][p] = rand();
             
             masks[y][x] = 1ULL << (x + 8 * y);
@@ -53,11 +53,21 @@ uint64_t calculate_hash_value()
     return value;
 }
 
-uint64_t update_hash(uint64_t hash_value, field move_from, field move_to, int piece_type)
+uint64_t update_hash(uint64_t hash_value, field move_from, field move_to, int piece_type, field captured[])
 {
     int x = 0;
     int y = 0;
     int piece = piece_type - 2 + (is_player_white ? 0 : 6);
+
+    int captured_piece = get_captured_piece(captured);
+    if(captured_piece != -1)
+    {
+        pos_to_coords(move_to, &x, &y);
+        printf("removing piece %d at x:%d y:%d\n", captured_piece, x, y);
+        hash_value ^= zobrist_table[y][x][captured_piece - 2];
+
+        printf("after capture: %lu\n", hash_value);
+    }
 
     pos_to_coords(move_from, &x, &y);
     hash_value ^= zobrist_table[y][x][piece];

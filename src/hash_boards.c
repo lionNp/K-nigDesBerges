@@ -10,7 +10,7 @@ field hash_boards(){
     return (val % hash_prime);
 }
 
-// avg 90k-105k hash collisions, median 95
+// avg 90k-105k hash collisions, median 95k
 field hash_boards2(){
     field val = 0UL;
     

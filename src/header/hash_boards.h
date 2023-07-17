@@ -5,5 +5,6 @@
 #include "common.h"
 
 field hash_boards();
+field hash_boards2();
 
 #endif
