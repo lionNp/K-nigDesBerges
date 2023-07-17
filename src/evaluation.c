@@ -4,6 +4,13 @@
 #include "move_util.h"
 #include <stdlib.h>
 #include "move_generator.h"
+#include "hashset.h"
+
+float material_modify = 20;
+float position_modify = 1;
+float contol_modify = 2;
+float pawns_modify = 1;
+float king_safety_modify = 1;
 
 float evaluation(){
     float total_rating = 0.0f;
@@ -23,7 +30,36 @@ float evaluation(){
 
     float king_safety = evaluate_king_safety();
 
-    total_rating = 20 * material + position + 2 * control + pawns + king_safety;
+    total_rating =  material_modify * material +
+                    position_modify * position +
+                    contol_modify * control + 
+                    pawns_modify * pawns + 
+                    king_safety_modify * king_safety;
+
+    /*
+    printf("material_modify: %f\n", material_modify);
+    printf("position_modify: %f\n", position_modify);
+    printf("contol_modify: %f\n", contol_modify);
+    printf("pawns_modify: %f\n", pawns_modify);
+    printf("king_safety_modify: %f\n\n", king_safety_modify);
+    */
+
+    /*
+    // avoid draw by repitition
+    hashset* present = hashset_contains(bitfields[is_player_white] | bitfields[!is_player_white]);
+    if(present != NULL)
+    {
+        printf("### avoiding repitition draw\n");
+        if(present->duplicates + 1 >= 2)
+        {
+            total_rating = 10000;
+            if(is_player_white)
+            {
+                total_rating = -10000;
+            }
+        }
+    }
+    */
 
     return total_rating;
 }
