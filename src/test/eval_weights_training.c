@@ -34,17 +34,17 @@ long total_fittings_tested = 0;
 //minimum fitting that all sets need to be achieve similtaniously before termination
 float all_fitting_precision = 0.98f;
 
-float learning_material_modify = 20;
-float learning_position_modify = 1;
-float learning_contol_modify = 2;
-float learning_pawns_modify = 1;
-float learning_king_safety_modify = 1;
+float learning_material_modify = 15.5;
+float learning_position_modify = 1.25;
+float learning_contol_modify = 2.5;
+float learning_pawns_modify = 0.5;
+float learning_king_safety_modify = 2.5;
 
-float bef_learning_material_modify = 20;
-float bef_learning_position_modify = 1;
-float bef_learning_contol_modify = 2;
-float bef_learning_pawns_modify = 1;
-float bef_learning_king_safety_modify = 1;
+float bef_learning_material_modify = 15.5;
+float bef_learning_position_modify = 1.25;
+float bef_learning_contol_modify = 2.5;
+float bef_learning_pawns_modify = 0.5;
+float bef_learning_king_safety_modify = 2.5;
 
 //std weight list for reference
 /*
@@ -67,10 +67,10 @@ king_safety_modify: 3.351111
 
 
 float learning_rate = 0.0005f;
-#define training_runs 10000
+#define training_runs 1000
 #define iteration_depth 1
-#define learning_player 1
-#define convergence_drystreak 100
+#define learning_player 0
+#define convergence_drystreak 200
 
 void main()
 {
@@ -284,6 +284,12 @@ void main()
             }
 
             is_player_white = !is_player_white;
+        }
+
+        if(convergence_ct > convergence_drystreak)
+        {
+            printf("converged after %d episodes and %d times of no improvement\n", z, convergence_drystreak);
+            break;
         }
     }   
 

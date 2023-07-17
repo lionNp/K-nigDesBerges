@@ -1,6 +1,23 @@
 
 ### nach 1000 episoden mit lr 0.0005
 
+converged after 556 episodes and 100 times of no improvement
+i learned new weights:
+material_modify: 20.092777
+position_modify: 0.852489
+contol_modify: 1.036934
+pawns_modify: 0.449907
+king_safety_modify: 1.320044
+
+converged after 999 episodes and 100 times of no improvement
+run completed.
+final weights after 186 times learned:
+material_modify: 13.540105
+position_modify: 0.179002
+contol_modify: 2.607262
+pawns_modify: 0.452645
+king_safety_modify: 2.632710
+
 final weights after 399 times learned:
 material_modify: 91.547089
 position_modify: 0.268100
