@@ -15,7 +15,7 @@ typedef struct s_hashset
 extern int max_duplicates;
 
 void hashset_add(field board);
-bool hashset_contains(field board);
+hashset* hashset_contains(field board);
 void hashset_clear();
 int hashset_duplicates();
 
