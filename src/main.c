@@ -163,7 +163,8 @@ int main() {
         float round_time = ((float) t / 1000000);
         printf("Time: %fs       --- depth: %d\n", round_time, depth);
         printf("Total Moves: %d --- Evaluated Moves: %d\n", num_moves_iterated, num_moves_trans);
-        
+        printf("Collosions: %d\n", num_hash_collisions);
+        printf("Collisionchance: %f\n", (float) num_hash_collisions/num_moves_iterated);
         //printf("Hash collisions: %d\n", num_hash_collisions);
         num_hash_collisions = 0;
 
@@ -178,7 +179,7 @@ int main() {
         castle_flags(piece_idx[idx], moves_from[idx]);
         print_move(moves_from[idx], moves_to[idx]);
         make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
-
+        
         // ###################### added reset hash on captured
         for (int i = 0; i < 8; i++){
             if(captured[i]){

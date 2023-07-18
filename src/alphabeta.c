@@ -22,13 +22,10 @@ float alphabeta(int depth, float alpha, float beta, bool max_player){
             num_moves_trans++;
             eval = evaluation();
         }
-<<<<<<< HEAD
+        else if(eval != evaluation())
+            num_hash_collisions++;
         //put_score(hash_value, eval);
         hash_table[hashtable_value] = eval;
-=======
-        hash_table[hashtable_value] = eval;
-        //put_score(hash_value, eval);
->>>>>>> 2512c5c (ufff)
         return eval;
     }
     field moves_from[max_move_count];
