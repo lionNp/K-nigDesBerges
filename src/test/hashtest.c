@@ -1,103 +1,36 @@
 #include "hashset.h"
+#include "common.h"
+#include "bit_boards_util.h"
+#include "move_executer.h"
+#include "move_generator.h"
 
 void main()
 {
-    printf("Adding 384\n");
-    hashset_add((field)384);
+    char fen[] = "r1bq1b1r/pp1p2pp/n1p1kp1n/4p3/1PB1P3/BRN5/P1PP1PPP/3QK1NR w Kha - 0 1";
+    import_gamestring(bitfields, game_string);
 
-    bool contains = hashset_contains((field)3884);
-    printf("Contains 3884: %s\n", contains ? "True" : "False");
+    field from[max_move_count];
+    field to[max_move_count];
+    int piece_type[max_move_count];
 
-    contains = hashset_contains((field)384);
-    printf("Contains 384: %s\n", contains ? "True" : "False");
+    int moves = generate_moves(from, to, piece_type);
 
-    contains = hashset_contains((field)382);
-    printf("Contains 382: %s\n", contains ? "True" : "False");
+    for(int counter = 0; counter < 9; counter++)
+    {
+        for(int i = 0; i < moves; i++)
+        {
+            field captured[8] = {0ul};
+            make_move(piece_type[i], from[i], to[i], captured);
 
-    printf("Adding 270\n");
-    hashset_add((field)270);
+            hashset_add();
 
-    contains = hashset_contains((field)270);
-    printf("Contains 270: %s\n", contains ? "True" : "False");
+            unmake_move(piece_type[i], from[i], to[i], captured);
+        }
 
-    contains = hashset_contains((field)384);
-    printf("Contains 384: %s\n", contains ? "True" : "False");
+        if(counter % 3 == 0)
+            hashset_clear();
+    }
 
-    printf("Adding 727\n");
-    hashset_add((field)727);
-
-    contains = hashset_contains((field)777);
-    printf("Contains 777: %s\n", contains ? "True" : "False");
-
-    contains = hashset_contains((field)727);
-    printf("Contains 727: %s\n", contains ? "True" : "False");
-
-    printf("Clearing hashset\n");
-    hashset_clear();
-
-    contains = hashset_contains((field)384);
-    printf("Contains 384: %s\n", contains ? "True" : "False");
-
-    contains = hashset_contains((field)270);
-    printf("Contains 270: %s\n", contains ? "True" : "False");
-
-    contains = hashset_contains((field)727);
-    printf("Contains 727: %s\n", contains ? "True" : "False");
-
-    int counter = hashset_duplicates();
-    printf("Duplicate counter for 5000: %d\n", counter);
-
-    printf("Adding 5000\n");
-    hashset_add((field)5000);
-
-    contains = hashset_contains((field)5000);
-    printf("Contains 5000: %s\n", contains ? "True" : "False");
-
-    counter = hashset_duplicates();
-    printf("Duplicate counter for 5000: %d\n", counter);
-
-    printf("Adding 5000\n");
-    hashset_add((field)5000);
-
-    contains = hashset_contains((field)5000);
-    printf("Contains 5000: %s\n", contains ? "True" : "False");
-
-    counter = hashset_duplicates();
-    printf("Duplicate counter for 5000: %d\n", counter);
-
-    printf("Clearing hashset\n");
-    hashset_clear();
-
-    contains = hashset_contains((field)5000);
-    printf("Contains 5000: %s\n", contains ? "True" : "False");
-
-    counter = hashset_duplicates();
-    printf("Duplicate counter for 5000: %d\n", counter);
-
-    printf("Adding 5000\n");
-    hashset_add((field)5000);
-
-    contains = hashset_contains((field)5000);
-    printf("Contains 5000: %s\n", contains ? "True" : "False");
-
-    counter = hashset_duplicates();
-    printf("Duplicate counter for 5000: %d\n", counter);
-
-        printf("Adding 5000\n");
-    hashset_add((field)5000);
-
-    contains = hashset_contains((field)5000);
-    printf("Contains 5000: %s\n", contains ? "True" : "False");
-
-    counter = hashset_duplicates();
-    printf("Duplicate counter for 5000: %d\n", counter);
-
-        printf("Adding 5000\n");
-    hashset_add((field)5000);
-
-    contains = hashset_contains((field)5000);
-    printf("Contains 5000: %s\n", contains ? "True" : "False");
-
-    counter = hashset_duplicates();
-    printf("Duplicate counter for 5000: %d\n", counter);
+    printf("max duplicates: %d\n", hashset_duplicates());
+    print_full_board();
 }

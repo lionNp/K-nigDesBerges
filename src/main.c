@@ -188,7 +188,7 @@ int main() {
         }
         // ######################
         print_full_board();
-        hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
+        hashset_add();
         // save move in struct
         // struct includes current hashtable
 

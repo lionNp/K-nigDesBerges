@@ -240,7 +240,7 @@ void main()
             //printf("%d Turn\n", is_player_white);
             //print_full_board();
 
-            hashset_add(bitfields[is_player_white] | bitfields[!is_player_white]);
+            hashset_add();
 
 
             //sleep(1);

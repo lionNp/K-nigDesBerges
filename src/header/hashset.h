@@ -7,15 +7,15 @@
 
 typedef struct s_hashset
 {
-    field value;
+    field boards[8];
     UT_hash_handle hh;
     int duplicates;
 } hashset;
 
 extern int max_duplicates;
 
-void hashset_add(field board);
-hashset* hashset_contains(field board);
+void hashset_add();
+hashset* hashset_contains();
 void hashset_clear();
 int hashset_duplicates();
 

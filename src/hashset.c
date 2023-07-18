@@ -3,9 +3,9 @@
 hashset* root = NULL;
 int max_duplicates = 1;
 
-void hashset_add(field board)
+void hashset_add()
 {
-    hashset* present = hashset_contains(board);
+    hashset* present = hashset_contains();
     if(present != NULL)
     {
         present->duplicates++;
@@ -15,16 +15,19 @@ void hashset_add(field board)
     }
 
     hashset* entry = malloc(sizeof(hashset));
-    entry->value = board;
+
+    for(int i = 0; i < figure_count; i++)
+        entry->boards[i] = bitfields[i];
+
     entry->duplicates = 1;
 
-    HASH_ADD(hh, root, value, sizeof(field), entry);
+    HASH_ADD(hh, root, boards, sizeof(field) * 8, entry);
 }
 
-hashset* hashset_contains(field board)
+hashset* hashset_contains()
 {
     hashset* entry;
-    HASH_FIND(hh, root, &board, sizeof(field), entry);
+    HASH_FIND(hh, root, &bitfields, sizeof(field) * 8, entry);
 
     return entry;
 }
