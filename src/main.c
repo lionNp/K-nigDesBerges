@@ -27,7 +27,7 @@ int main() {
     int total_pieces = 32;
 
     printf("start mcts\n");
-    int mcts_depth = 2;
+    int mcts_depth = 4;
     node *root = (node *) malloc(sizeof(node));
     field moves_from[max_move_count];
     field moves_to[max_move_count];
@@ -41,6 +41,8 @@ int main() {
     //    printf("%f\n", root->children[i].rating);
     print_move_2(root->children[root->pv].from ^ root->children[root->pv].to);
     print_move_2(root->children[root->pv].next->from ^ root->children[root->pv].next->to);
+    print_move_2(root->children[root->pv].next->next->from ^ root->children[root->pv].next->next->to);
+    print_move_2(root->children[root->pv].next->next->next->from ^ root->children[root->pv].next->next->next->to);
     printf("%f\n", root->rating);
     printf("%d\n", root->pv);
     printf("end mcts\n");

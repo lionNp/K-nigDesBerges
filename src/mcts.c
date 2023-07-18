@@ -24,7 +24,7 @@ float rollout(){
     memcpy(castle_flags_left, castle_left, sizeof(castle_flags_left));
     memcpy(castle_flags_right, castle_right, sizeof(castle_flags_right));
 
-    int depth = 3;
+    int depth = 7;
     int move_count;
     int i = 0;
     for(; i < depth; i++){
