@@ -129,7 +129,7 @@ void main()
             
             if(move_count == 0){
                 //nothing special for now
-                printf("no moves \n");
+                printf("draw \n");
                 break;
             }
 
