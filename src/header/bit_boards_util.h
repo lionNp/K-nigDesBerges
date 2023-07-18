@@ -43,6 +43,10 @@ void print_pos(field position);
 //get piece id of one position
 int get_piece_id(field pos);
 
+//save y and x coorinates from pos into x and y
 bool pos_to_coords(field pos, int* x, int* y);
+
+//returns the captured piece or -1. If greater than 7 its black (subtract 6). 
+int get_captured_piece(field captured[]);
 
 #endif

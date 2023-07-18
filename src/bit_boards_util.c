@@ -442,3 +442,49 @@ bool pos_to_coords(field pos, int* x, int* y)
     *y = p / 8;
     return false;
 }
+
+int get_captured_piece(field captured[])
+{
+    int result = 0;
+    for(int i = 0; i < 8; i++)
+    {
+        if(captured[i] == 0ul) 
+            continue;
+        
+        switch(i)
+        {
+            case black:
+                result += 6;
+                break;
+
+            case white:
+                break;
+            
+            case king:
+                result += 2;
+                return result;
+            
+            case queen:
+                result += 3;
+                return result;
+
+            case rook:
+                result += 4;
+                return result;
+            
+            case bishop:
+                result += 5;
+                return result;
+
+            case knight:
+                result += 6;
+                return result;
+
+            case pawn:
+                result += 7;
+                return result;
+        }
+    }
+
+    return -1;
+}

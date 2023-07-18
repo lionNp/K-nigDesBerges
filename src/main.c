@@ -27,9 +27,24 @@ int main() {
     int total_pieces = 32;
 
     printf("start mcts\n");
-    int mcts_depth = 0;
+    int mcts_depth = 4;
     node *root = (node *) malloc(sizeof(node));
+    field moves_from[max_move_count];
+    field moves_to[max_move_count];
+    int piece_idx[max_move_count];
+    int move_count = generate_moves(moves_from, moves_to, piece_idx);
+    
+    root->children = (node *) malloc(sizeof(node) * move_count);
     root->rating = mcts(root, mcts_depth);
+
+    //for(int i = 0; i < 20; i++)
+    //    printf("%f\n", root->children[i].rating);
+    print_move_2(root->children[root->pv].from ^ root->children[root->pv].to);
+    print_move_2(root->children[root->pv].next->from ^ root->children[root->pv].next->to);
+    print_move_2(root->children[root->pv].next->next->from ^ root->children[root->pv].next->next->to);
+    print_move_2(root->children[root->pv].next->next->next->from ^ root->children[root->pv].next->next->next->to);
+    printf("%f\n", root->rating);
+    printf("%d\n", root->pv);
     printf("end mcts\n");
     
     //printf("%f\n", root->rating);
@@ -41,15 +56,13 @@ int main() {
         stopwatch turn_time = start_stopwatch();
         field t = 0UL;
         //initilizing moves
-        field moves_from[max_move_count];
-        field moves_to[max_move_count];
-        int piece_idx[max_move_count];
+        
         //alpha beta initilizing
         float alpha = losing_move;
         float beta = winning_move;
         bool max_player = is_player_white;
         //get moves and set rating
-        int move_count = generate_moves(moves_from, moves_to, piece_idx);
+        move_count = generate_moves(moves_from, moves_to, piece_idx);
         
         bool castle_flags_left[2];
         bool castle_flags_right[2];
