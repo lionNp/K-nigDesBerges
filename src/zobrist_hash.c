@@ -81,6 +81,10 @@ uint64_t update_hash(uint64_t hash_value, field move_from, field move_to, int pi
 void put_score(uint64_t hash_value, float score)
 {
     int idx = hash_value % TABLE_SIZE;
+
+    if(score_table[idx].score != 0)
+        num_hash_collisions++;
+
     score_table[idx].hash_value = hash_value;
     score_table[idx].score = score;
 }
