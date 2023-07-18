@@ -253,6 +253,7 @@ void main()
 
             if(gameover){
                 printf("game %d finished\n", z);
+                printf("%s won!\n", is_player_white ? "white" : "black");
                 print_full_board();
                 // learn from match if learnee won
                 //if(winner == learning_player && move_count > 0 && hashset_duplicates() < 3)

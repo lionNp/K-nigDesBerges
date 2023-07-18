@@ -60,7 +60,7 @@ int get_piece_count2(field board) {
 
 bool game_finished(int total_legal_moves){
     if((bitfields[is_player_white] & bitfields[king]) & koth){
-        printf("%s won!\n", is_player_white ? "white" : "black");
+        //printf("%s won!\n", is_player_white ? "white" : "black");
         return true;
     }
 
