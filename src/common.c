@@ -7,6 +7,8 @@ field default_time_per_move = 2000000;
 field total_remaining_time = 80000000;
 field total_moves = 0;
 
+int winner = 2;
+
 bool is_player_white = true;
 bool gameover = false;
 bool castle_left[2] = {true, true};
