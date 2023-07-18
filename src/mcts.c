@@ -15,8 +15,6 @@ float rollout(){
     field boards[8];
     memcpy(boards, bitfields, sizeof(boards));
 
-    
-
     bool player = is_player_white;
 
     bool castle_flags_left[2];
