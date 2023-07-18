@@ -14,9 +14,9 @@ field calc_time_budget(int move_count){
 
     field relative_time =  (field) ((absolute_time/(expected_needed_time)) * total_remaining_time);
     
-    printf("time budget calculated: %ld\n", (field) absolute_time);
-    printf("time budget relative to remaining clock: %ld\n", relative_time);
-    printf("remaining clock: %ld\n", total_remaining_time);
+    printf("time budget calculated: %ldms\n", (field) absolute_time/1000);
+    printf("time budget relative to remaining clock: %ldms\n", relative_time/1000);
+    printf("remaining clock: %ldms\n", total_remaining_time/1000);
 
     //minimum time = 0.2s
     if (relative_time < (field) 0.2 * sec_in_us)

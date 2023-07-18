@@ -1,0 +1,1283 @@
+start mcts
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 1 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 1 0 0 
+0 0 0 0 0 0 0 0 
+
+0 0 0 0 0 0 0 0 
+0 0 0 1 0 0 0 0 
+0 0 0 1 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 1 0 0 
+0 0 0 0 0 1 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+
+0 0 1 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 1 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+
+-30.000000
+9
+end mcts
+move count: 20
+time budget calculated: 378711
+time budget relative to remaining clock: 378711
+remaining clock: 116000000
+Time: 0.785355s       --- depth: 5
+Total Moves: 230950 --- Evaluated Moves: 122595
+e2-e4
+r n b q k b n r 
+p p p p p p p p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+P P P P 0 P P P 
+R N B Q K B N R 
+
+move count: 20
+time budget calculated: 378711
+time budget relative to remaining clock: 382747
+remaining clock: 115214645
+Time: 0.802532s       --- depth: 5
+Total Moves: 395477 --- Evaluated Moves: 128989
+f7-f5
+r n b q k b n r 
+p p p p p 0 p p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 p 0 0 
+0 0 0 0 P 0 0 0 
+0 0 0 0 0 0 0 0 
+P P P P 0 P P P 
+R N B Q K B N R 
+
+move count: 31
+time budget calculated: 1313377
+time budget relative to remaining clock: 1341663
+remaining clock: 114412113
+Time: 1.606824s       --- depth: 5
+Total Moves: 743317 --- Evaluated Moves: 261746
+e4-f5
+r n b q k b n r 
+p p p p p 0 p p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 P 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+P P P P 0 P P P 
+R N B Q K B N R 
+
+move count: 19
+time budget calculated: 337153
+time budget relative to remaining clock: 345752
+remaining clock: 112805289
+Time: 0.476546s       --- depth: 4
+Total Moves: 216795 --- Evaluated Moves: 106311
+e7-e5
+r n b q k b n r 
+p p p p 0 0 p p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 p P 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+P P P P 0 P P P 
+R N B Q K B N R 
+
+move count: 30
+time budget calculated: 1211777
+time budget relative to remaining clock: 1260346
+remaining clock: 112328743
+Time: 1.391041s       --- depth: 5
+Total Moves: 566963 --- Evaluated Moves: 276388
+e1-e2
+r n b q k b n r 
+p p p p 0 0 p p 
+0 0 0 0 0 0 0 0 
+0 0 0 0 p P 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+P P P P K P P P 
+R N B Q 0 B N R 
+
+move count: 29
+time budget calculated: 1108594
+time budget relative to remaining clock: 1160235
+remaining clock: 110937702
+Time: 1.304428s       --- depth: 5
+Total Moves: 749288 --- Evaluated Moves: 254602
+d7-d6
+r n b q k b n r 
+p p p 0 0 0 p p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 p P 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+P P P P K P P P 
+R N B Q 0 B N R 
+
+move count: 24
+time budget calculated: 631486
+time budget relative to remaining clock: 665691
+remaining clock: 109633274
+Time: 1.039404s       --- depth: 5
+Total Moves: 825457 --- Evaluated Moves: 189633
+f2-f4
+r n b q k b n r 
+p p p 0 0 0 p p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 p P 0 0 
+0 0 0 0 0 P 0 0 
+0 0 0 0 0 0 0 0 
+P P P P K 0 P P 
+R N B Q 0 B N R 
+
+move count: 31
+time budget calculated: 1313377
+time budget relative to remaining clock: 1398282
+remaining clock: 108593870
+Time: 1.470092s       --- depth: 5
+Total Moves: 1053599 --- Evaluated Moves: 249712
+c8-f5
+r n 0 q k b n r 
+p p p 0 0 0 p p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 p b 0 0 
+0 0 0 0 0 P 0 0 
+0 0 0 0 0 0 0 0 
+P P P P K 0 P P 
+R N B Q 0 B N R 
+
+move count: 22
+time budget calculated: 487359
+time budget relative to remaining clock: 522077
+remaining clock: 107123778
+Time: 0.565952s       --- depth: 4
+Total Moves: 242464 --- Evaluated Moves: 134293
+c2-c3
+r n 0 q k b n r 
+p p p 0 0 0 p p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 p b 0 0 
+0 0 0 0 0 P 0 0 
+0 0 P 0 0 0 0 0 
+P P 0 P K 0 P P 
+R N B Q 0 B N R 
+
+move count: 39
+time budget calculated: 1945538
+time budget relative to remaining clock: 2115432
+remaining clock: 106557826
+Time: 2.634994s       --- depth: 5
+Total Moves: 1280433 --- Evaluated Moves: 553112
+e5-f4
+r n 0 q k b n r 
+p p p 0 0 0 p p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 b 0 0 
+0 0 0 0 0 p 0 0 
+0 0 P 0 0 0 0 0 
+P P 0 P K 0 P P 
+R N B Q 0 B N R 
+
+move count: 21
+time budget calculated: 428626
+time budget relative to remaining clock: 464000
+remaining clock: 103922832
+Time: 0.476553s       --- depth: 4
+Total Moves: 187240 --- Evaluated Moves: 107810
+b2-b3
+r n 0 q k b n r 
+p p p 0 0 0 p p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 b 0 0 
+0 0 0 0 0 p 0 0 
+0 P P 0 0 0 0 0 
+P 0 0 P K 0 P P 
+R N B Q 0 B N R 
+
+move count: 38
+time budget calculated: 1887885
+time budget relative to remaining clock: 2077603
+remaining clock: 103446279
+Time: 2.380313s       --- depth: 5
+Total Moves: 1172760 --- Evaluated Moves: 486151
+e8-f7
+r n 0 q 0 b n r 
+p p p 0 0 k p p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 b 0 0 
+0 0 0 0 0 p 0 0 
+0 P P 0 0 0 0 0 
+P 0 0 P K 0 P P 
+R N B Q 0 B N R 
+
+move count: 20
+time budget calculated: 378711
+time budget relative to remaining clock: 416031
+remaining clock: 101065966
+Time: 0.715552s       --- depth: 5
+Total Moves: 764399 --- Evaluated Moves: 91450
+d2-d4
+r n 0 q 0 b n r 
+p p p 0 0 k p p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 b 0 0 
+0 0 0 P 0 p 0 0 
+0 P P 0 0 0 0 0 
+P 0 0 0 K 0 P P 
+R N B Q 0 B N R 
+
+move count: 41
+time budget calculated: 2043951
+time budget relative to remaining clock: 2279015
+remaining clock: 100350414
+Time: 2.678570s       --- depth: 5
+Total Moves: 1317816 --- Evaluated Moves: 540974
+f5-g4
+r n 0 q 0 b n r 
+p p p 0 0 k p p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 P 0 p b 0 
+0 P P 0 0 0 0 0 
+P 0 0 0 K 0 P P 
+R N B Q 0 B N R 
+
+move count: 5
+time budget calculated: 200320
+time budget relative to remaining clock: 222337
+remaining clock: 97671844
+Time: 0.507618s       --- depth: 5
+Total Moves: 284524 --- Evaluated Moves: 87307
+g1-f3
+r n 0 q 0 b n r 
+p p p 0 0 k p p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 P 0 p b 0 
+0 P P 0 0 N 0 0 
+P 0 0 0 K 0 P P 
+R N B Q 0 B 0 R 
+
+move count: 37
+time budget calculated: 1824134
+time budget relative to remaining clock: 2060937
+remaining clock: 97164226
+Time: 2.566795s       --- depth: 5
+Total Moves: 1193050 --- Evaluated Moves: 530820
+g7-g5
+r n 0 q 0 b n r 
+p p p 0 0 k 0 p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 p 0 
+0 0 0 P 0 p b 0 
+0 P P 0 0 N 0 0 
+P 0 0 0 K 0 P P 
+R N B Q 0 B 0 R 
+
+move count: 24
+time budget calculated: 631486
+time budget relative to remaining clock: 711154
+remaining clock: 94597431
+Time: 1.536379s       --- depth: 5
+Total Moves: 1039164 --- Evaluated Moves: 287123
+e2-f2
+r n 0 q 0 b n r 
+p p p 0 0 k 0 p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 p 0 
+0 0 0 P 0 p b 0 
+0 P P 0 0 N 0 0 
+P 0 0 0 0 K P P 
+R N B Q 0 B 0 R 
+
+move count: 36
+time budget calculated: 1754051
+time budget relative to remaining clock: 1990657
+remaining clock: 93061052
+Time: 2.319912s       --- depth: 5
+Total Moves: 1465557 --- Evaluated Moves: 411582
+g4-f3
+r n 0 q 0 b n r 
+p p p 0 0 k 0 p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 p 0 
+0 0 0 P 0 p 0 0 
+0 P P 0 0 b 0 0 
+P 0 0 0 0 K P P 
+R N B Q 0 B 0 R 
+
+move count: 32
+time budget calculated: 1411858
+time budget relative to remaining clock: 1601420
+remaining clock: 90741140
+Time: 1.686381s       --- depth: 4
+Total Moves: 854075 --- Evaluated Moves: 372747
+g2-f3
+r n 0 q 0 b n r 
+p p p 0 0 k 0 p 
+0 0 0 p 0 0 0 0 
+0 0 0 0 0 0 p 0 
+0 0 0 P 0 p 0 0 
+0 P P 0 0 P 0 0 
+P 0 0 0 0 K 0 P 
+R N B Q 0 B 0 R 
+
+move count: 30
+time budget calculated: 1211777
+time budget relative to remaining clock: 1383519
+remaining clock: 89054759
+Time: 1.601934s       --- depth: 5
+Total Moves: 867183 --- Evaluated Moves: 352214
+h7-h6
+r n 0 q 0 b n r 
+p p p 0 0 k 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 P 0 p 0 0 
+0 P P 0 0 P 0 0 
+P 0 0 0 0 K 0 P 
+R N B Q 0 B 0 R 
+
+move count: 31
+time budget calculated: 1313377
+time budget relative to remaining clock: 1511297
+remaining clock: 87452825
+Time: 1.992669s       --- depth: 5
+Total Moves: 1338756 --- Evaluated Moves: 384808
+a2-a3
+r n 0 q 0 b n r 
+p p p 0 0 k 0 0 
+0 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 P 0 p 0 0 
+P P P 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R N B Q 0 B 0 R 
+
+move count: 28
+time budget calculated: 1005582
+time budget relative to remaining clock: 1161314
+remaining clock: 85460156
+Time: 1.218897s       --- depth: 5
+Total Moves: 925623 --- Evaluated Moves: 217229
+a7-a6
+r n 0 q 0 b n r 
+0 p p 0 0 k 0 0 
+p 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 P 0 p 0 0 
+P P P 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R N B Q 0 B 0 R 
+
+move count: 29
+time budget calculated: 1108594
+time budget relative to remaining clock: 1297075
+remaining clock: 84241259
+Time: 1.426692s       --- depth: 5
+Total Moves: 1027386 --- Evaluated Moves: 278035
+b1-d2
+r n 0 q 0 b n r 
+0 p p 0 0 k 0 0 
+p 0 0 p 0 0 0 p 
+0 0 0 0 0 0 p 0 
+0 0 0 P 0 p 0 0 
+P P P 0 0 P 0 0 
+0 0 0 N 0 K 0 P 
+R 0 B Q 0 B 0 R 
+
+move count: 27
+time budget calculated: 904604
+time budget relative to remaining clock: 1070205
+remaining clock: 82814567
+Time: 1.154661s       --- depth: 5
+Total Moves: 854421 --- Evaluated Moves: 214980
+b7-b5
+r n 0 q 0 b n r 
+0 0 p 0 0 k 0 0 
+p 0 0 p 0 0 0 p 
+0 p 0 0 0 0 p 0 
+0 0 0 P 0 p 0 0 
+P P P 0 0 P 0 0 
+0 0 0 N 0 K 0 P 
+R 0 B Q 0 B 0 R 
+
+move count: 26
+time budget calculated: 807507
+time budget relative to remaining clock: 969720
+remaining clock: 81659906
+Time: 1.177887s       --- depth: 5
+Total Moves: 804967 --- Evaluated Moves: 220105
+b3-b4
+r n 0 q 0 b n r 
+0 0 p 0 0 k 0 0 
+p 0 0 p 0 0 0 p 
+0 p 0 0 0 0 p 0 
+0 P 0 P 0 p 0 0 
+P 0 P 0 0 P 0 0 
+0 0 0 N 0 K 0 P 
+R 0 B Q 0 B 0 R 
+
+move count: 25
+time budget calculated: 715991
+time budget relative to remaining clock: 873097
+remaining clock: 80482019
+Time: 1.061369s       --- depth: 5
+Total Moves: 679650 --- Evaluated Moves: 206779
+g8-e7
+r n 0 q 0 b 0 r 
+0 0 p 0 n k 0 0 
+p 0 0 p 0 0 0 p 
+0 p 0 0 0 0 p 0 
+0 P 0 P 0 p 0 0 
+P 0 P 0 0 P 0 0 
+0 0 0 N 0 K 0 P 
+R 0 B Q 0 B 0 R 
+
+move count: 28
+time budget calculated: 1005582
+time budget relative to remaining clock: 1247875
+remaining clock: 79420650
+Time: 1.643581s       --- depth: 5
+Total Moves: 1107229 --- Evaluated Moves: 329925
+c3-c4
+r n 0 q 0 b 0 r 
+0 0 p 0 n k 0 0 
+p 0 0 p 0 0 0 p 
+0 p 0 0 0 0 p 0 
+0 P P P 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 0 0 N 0 K 0 P 
+R 0 B Q 0 B 0 R 
+
+move count: 28
+time budget calculated: 1005582
+time budget relative to remaining clock: 1261472
+remaining clock: 77777069
+Time: 1.318820s       --- depth: 5
+Total Moves: 970843 --- Evaluated Moves: 267688
+f8-g7
+r n 0 q 0 0 0 r 
+0 0 p 0 n k b 0 
+p 0 0 p 0 0 0 p 
+0 p 0 0 0 0 p 0 
+0 P P P 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 0 0 N 0 K 0 P 
+R 0 B Q 0 B 0 R 
+
+move count: 26
+time budget calculated: 807507
+time budget relative to remaining clock: 1029009
+remaining clock: 76458249
+Time: 1.546728s       --- depth: 5
+Total Moves: 1193583 --- Evaluated Moves: 269399
+d2-b3
+r n 0 q 0 0 0 r 
+0 0 p 0 n k b 0 
+p 0 0 p 0 0 0 p 
+0 p 0 0 0 0 p 0 
+0 P P P 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q 0 B 0 R 
+
+move count: 35
+time budget calculated: 1677549
+time budget relative to remaining clock: 2166685
+remaining clock: 74911521
+Time: 2.436744s       --- depth: 5
+Total Moves: 1527258 --- Evaluated Moves: 483840
+h8-e8
+r n 0 q r 0 0 0 
+0 0 p 0 n k b 0 
+p 0 0 p 0 0 0 p 
+0 p 0 0 0 0 p 0 
+0 P P P 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q 0 B 0 R 
+
+move count: 29
+time budget calculated: 1108594
+time budget relative to remaining clock: 1434734
+remaining clock: 72474777
+Time: 2.079547s       --- depth: 5
+Total Moves: 1255121 --- Evaluated Moves: 392916
+c4-b5
+r n 0 q r 0 0 0 
+0 0 p 0 n k b 0 
+p 0 0 p 0 0 0 p 
+0 P 0 0 0 0 p 0 
+0 P 0 P 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q 0 B 0 R 
+
+move count: 31
+time budget calculated: 1313377
+time budget relative to remaining clock: 1712139
+remaining clock: 70395230
+Time: 1.942358s       --- depth: 5
+Total Moves: 861616 --- Evaluated Moves: 437196
+a6-b5
+r n 0 q r 0 0 0 
+0 0 p 0 n k b 0 
+0 0 0 p 0 0 0 p 
+0 p 0 0 0 0 p 0 
+0 P 0 P 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q 0 B 0 R 
+
+move count: 29
+time budget calculated: 1108594
+time budget relative to remaining clock: 1459355
+remaining clock: 68452872
+Time: 2.462326s       --- depth: 5
+Total Moves: 1260804 --- Evaluated Moves: 527986
+f1-b5
+r n 0 q r 0 0 0 
+0 0 p 0 n k b 0 
+0 0 0 p 0 0 0 p 
+0 B 0 0 0 0 p 0 
+0 P 0 P 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q 0 0 0 R 
+
+move count: 34
+time budget calculated: 1594735
+time budget relative to remaining clock: 2104748
+remaining clock: 65990546
+Time: 2.193534s       --- depth: 5
+Total Moves: 1125438 --- Evaluated Moves: 472625
+f7-e6
+r n 0 q r 0 0 0 
+0 0 p 0 n 0 b 0 
+0 0 0 p k 0 0 p 
+0 B 0 0 0 0 p 0 
+0 P 0 P 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q 0 0 0 R 
+
+move count: 37
+time budget calculated: 1824134
+time budget relative to remaining clock: 2424465
+remaining clock: 63797012
+Time: 2.855971s       --- depth: 5
+Total Moves: 1357692 --- Evaluated Moves: 624462
+h1-e1
+r n 0 q r 0 0 0 
+0 0 p 0 n 0 b 0 
+0 0 0 p k 0 0 p 
+0 B 0 0 0 0 p 0 
+0 P 0 P 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q R 0 0 0 
+
+move count: 5
+time budget calculated: 200320
+time budget relative to remaining clock: 265385
+remaining clock: 60941041
+Time: 0.457011s       --- depth: 5
+Total Moves: 250701 --- Evaluated Moves: 76656
+g7-e5
+r n 0 q r 0 0 0 
+0 0 p 0 n 0 0 0 
+0 0 0 p k 0 0 p 
+0 B 0 0 b 0 p 0 
+0 P 0 P 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q R 0 0 0 
+
+move count: 38
+time budget calculated: 1887885
+time budget relative to remaining clock: 2595157
+remaining clock: 60484030
+Time: 2.814499s       --- depth: 5
+Total Moves: 1509941 --- Evaluated Moves: 631089
+d4-e5
+r n 0 q r 0 0 0 
+0 0 p 0 n 0 0 0 
+0 0 0 p k 0 0 p 
+0 B 0 0 P 0 p 0 
+0 P 0 0 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q R 0 0 0 
+
+move count: 27
+time budget calculated: 904604
+time budget relative to remaining clock: 1242097
+remaining clock: 57669531
+Time: 1.503578s       --- depth: 4
+Total Moves: 914524 --- Evaluated Moves: 367551
+d6-e5
+r n 0 q r 0 0 0 
+0 0 p 0 n 0 0 0 
+0 0 0 0 k 0 0 p 
+0 B 0 0 p 0 p 0 
+0 P 0 0 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q R 0 0 0 
+
+move count: 42
+time budget calculated: 2085540
+time budget relative to remaining clock: 2928409
+remaining clock: 56165953
+Time: 4.235314s       --- depth: 5
+Total Moves: 2009233 --- Evaluated Moves: 1012127
+e1-e5
+r n 0 q r 0 0 0 
+0 0 p 0 n 0 0 0 
+0 0 0 0 k 0 0 p 
+0 B 0 0 R 0 p 0 
+0 P 0 0 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q 0 0 0 0 
+
+move count: 3
+time budget calculated: 200238
+time budget relative to remaining clock: 273644
+remaining clock: 51930639
+Time: 0.896135s       --- depth: 5
+Total Moves: 319494 --- Evaluated Moves: 177895
+e6-f6
+r n 0 q r 0 0 0 
+0 0 p 0 n 0 0 0 
+0 0 0 0 0 k 0 p 
+0 B 0 0 R 0 p 0 
+0 P 0 0 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B Q 0 0 0 0 
+
+move count: 50
+time budget calculated: 2289627
+time budget relative to remaining clock: 3245833
+remaining clock: 51034504
+Time: 3.482312s       --- depth: 5
+Total Moves: 2064569 --- Evaluated Moves: 743634
+d1-e1
+r n 0 q r 0 0 0 
+0 0 p 0 n 0 0 0 
+0 0 0 0 0 k 0 p 
+0 B 0 0 R 0 p 0 
+0 P 0 0 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B 0 Q 0 0 0 
+
+move count: 32
+time budget calculated: 1411858
+time budget relative to remaining clock: 1974616
+remaining clock: 47552192
+Time: 2.832911s       --- depth: 5
+Total Moves: 2287296 --- Evaluated Moves: 531850
+c7-c6
+r n 0 q r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 k 0 p 
+0 B 0 0 R 0 p 0 
+0 P 0 0 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 B 0 Q 0 0 0 
+
+move count: 42
+time budget calculated: 2085540
+time budget relative to remaining clock: 2914496
+remaining clock: 44719281
+Time: 2.939635s       --- depth: 5
+Total Moves: 1979333 --- Evaluated Moves: 589722
+c1-b2
+r n 0 q r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 k 0 p 
+0 B 0 0 R 0 p 0 
+0 P 0 0 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 33
+time budget calculated: 1505959
+time budget relative to remaining clock: 2097281
+remaining clock: 41779646
+Time: 2.672400s       --- depth: 5
+Total Moves: 2057069 --- Evaluated Moves: 532872
+f6-f7
+r n 0 q r 0 0 0 
+0 0 0 0 n k 0 0 
+0 0 p 0 0 0 0 p 
+0 B 0 0 R 0 p 0 
+0 P 0 0 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 46
+time budget calculated: 2211156
+time budget relative to remaining clock: 3088294
+remaining clock: 39107246
+Time: 3.278115s       --- depth: 5
+Total Moves: 2584081 --- Evaluated Moves: 667908
+b5-c4
+r n 0 q r 0 0 0 
+0 0 0 0 n k 0 0 
+0 0 p 0 0 0 0 p 
+0 0 0 0 R 0 p 0 
+0 P B 0 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 6
+time budget calculated: 200473
+time budget relative to remaining clock: 276261
+remaining clock: 35829131
+Time: 1.364486s       --- depth: 5
+Total Moves: 864117 --- Evaluated Moves: 284777
+f7-f8
+r n 0 q r k 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 0 0 p 
+0 0 0 0 R 0 p 0 
+0 P B 0 0 p 0 0 
+P N 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 51
+time budget calculated: 2304142
+time budget relative to remaining clock: 3308810
+remaining clock: 34464645
+Time: 3.513216s       --- depth: 5
+Total Moves: 2384757 --- Evaluated Moves: 746554
+b3-d4
+r n 0 q r k 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 0 0 p 
+0 0 0 0 R 0 p 0 
+0 P B N 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 24
+time budget calculated: 631486
+time budget relative to remaining clock: 888427
+remaining clock: 30951429
+Time: 1.705202s       --- depth: 5
+Total Moves: 1529051 --- Evaluated Moves: 295307
+d8-d6
+r n 0 0 r k 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p q 0 0 0 p 
+0 0 0 0 R 0 p 0 
+0 P B N 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 54
+time budget calculated: 2338898
+time budget relative to remaining clock: 3420198
+remaining clock: 29246227
+Time: 3.963721s       --- depth: 5
+Total Moves: 2909109 --- Evaluated Moves: 825153
+d4-e6
+r n 0 0 r k 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p q N 0 0 p 
+0 0 0 0 R 0 p 0 
+0 P B 0 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 3
+time budget calculated: 200238
+time budget relative to remaining clock: 281251
+remaining clock: 25282506
+Time: 0.747270s       --- depth: 5
+Total Moves: 389620 --- Evaluated Moves: 128983
+f8-g8
+r n 0 0 r 0 k 0 
+0 0 0 0 n 0 0 0 
+0 0 p q N 0 0 p 
+0 0 0 0 R 0 p 0 
+0 P B 0 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 51
+time budget calculated: 2304142
+time budget relative to remaining clock: 3533292
+remaining clock: 24535236
+Time: 4.669478s       --- depth: 5
+Total Moves: 2485290 --- Evaluated Moves: 1076162
+e6-c7
+r n 0 0 r 0 k 0 
+0 0 N 0 n 0 0 0 
+0 0 p q 0 0 0 p 
+0 0 0 0 R 0 p 0 
+0 P B 0 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 7
+time budget calculated: 200800
+time budget relative to remaining clock: 284932
+remaining clock: 19865758
+Time: 0.961123s       --- depth: 5
+Total Moves: 661825 --- Evaluated Moves: 149758
+g8-f8
+r n 0 0 r k 0 0 
+0 0 N 0 n 0 0 0 
+0 0 p q 0 0 0 p 
+0 0 0 0 R 0 p 0 
+0 P B 0 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 54
+time budget calculated: 2338898
+time budget relative to remaining clock: 3684668
+remaining clock: 18904635
+Time: 4.782994s       --- depth: 5
+Total Moves: 2971462 --- Evaluated Moves: 1046088
+e5-f5
+r n 0 0 r k 0 0 
+0 0 N 0 n 0 0 0 
+0 0 p q 0 0 0 p 
+0 0 0 0 0 R p 0 
+0 P B 0 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 2
+time budget calculated: 200233
+time budget relative to remaining clock: 282762
+remaining clock: 14121641
+Time: 0.512220s       --- depth: 5
+Total Moves: 196001 --- Evaluated Moves: 80759
+d6-f6
+r n 0 0 r k 0 0 
+0 0 N 0 n 0 0 0 
+0 0 p 0 0 q 0 p 
+0 0 0 0 0 R p 0 
+0 P B 0 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 B 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 56
+time budget calculated: 2356331
+time budget relative to remaining clock: 4008537
+remaining clock: 13609421
+Time: 4.394199s       --- depth: 5
+Total Moves: 2454054 --- Evaluated Moves: 1013817
+b2-f6
+r n 0 0 r k 0 0 
+0 0 N 0 n 0 0 0 
+0 0 p 0 0 B 0 p 
+0 0 0 0 0 R p 0 
+0 P B 0 0 p 0 0 
+P 0 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 17
+time budget calculated: 276170
+time budget relative to remaining clock: 424162
+remaining clock: 9215222
+Time: 0.444861s       --- depth: 4
+Total Moves: 180689 --- Evaluated Moves: 118940
+g5-g4
+r n 0 0 r k 0 0 
+0 0 N 0 n 0 0 0 
+0 0 p 0 0 B 0 p 
+0 0 0 0 0 R 0 0 
+0 P B 0 0 p p 0 
+P 0 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 61
+time budget calculated: 2386428
+time budget relative to remaining clock: 5232459
+remaining clock: 8770361
+Time: 5.245103s       --- depth: 5
+Total Moves: 3077838 --- Evaluated Moves: 1309086
+c7-e6
+r n 0 0 r k 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 N B 0 p 
+0 0 0 0 0 R 0 0 
+0 P B 0 0 p p 0 
+P 0 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 2
+time budget calculated: 200233
+time budget relative to remaining clock: 352937
+remaining clock: 3525258
+Time: 0.634630s       --- depth: 5
+Total Moves: 248340 --- Evaluated Moves: 131916
+f8-f7
+r n 0 0 r 0 0 0 
+0 0 0 0 n k 0 0 
+0 0 p 0 N B 0 p 
+0 0 0 0 0 R 0 0 
+0 P B 0 0 p p 0 
+P 0 0 0 0 P 0 0 
+0 0 0 0 0 K 0 P 
+R 0 0 0 Q 0 0 0 
+
+move count: 58
+time budget calculated: 2370323
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+f2-g2
+r n 0 0 r 0 0 0 
+0 0 0 0 n k 0 0 
+0 0 p 0 N B 0 p 
+0 0 0 0 0 R 0 0 
+0 P B 0 0 p p 0 
+P 0 0 0 0 P 0 0 
+0 0 0 0 0 0 K P 
+R 0 0 0 Q 0 0 0 
+
+move count: 23
+time budget calculated: 555057
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+f7-g6
+r n 0 0 r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 N B k p 
+0 0 0 0 0 R 0 0 
+0 P B 0 0 p p 0 
+P 0 0 0 0 P 0 0 
+0 0 0 0 0 0 K P 
+R 0 0 0 Q 0 0 0 
+
+move count: 61
+time budget calculated: 2386428
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+e1-c3
+r n 0 0 r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 N B k p 
+0 0 0 0 0 R 0 0 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 0 
+0 0 0 0 0 0 K P 
+R 0 0 0 0 0 0 0 
+
+move count: 23
+time budget calculated: 555057
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+g6-f5
+r n 0 0 r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 N B 0 p 
+0 0 0 0 0 k 0 0 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 0 
+0 0 0 0 0 0 K P 
+R 0 0 0 0 0 0 0 
+
+move count: 50
+time budget calculated: 2289627
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+e6-d8
+r n 0 N r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 B 0 p 
+0 0 0 0 0 k 0 0 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 0 
+0 0 0 0 0 0 K P 
+R 0 0 0 0 0 0 0 
+
+move count: 20
+time budget calculated: 378711
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+h6-h5
+r n 0 N r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 B 0 0 
+0 0 0 0 0 k 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 0 
+0 0 0 0 0 0 K P 
+R 0 0 0 0 0 0 0 
+
+move count: 49
+time budget calculated: 2273320
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+d8-f7
+r n 0 0 r 0 0 0 
+0 0 0 0 n N 0 0 
+0 0 p 0 0 B 0 0 
+0 0 0 0 0 k 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 0 
+0 0 0 0 0 0 K P 
+R 0 0 0 0 0 0 0 
+
+move count: 21
+time budget calculated: 428626
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+f5-g6
+r n 0 0 r 0 0 0 
+0 0 0 0 n N 0 0 
+0 0 p 0 0 B k 0 
+0 0 0 0 0 0 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 0 
+0 0 0 0 0 0 K P 
+R 0 0 0 0 0 0 0 
+
+move count: 49
+time budget calculated: 2273320
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+h2-h3
+r n 0 0 r 0 0 0 
+0 0 0 0 n N 0 0 
+0 0 p 0 0 B k 0 
+0 0 0 0 0 0 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+move count: 23
+time budget calculated: 555057
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+g6-f5
+r n 0 0 r 0 0 0 
+0 0 0 0 n N 0 0 
+0 0 p 0 0 B 0 0 
+0 0 0 0 0 k 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+move count: 50
+time budget calculated: 2289627
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+f7-d8
+r n 0 N r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 B 0 0 
+0 0 0 0 0 k 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+move count: 21
+time budget calculated: 428626
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+f5-g6
+r n 0 N r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 B k 0 
+0 0 0 0 0 0 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+move count: 50
+time budget calculated: 2289627
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+d8-b7
+r n 0 0 r 0 0 0 
+0 N 0 0 n 0 0 0 
+0 0 p 0 0 B k 0 
+0 0 0 0 0 0 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+move count: 24
+time budget calculated: 631486
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+g6-f5
+r n 0 0 r 0 0 0 
+0 N 0 0 n 0 0 0 
+0 0 p 0 0 B 0 0 
+0 0 0 0 0 k 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+move count: 50
+time budget calculated: 2289627
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+b7-d8
+r n 0 N r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 B 0 0 
+0 0 0 0 0 k 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+move count: 21
+time budget calculated: 428626
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+f5-g6
+r n 0 N r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 B k 0 
+0 0 0 0 0 0 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+move count: 50
+time budget calculated: 2289627
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+d8-b7
+r n 0 0 r 0 0 0 
+0 N 0 0 n 0 0 0 
+0 0 p 0 0 B k 0 
+0 0 0 0 0 0 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+move count: 24
+time budget calculated: 631486
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+g6-f5
+r n 0 0 r 0 0 0 
+0 N 0 0 n 0 0 0 
+0 0 p 0 0 B 0 0 
+0 0 0 0 0 k 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+move count: 50
+time budget calculated: 2289627
+time budget relative to remaining clock: 0
+remaining clock: 2890628
+Time: 0.000000s       --- depth: 0
+Total Moves: 0 --- Evaluated Moves: 0
+b7-d8
+r n 0 N r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 B 0 0 
+0 0 0 0 0 k 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+Game Over
+r n 0 N r 0 0 0 
+0 0 0 0 n 0 0 0 
+0 0 p 0 0 B 0 0 
+0 0 0 0 0 k 0 p 
+0 P B 0 0 p p 0 
+P 0 Q 0 0 P 0 P 
+0 0 0 0 0 0 K 0 
+R 0 0 0 0 0 0 0 
+
+Match took 77 moves took 120453490μs

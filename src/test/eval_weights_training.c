@@ -51,7 +51,7 @@ float bef_learning_king_safety_modify = 1;
 float learning_rate = 0.0005f;
 #define training_runs 1000
 #define iteration_depth 1
-#define learning_player 0
+#define learning_player 1
 #define convergence_drystreak 200
 
 void main()
@@ -128,6 +128,7 @@ void main()
             if(move_count == 0){
                 //nothing special for now
                 printf("draw \n");
+                print_full_board();
                 break;
             }
 
@@ -153,8 +154,8 @@ void main()
                     make_move(piece_idx[i], moves_from[i], moves_to[i], captured);
 
 
-                      // avoid draw by repitition
-                    hashset* present = hashset_contains(bitfields[is_player_white] | bitfields[!is_player_white]);
+                    // avoid draw by repitition
+                    hashset* present = hashset_contains();
                     if(present != NULL)
                     {
                         //printf("### avoiding repitition draw\n");
