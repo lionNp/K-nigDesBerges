@@ -46,24 +46,6 @@ float bef_learning_contol_modify = 2;
 float bef_learning_pawns_modify = 1;
 float bef_learning_king_safety_modify = 1;
 
-//std weight list for reference
-/*
-float material_modify = 20;
-float position_modify = 1;
-float contol_modify = 2;
-float pawns_modify = 1;
-float king_safety_modify = 1;
-*/
-
-//best run todate: ep 100
-/*
-final weights after 22 times learned:
-material_modify: 11.464553
-position_modify: 0.732378
-contol_modify: 0.257649
-pawns_modify: 0.324688
-king_safety_modify: 3.351111
-*/
 
 
 float learning_rate = 0.0005f;
@@ -226,7 +208,6 @@ void main()
             make_move(piece_idx[idx], moves_from[idx], moves_to[idx], captured);
 
             //clear hash as to not use it up too much
-            /*
             for(int xc=0; xc<8; xc++)
             {
                 if(captured[xc] != 0UL)
@@ -234,7 +215,6 @@ void main()
                     hashset_clear();
                 }
             }
-            */
 
 
             //printf("%d Turn\n", is_player_white);
