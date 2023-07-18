@@ -1,6 +1,9 @@
 
-# Durchführen eines Spiels mit nicht festgesetzter Iterationstiefe (dynamisches Zeitmanagement) und Alpha-Beta suche mit transposition tables:
+# Durchführen eines Spiels mit nicht festgesetzter Iterationstiefe (dynamisches Zeitmanagement), initialer MCTS und Alpha-Beta suche mit transposition tables:
 ./compile.sh
+
+## Anmerkung:
+depth 1 ist bei uns Äquivalent zu einem Zug von A und einem Gegenzug von B, also der Tiefe 2 im Kontext des Kurses
 
 
 # Training der Gewichte durch Spielen gegen sich selbst:
