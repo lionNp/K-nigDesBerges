@@ -51,7 +51,7 @@ float bef_learning_king_safety_modify = 1;
 float learning_rate = 0.0005f;
 #define training_runs 1000
 #define iteration_depth 1
-#define learning_player 1
+#define learning_player 0
 #define convergence_drystreak 200
 
 void main()
@@ -104,9 +104,6 @@ void main()
                 select_last_best_weights();
             }
 
-
-
-            //printf(".");
             field t = 0UL;
 
             field moves_from[max_move_count];
@@ -127,8 +124,39 @@ void main()
             
             if(move_count == 0){
                 //nothing special for now
-                printf("draw \n");
-                print_full_board();
+                is_player_white = !is_player_white;
+                gameover = game_finished(move_count);
+                printf("no more moves for %d\n", !is_player_white);
+                if(gameover){
+                    printf("game %d finished\n", z);
+                    printf("%s won!\n", is_player_white ? "white" : "black");
+                    print_full_board();
+                    // learn from match if learnee won
+                    //if(winner == learning_player && move_count > 0 && hashset_duplicates() < 3)
+                    if(is_player_white == learning_player)
+                    {
+                        printf("i learned ");
+                        use_learning_weights();
+                        printf("new weights:\n");
+                        print_all_learning_weights();
+
+                        printf("from:\n");
+                        print_full_board();
+
+                        learn_ct++;
+                        convergence_ct = 0;
+                    }
+                    else
+                    {
+                        convergence_ct ++;
+                        if(convergence_ct > convergence_drystreak)
+                        {
+                            printf("converged after %d episodes and %d times of no improvement\n", z, convergence_drystreak);
+                            break;
+                        }
+                    }
+                    break;
+                }
                 break;
             }
 
