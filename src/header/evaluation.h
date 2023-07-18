@@ -15,4 +15,15 @@ float evaluate_material();
 float evaluate_pawns();
 float evaluate_king_safety();
 float piece_value(field board);
+
+extern float material_modify;
+
+extern float position_modify;
+
+extern float contol_modify;
+
+extern float pawns_modify;
+
+extern float king_safety_modify;
+
 #endif

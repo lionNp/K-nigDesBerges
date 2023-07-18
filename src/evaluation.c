@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include "move_generator.h"
 
+float material_modify = 20;
+float position_modify = 1;
+float contol_modify = 2;
+float pawns_modify = 1;
+float king_safety_modify = 1;
+
 float evaluation(){
     float total_rating = 0.0f;
 
