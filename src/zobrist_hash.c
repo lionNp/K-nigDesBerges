@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #define NO_PIECE 12
-#define TABLE_SIZE 1000003
+#define TABLE_SIZE 240000007
 
 field zobrist_table[8][8][13];
 field masks[8][8];
@@ -82,8 +82,8 @@ void put_score(uint64_t hash_value, float score)
 {
     int idx = hash_value % TABLE_SIZE;
 
-    if(score_table[idx].score != 0)
-        num_hash_collisions++;
+    //if(score_table[idx].score != 0)
+    //    num_hash_collisions++;
 
     score_table[idx].hash_value = hash_value;
     score_table[idx].score = score;
