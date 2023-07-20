@@ -6,11 +6,11 @@
 #include "move_generator.h"
 #include "hashset.h"
 
-float material_modify = 15.5;
-float position_modify = 1.25;
-float contol_modify =  3.5;
-float pawns_modify = 0.5;
-float king_safety_modify = 2.5;
+float material_modify = 25;
+float position_modify = 1;
+float contol_modify =  3;
+float pawns_modify = 1;
+float king_safety_modify = 1;
 
 
 float evaluation(){
